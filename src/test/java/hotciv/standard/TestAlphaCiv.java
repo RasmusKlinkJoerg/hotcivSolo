@@ -43,16 +43,94 @@ public class TestAlphaCiv {
   @Before
   public void setUp() {
     game = new GameImpl();
+    ((GameImpl) game).createWorld();
   }
 
   // FRS p. 455 states that 'Red is the first player to take a turn'.
   @Test
   public void shouldBeRedAsStartingPlayer() {
     assertThat(game, is(notNullValue()));
-    // TODO: reenable the assert below to get started...
-    // assertThat(game.getPlayerInTurn(), is(Player.RED));
+    assertThat(game.getPlayerInTurn(), is(Player.RED));
   }
 
+  @Test
+  public void secondPlayerIsBlue(){
+    game.endOfTurn();
+    assertThat(game.getPlayerInTurn(), is(Player.BLUE));
+  }
+
+  @Test
+  public void redCityAt_1_1(){
+    assertThat(game.getCityAt(new Position(1,1)).getOwner(), is(Player.RED));
+  }
+
+  @Test
+  public void blueCityAt_4_1(){
+    assertThat(game.getCityAt(new Position(4,1)).getOwner(), is(Player.BLUE));
+  }
+
+  @Test
+  public void oceanAt_1_0(){
+    assertThat(game.getTileAt(new Position(1,0)).getTypeString(), is(GameConstants.OCEANS));
+  }
+
+  @Test
+  public void hillsAt_0_1(){
+    assertThat(game.getTileAt(new Position(0,1)).getTypeString(), is(GameConstants.HILLS));
+  }
+
+  @Test
+  public void mountainAt_2_2(){
+    assertThat(game.getTileAt(new Position(2,2)).getTypeString(), is(GameConstants.MOUNTAINS));
+  }
+
+  @Test
+  public void plainsAt_0_0(){
+    assertThat(game.getTileAt(new Position(0,0)).getTypeString(), is(GameConstants.PLAINS));
+  }
+  @Test
+  public void plainsAt_4_7(){
+    assertThat(game.getTileAt(new Position(4,7)).getTypeString(), is(GameConstants.PLAINS));
+  }
+  @Test
+  public void plainsAt_15_15(){
+    assertThat(game.getTileAt(new Position(15,15)).getTypeString(), is(GameConstants.PLAINS));
+  }
+
+  @Test
+  public void redArcherAt_2_0(){
+    Position p = new Position(2,0);
+    assertThat(game.getUnitAt(p).getOwner(), is(Player.RED));
+    assertThat(game.getUnitAt(p).getTypeString(), is(GameConstants.ARCHER));
+  }
+
+  @Test
+  public void blueLegionAt_3_2(){
+    Position p = new Position(3,2);
+    assertThat(game.getUnitAt(p).getOwner(), is(Player.BLUE));
+    assertThat(game.getUnitAt(p).getTypeString(), is(GameConstants.LEGION));
+  }
+
+   @Test
+   public void redSettlerAt_4_3(){
+    Position p = new Position(4,3);
+     assertThat(game.getUnitAt(p).getOwner(), is(Player.RED));
+     assertThat(game.getUnitAt(p).getTypeString(), is(GameConstants.SETTLER));
+  }
+
+  @Test
+  public void gameStartsInYear4000BC() {
+    assertThat(game.getAge(), is(-4000));
+  }
+
+  @Test
+  public void afterRound1ItisYear3900BC() {
+    game.endOfTurn();
+    game.endOfTurn();
+    assertThat(game.getAge(), is(-3900));
+  }
+
+//______________________________________________________________________
   /** REMOVE ME. Not a test of HotCiv, just an example of what
       matchers the hamcrest library has... */
   @Test

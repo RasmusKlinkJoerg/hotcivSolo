@@ -1,0 +1,66 @@
+General test list:
+Players:
+2-4 players
+
+World map:
+* is 16x16 matrix
+* terrain types give different resources
+*
+Units:
+✽ Units cannot move over ocean
+✽ Units cannot move over mountain
+✽ Red cannot move Blue’s units
+✽ Blue cannot move red’s units
+* Only one unit at a tile
+* has different stats and actions:
+    - archer: def:3 atc: 2, action: fortify= def*2 & stationary
+    - legion: def:2, atc: 4, action: none
+    - setter: d: 3, atc 0 , action: transform into city
+* archer, legion and settler has 1 movecount per round
+*archer cost 10, legion 15, settler 30
+
+Cities:
+Food increases city size
+Production creates units
+
+Winning:
+Attacking:
+Aging:
+A round ends after all players have taken their turn
+_____________________________________
+Test list - alpha civ:
+Players:
+[x]✽ Red is the first player in turn
+[x] * Blue is the second player in turn
+World map:
+[x] ✽ Red’s city is at (1,1)
+[x]* blue city at (4,1)
+[x]✽ there is ocean at (1,0)
+[x]* there is hills at (0,1)
+[x]* there is mountain at (2,2)
+[x]* the rest is plains
+[x]* red archer at (2,0)
+[x]* blue legion at (3,2)
+[x]* red settler at (4,3)
+
+Units:
+
+Cities:
+✽ cities produce 6 ‘production’ after a round has ended
+✽ cities’ population size is always 1
+* the player can select to produce archers, legions or settlers
+    Unit production:
+    * produces unit when enough production
+    * when produce, cost is deducted from treasury
+    * produce placed in city if space else clockwise starting from north
+Winning:
+✽ Red wins in year 3000 BC
+Attacking:
+✽ Attacking unit always wins
+
+Aging:
+[x] * starts in 4000 bc
+[x]* + 100 years each round
+[~] * round ends after 2 turns
+
+No actions are supported
