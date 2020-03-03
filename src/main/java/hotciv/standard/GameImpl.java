@@ -34,16 +34,18 @@ import java.util.HashMap;
 
 public class GameImpl implements Game {
     private Player playerInTurn = Player.RED;
-    private HashMap<Position, City> cityHashMap;
+    private HashMap<Position, CityImpl> cityHashMap;
     private HashMap<Position, Tile> tileHashMap;
     private HashMap<Position, Unit> unitHashMap;
     private int age;
+    private Player winner;
 
     public GameImpl() {
         cityHashMap = new HashMap<>();
         tileHashMap = new HashMap<>();
         unitHashMap = new HashMap<>();
         age = -4000;
+        winner = null;
     }
 
 
@@ -64,7 +66,10 @@ public class GameImpl implements Game {
     }
 
     public Player getWinner() {
-        return null;
+        if (age==-3000) {
+            winner = Player.RED;
+        }
+        return winner;
     }
 
     public int getAge() {
@@ -72,7 +77,15 @@ public class GameImpl implements Game {
     }
 
     public boolean moveUnit(Position from, Position to) {
-        return false;
+        boolean toOcean = tileHashMap.get(to).getTypeString() == GameConstants.OCEANS;
+        boolean toMountain = tileHashMap.get(to).getTypeString() == GameConstants.MOUNTAINS;
+        boolean movingOwnUnit = getUnitAt(from).getOwner() == getPlayerInTurn();
+        if ( toOcean || toMountain  || !movingOwnUnit) {
+            return false;
+        }
+        unitHashMap.put(to, getUnitAt(from));
+        unitHashMap.put(from, null);
+        return true;
     }
 
     public void endOfTurn() {
@@ -83,9 +96,24 @@ public class GameImpl implements Game {
         }
         if (bluesTurn) {
             playerInTurn = Player.RED;
-            age += 100;
+            endOfRound();
         }
     }
+
+    private void endOfRound() {
+        age += 100;
+        cityActions();
+    }
+
+    private void cityActions() {
+        for (CityImpl c : cityHashMap.values()) {
+            c.increaseTreasury(6);
+            if (c.getTreasury() > c.getCurrentUnitPrice()){
+                c.decreaseTreasury(c.getCurrentUnitPrice());
+            }
+        }
+    }
+
 
     public void changeWorkForceFocusInCityAt(Position p, String balance) {
     }

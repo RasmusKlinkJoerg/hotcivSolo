@@ -11,7 +11,6 @@ public class TileImpl implements hotciv.framework.Tile {
 
     @Override
     public String getTypeString() {
-        System.out.println("hello from tileimpl");
         return tileType;
     }
 }

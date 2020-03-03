@@ -7,10 +7,12 @@ World map:
 * terrain types give different resources
 *
 Units:
-✽ Units cannot move over ocean
-✽ Units cannot move over mountain
-✽ Red cannot move Blue’s units
-✽ Blue cannot move red’s units
+[x] Unit can move over plain
+[x]✽ Units cannot move over ocean
+[x] ✽ Units cannot move over mountain
+[x] ✽ Red cannot move Blue’s units
+[x] map is updated after successful move
+ ✽ Blue cannot move red’s units
 * Only one unit at a tile
 * has different stats and actions:
     - archer: def:3 atc: 2, action: fortify= def*2 & stationary
@@ -21,10 +23,11 @@ Units:
 
 Cities:
 Food increases city size
-Production creates units
+[] Production creates units
 
 Winning:
 Attacking:
+* attacks by moving to enemy units position
 Aging:
 A round ends after all players have taken their turn
 _____________________________________
@@ -33,28 +36,32 @@ Players:
 [x]✽ Red is the first player in turn
 [x] * Blue is the second player in turn
 World map:
-[x] ✽ Red’s city is at (1,1)
-[x]* blue city at (4,1)
-[x]✽ there is ocean at (1,0)
-[x]* there is hills at (0,1)
-[x]* there is mountain at (2,2)
-[x]* the rest is plains
-[x]* red archer at (2,0)
-[x]* blue legion at (3,2)
-[x]* red settler at (4,3)
+    Cities:
+        [x] ✽ Red’s city is at (1,1)
+        [x]* blue city at (4,1)
+    Tiles:
+        [x]✽ there is ocean at (1,0)
+        [x]* there is hills at (0,1)
+        [x]* there is mountain at (2,2)
+        [x]* the rest is plains
+    Units:
+        [x]* red archer at (2,0)
+        [x]* blue legion at (3,2)
+        [x]* red settler at (4,3)
 
 Units:
 
 Cities:
-✽ cities produce 6 ‘production’ after a round has ended
-✽ cities’ population size is always 1
-* the player can select to produce archers, legions or settlers
+[x]✽ cities start with 0 ‘production’
+[x]✽ cities produce 6 ‘production’ after a round has ended
+[x] ✽ cities’ population size is always 1
+[x~]* the player can select a city to produce archers, legions or settlers
     Unit production:
-    * produces unit when enough production
-    * when produce, cost is deducted from treasury
-    * produce placed in city if space else clockwise starting from north
+[]    * produces unit when enough production
+[x]    * when produce, cost is deducted from treasury
+[]    * produce placed in city if space else clockwise starting from north
 Winning:
-✽ Red wins in year 3000 BC
+[x] ✽ Red wins in year 3000 BC
 Attacking:
 ✽ Attacking unit always wins
 
