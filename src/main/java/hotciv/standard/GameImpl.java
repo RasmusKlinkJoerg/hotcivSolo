@@ -36,7 +36,7 @@ public class GameImpl implements Game {
     private Player playerInTurn = Player.RED;
     private HashMap<Position, CityImpl> cityHashMap;
     private HashMap<Position, Tile> tileHashMap;
-    private HashMap<Position, Unit> unitHashMap;
+    private HashMap<Position, UnitImpl> unitHashMap;
     private int age;
     private Player winner;
 
@@ -80,11 +80,15 @@ public class GameImpl implements Game {
         boolean toOcean = tileHashMap.get(to).getTypeString() == GameConstants.OCEANS;
         boolean toMountain = tileHashMap.get(to).getTypeString() == GameConstants.MOUNTAINS;
         boolean movingOwnUnit = getUnitAt(from).getOwner() == getPlayerInTurn();
-        if ( toOcean || toMountain  || !movingOwnUnit) {
+        boolean unitAtTo = unitHashMap.get(to) != null;
+        boolean ownsUnitAtTo =  unitAtTo && getUnitAt(to).getOwner() == getPlayerInTurn();
+        boolean moveCountGreaterThanZero = getUnitAt(from).getMoveCount() > 0;
+        if ( toOcean || toMountain  || !movingOwnUnit || ownsUnitAtTo || !moveCountGreaterThanZero) {
             return false;
         }
-        unitHashMap.put(to, getUnitAt(from));
-        unitHashMap.put(from, null);
+        unitHashMap.put(to, (UnitImpl) getUnitAt(from));
+        unitHashMap.remove(from);
+        unitHashMap.get(to).decreaseMoveCount(1);
         return true;
     }
 
@@ -103,6 +107,9 @@ public class GameImpl implements Game {
     private void endOfRound() {
         age += 100;
         cityActions();
+        for (UnitImpl u : unitHashMap.values()) {
+            u.resetMoveCount();
+        }
     }
 
     private void cityActions() {

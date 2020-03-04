@@ -12,13 +12,21 @@ Units:
 [x] ✽ Units cannot move over mountain
 [x] ✽ Red cannot move Blue’s units
 [x] map is updated after successful move
- ✽ Blue cannot move red’s units
-* Only one unit at a tile
-* has different stats and actions:
-    - archer: def:3 atc: 2, action: fortify= def*2 & stationary
-    - legion: def:2, atc: 4, action: none
-    - setter: d: 3, atc 0 , action: transform into city
-* archer, legion and settler has 1 movecount per round
+[x] ✽ Blue cannot move red’s units
+[x] * Only one unit at a tile/ cannot move unit to own unit
+[x] * Can only move if move count is greater than 0
+[x]* archer, legion and settler has 1 movecount per round
+[] * has different stats and actions:
+      - archer:
+             []   def:3 atc: 2,
+                action: fortify= def*2 & stationary
+    - legion:
+                def:2, atc: 4,
+                action: none
+    - setter:
+                def: 3, atc 0,
+                action: transform into city
+
 *archer cost 10, legion 15, settler 30
 
 Cities:

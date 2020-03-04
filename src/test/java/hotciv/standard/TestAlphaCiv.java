@@ -246,6 +246,50 @@ public class TestAlphaCiv {
         assertThat(game.getUnitAt(to), is(notNullValue()));
     }
 
+    @Test
+    public void cantMoveUnitToOwnUnit() {
+        Position redArcherP1 = new Position(2,0);
+        Position redArcherP2 = new Position(3,1);
+        Position redArcherP3 = new Position(4,2);
+        Position redSettlerP = new Position(4,3);
+
+        game.moveUnit(redArcherP1, redArcherP2); //move red archer towards red settler
+        game.endOfTurn();
+        game.endOfTurn();                        //end the round to refresh move count
+        game.moveUnit(redArcherP2, redArcherP3);
+        game.endOfTurn();
+        game.endOfTurn();
+
+        assertThat(game.moveUnit(redArcherP3, redSettlerP), is(false));
+    }
+
+    @Test
+    public void canOnlyMoveIfMoveCountIsGreaterThan0() {
+        Position redArcherP1 = new Position(2,0);
+        Position redArcherP2 = new Position(3,1);
+        Position redArcherP3 = new Position(4,2);
+        game.moveUnit(redArcherP1, redArcherP2);
+        assertThat(game.moveUnit(redArcherP2, redArcherP3), is(false));
+    }
+
+    @Test
+    public void archerHas4Def() {
+        Position redArcherP1 = new Position(2,0);
+        assertThat(game.getUnitAt(redArcherP1).getDefensiveStrength(), is(3));
+    }
+
+    @Test
+    public void legionHas2Def() {
+        Position blueLegionP1 = new Position(3,2);
+        assertThat(game.getUnitAt(blueLegionP1).getDefensiveStrength(), is(2));
+    }
+
+    @Test
+    public void settlerHas3Def() {
+        Position redSettlerP1 = new Position(4,3);
+        assertThat(game.getUnitAt(redSettlerP1).getDefensiveStrength(), is(3));
+    }
+
 
 
 //______________________________________________________________________
