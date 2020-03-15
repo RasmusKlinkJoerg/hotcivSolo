@@ -77,12 +77,20 @@ public class GameImpl implements Game {
     }
 
     public boolean moveUnit(Position from, Position to) {
+
+        UnitImpl unit = (UnitImpl) getUnitAt(from);
+
         boolean toOcean = tileHashMap.get(to).getTypeString() == GameConstants.OCEANS;
         boolean toMountain = tileHashMap.get(to).getTypeString() == GameConstants.MOUNTAINS;
         boolean movingOwnUnit = getUnitAt(from).getOwner() == getPlayerInTurn();
         boolean unitAtTo = unitHashMap.get(to) != null;
         boolean ownsUnitAtTo =  unitAtTo && getUnitAt(to).getOwner() == getPlayerInTurn();
         boolean moveCountGreaterThanZero = getUnitAt(from).getMoveCount() > 0;
+
+        boolean stationary = unit.getStationary();
+        if (stationary) {
+            return false;
+        }
         if ( toOcean || toMountain  || !movingOwnUnit || ownsUnitAtTo || !moveCountGreaterThanZero) {
             return false;
         }
@@ -113,24 +121,119 @@ public class GameImpl implements Game {
     }
 
     private void cityActions() {
-        for (CityImpl c : cityHashMap.values()) {
+        for (Position p : cityHashMap.keySet()) {
+            CityImpl c = cityHashMap.get(p);
             c.increaseTreasury(6);
             if (c.getTreasury() > c.getCurrentUnitPrice()){
+                placeUnit(p, c);
                 c.decreaseTreasury(c.getCurrentUnitPrice());
             }
         }
     }
 
+    private void placeUnit(Position cityPos, City c) {
+        //in city
+        if (getUnitAt(cityPos) == null) {
+            unitHashMap.put(cityPos, new UnitImpl(c.getOwner(),c.getProduction()));
+            return;
+        }
+        //north
+        Position tempPos = new Position(cityPos.getRow()-1, cityPos.getColumn());
+        Tile t = getTileAt(tempPos);
+        boolean validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
+        if (getUnitAt(tempPos)==null & validTile) {
+            unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
+            return;
+        }
+        //north east
+        tempPos = new Position(cityPos.getRow()-1, cityPos.getColumn()+1);
+        t = getTileAt(tempPos);
+        validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
+        if (getUnitAt(tempPos)==null & validTile) {
+            unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
+            return;
+        }
+        //east
+        tempPos = new Position(cityPos.getRow(), cityPos.getColumn()+1);
+        t = getTileAt(tempPos);
+        validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
+        if (getUnitAt(tempPos)==null & validTile) {
+            unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
+            return;
+        }
+        //south east
+        tempPos = new Position(cityPos.getRow()+1, cityPos.getColumn()+1);
+        t = getTileAt(tempPos);
+        validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
+        if (getUnitAt(tempPos)==null & validTile) {
+            unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
+            return;
+        }
+        //south
+        tempPos = new Position(cityPos.getRow()+1, cityPos.getColumn());
+        t = getTileAt(tempPos);
+        validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
+        if (getUnitAt(tempPos)==null & validTile) {
+            unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
+            return;
+        }
+        //south west
+        tempPos = new Position(cityPos.getRow()+1, cityPos.getColumn()-1);
+        t = getTileAt(tempPos);
+        validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
+        if (getUnitAt(tempPos)==null & validTile) {
+            unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
+            return;
+        }
+        //west
+        tempPos = new Position(cityPos.getRow(), cityPos.getColumn()-1);
+        t = getTileAt(tempPos);
+        validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
+        if (getUnitAt(tempPos)==null & validTile) {
+            unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
+            return;
+        }
+        //Nort west
+        tempPos = new Position(cityPos.getRow()-1, cityPos.getColumn()-1);
+        t = getTileAt(tempPos);
+        validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
+        if (getUnitAt(tempPos)==null & validTile) {
+            unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
+            return;
+        }
+    }
+
 
     public void changeWorkForceFocusInCityAt(Position p, String balance) {
+
     }
 
     public void changeProductionInCityAt(Position p, String unitType) {
+        CityImpl c = (CityImpl) getCityAt(p);
+        c.setProduction(unitType);
     }
 
     public void performUnitActionAt(Position p) {
+        UnitImpl unit = (UnitImpl) getUnitAt(p);
+        String unitType = unit.getTypeString();
+        if (unitType == GameConstants.ARCHER) {
+            if (unit.getFortified()) {
+                unit.setDefensiveStrength(3);
+                unit.setStationary(false);
+                unit.setFortified(false);
+            } else {
+                int oldDef = unit.getDefensiveStrength();
+                unit.setDefensiveStrength(oldDef*2);
+                unit.setStationary(true);
+                unit.setFortified(true);
+            }
+        }
+        if (unitType == GameConstants.SETTLER) {
+            CityImpl newCity = new CityImpl(unit.getOwner());
+            cityHashMap.put(p, newCity);
+            unitHashMap.remove(p);
+        }
     }
-
 
     private void putCity(Position p, Player owner) {
         cityHashMap.put(p, new CityImpl(owner));
@@ -143,7 +246,6 @@ public class GameImpl implements Game {
     private void putUnit(Position p, Player owner, String unitType) {
         unitHashMap.put(p, new UnitImpl(owner, unitType));
     }
-
 
     public void createWorld() {
         //Cities

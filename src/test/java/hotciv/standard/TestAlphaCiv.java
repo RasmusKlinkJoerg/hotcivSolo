@@ -62,6 +62,7 @@ public class TestAlphaCiv {
         assertThat(game.getPlayerInTurn(), is(Player.BLUE));
     }
 
+    //World
     @Test
     public void redCityAt_1_1() {
         assertThat(game.getCityAt(new Position(1, 1)).getOwner(), is(Player.RED));
@@ -123,18 +124,20 @@ public class TestAlphaCiv {
         assertThat(game.getUnitAt(p).getTypeString(), is(GameConstants.SETTLER));
     }
 
+    //Aging
     @Test
     public void gameStartsInYear4000BC() {
         assertThat(game.getAge(), is(-4000));
     }
 
     @Test
-    public void afterRound1ItisYear3900BC() {
+    public void afterRound1ItIsYear3900BC() {
         game.endOfTurn();
         game.endOfTurn();
         assertThat(game.getAge(), is(-3900));
     }
 
+    //City
     @Test
     public void cityHas0TreasuryAtStartOfGame() {
         Position p = new Position(1, 1);
@@ -171,23 +174,78 @@ public class TestAlphaCiv {
 
     @Test
     public void cityCanChangeUnitProduction() {
-        Position p = new Position(4, 1);
-        CityImpl bCity = (CityImpl) game.getCityAt(p);
-        bCity.setProduction(GameConstants.ARCHER);
+        Position bCityPos = new Position(4, 1);
+        CityImpl bCity = (CityImpl) game.getCityAt(bCityPos);
+        game.changeProductionInCityAt(bCityPos, GameConstants.ARCHER);
         assertThat(bCity.getProduction(), is(GameConstants.ARCHER));
     }
 
     @Test
     public void cityLosesTreasuryWhenProducesUnit() {
-        for (int i = 0; i < 6; i++) {  // wait 6 turns so treasury is increased to 18
+        for (int i = 0; i < 6; i++) {  // wait 6 turns so treasury is increased to 18, (legion costs 15)
             game.endOfTurn();
         }
         Position p = new Position(4, 1);
         assertThat(game.getCityAt(p).getTreasury(), is(18 - 15));
     }
 
+    @Test
+    public void cityProducesUnitWhenHasEnoughProduction() {
+        Position bCityPos = new Position(4, 1);
+        assertThat(game.getUnitAt(bCityPos), is(nullValue())); // No unit to begin with
+        for (int i = 0; i < 6; i++) {  // wait 6 turns (3 rounds) so treasury is increased to 18 (legion costs 15)
+            game.endOfTurn();
+        }
+        assertThat(game.getUnitAt(bCityPos), is(notNullValue())); // unit should first be placed in city if there is space
+    }
+
+    @Test
+    public void producedUnitIsPlacedNorthIfCityIsOccupied() {
+        Position northPos = new Position(3, 1);
+        for (int i = 0; i < 12; i++) {  // wait 12 turns (6 rounds) so 36 is added to treasury and two legions are produced(legion costs 15)
+            game.endOfTurn();
+        }
+        assertThat(game.getUnitAt(northPos), is(notNullValue())); // unit should first be placed in city if there is space
+    }
+
+    @Test
+    public void producedUnitIsPlacedClockwise() {
+        Position eastPos = new Position(4, 2);
+        for (int i = 0; i < 18; i++) {  // wait 18 turns (9 rounds) so 54 is added to treasury and 3 legions are produced(legion costs 15),
+            game.endOfTurn();           // there is already a legion at north east, therefore the third produced is placed east.
+        }
+        assertThat(game.getUnitAt(eastPos), is(notNullValue())); // unit should first be placed in city if there is space
+    }
+
+    @Test
+    public void producedUnitInNorthWestAfterExcessAmountOfRounds() {
+        Position northWestPos = new Position(4, 2);
+        for (int i = 0; i < 69420; i++) {  // wait 69420 turns (34710 rounds) so 208260 is added to treasury and 10 (max (if none moved)) legions are produced(legion costs 15),
+            game.endOfTurn();           // there is already a legion at north east, therefore the third produced is placed east.
+        }
+        assertThat(game.getUnitAt(northWestPos), is(notNullValue())); // unit should first be placed in city if there is space
+    }
+
+    @Test
+    public void unitCannotBeProducedOnOcean() {
+        Position oceanPos = new Position(1, 0); //adjacent (west) to red city at (1,1)
+        for (int i = 0; i < 69420; i++) {  // wait 69420 turns (34710 rounds) so 208260 is added to treasury and 10 (max (if none moved)) legions are produced(legion costs 15),
+            game.endOfTurn();           // there is already a legion at north east, therefore the third produced is placed east.
+        }
+        assertThat(game.getUnitAt(oceanPos), is(nullValue())); // unit should first be placed in city if there is space
+    }
+
+    @Test
+    public void unitCannotBeProducedOnMountain() {
+        Position mountPos = new Position(2, 2); //adjacent (south east) to red city at (1,1)
+        for (int i = 0; i < 69420; i++) {  // wait 69420 turns (34710 rounds) so 208260 is added to treasury and 10 (max (if none moved)) legions are produced(legion costs 15),
+            game.endOfTurn();           // there is already a legion at north east, therefore the third produced is placed east.
+        }
+        assertThat(game.getUnitAt(mountPos), is(nullValue())); // unit should first be placed in city if there is space
+    }
 
 
+    //Winning
     @Test
     public void redWinsIn3000BC() {
         for (int i = 0; i < 20; i++) {  // wait 10 turns so year is 3000BC
@@ -201,6 +259,7 @@ public class TestAlphaCiv {
         assertThat(game.getWinner(), is(nullValue()));
     }
 
+    //Move unit
     @Test
     public void cantMoveOverOcean() {
         Position redArcherP = new Position(2,0);
@@ -272,6 +331,7 @@ public class TestAlphaCiv {
         assertThat(game.moveUnit(redArcherP2, redArcherP3), is(false));
     }
 
+    //Units
     @Test
     public void archerHas4Def() {
         Position redArcherP1 = new Position(2,0);
@@ -289,6 +349,58 @@ public class TestAlphaCiv {
         Position redSettlerP1 = new Position(4,3);
         assertThat(game.getUnitAt(redSettlerP1).getDefensiveStrength(), is(3));
     }
+
+    @Test
+    public void archerHas2Atc() {
+        Position redArcherP1 = new Position(2,0);
+        assertThat(game.getUnitAt(redArcherP1).getAttackingStrength(), is(2));
+    }
+
+    @Test
+    public void legionHas4Atc() {
+        Position blueLegionP1 = new Position(3,2);
+        assertThat(game.getUnitAt(blueLegionP1).getAttackingStrength(), is(4));
+    }
+
+    @Test
+    public void settlerHas0Atc() {
+        Position redSettlerP1 = new Position(4,3);
+        assertThat(game.getUnitAt(redSettlerP1).getAttackingStrength(), is(0));
+    }
+
+    @Test
+    public void archerFortifyActionDoublesDefense() {
+        Position redArcherP1 = new Position(2,0);
+        game.performUnitActionAt(redArcherP1);
+        assertThat(game.getUnitAt(redArcherP1).getDefensiveStrength(), is(3*2));
+    }
+
+    @Test
+    public void archerFortifyActionMakesStationary() {
+        Position redArcherP1 = new Position(2,0);
+        Position redArcherP2 = new Position(2,1);
+        game.performUnitActionAt(redArcherP1);
+        assertThat(game.moveUnit(redArcherP1,redArcherP2), is(false));
+    }
+
+    @Test
+    public void archerCanUndoFortifyAction(){
+        Position redArcherP1 = new Position(2,0);
+        Position redArcherP2 = new Position(2,1);
+        game.performUnitActionAt(redArcherP1);  //Fortify
+        game.performUnitActionAt(redArcherP1);  //Undo fortify
+        assertThat(game.getUnitAt(redArcherP1).getDefensiveStrength(), is(3));  //check that def is normal
+        assertThat(game.moveUnit(redArcherP1,redArcherP2), is(true));
+    }
+
+    @Test
+    public void settlerActionTransformsSettlerToCity() {
+        Position redSettlerP1 = new Position(4,3);
+        game.performUnitActionAt(redSettlerP1);
+        assertThat(game.getCityAt(redSettlerP1), is(notNullValue()));
+    }
+
+
 
 
 

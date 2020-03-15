@@ -15,27 +15,29 @@ Units:
 [x] ✽ Blue cannot move red’s units
 [x] * Only one unit at a tile/ cannot move unit to own unit
 [x] * Can only move if move count is greater than 0
-[x]* archer, legion and settler has 1 movecount per round
-[] * has different stats and actions:
+[x]* archer, legion and settler has 1 move count per round
+[x] * has different stats and actions:
       - archer:
-             []   def:3 atc: 2,
-                action: fortify= def*2 & stationary
+             [x]   def:3 atc: 2,
+               [x] action: fortify= def*2 & stationary
     - legion:
-                def:2, atc: 4,
-                action: none
-    - setter:
-                def: 3, atc 0,
-                action: transform into city
+               [x] def:2, atc: 4,
+               [x] action: none
+    - settler:
+              [x]  def: 3, atc 0,
+               [x] action: transform into city
 
 *archer cost 10, legion 15, settler 30
 
 Cities:
-Food increases city size
+Food increases city size , size always 1 in Alpha
 [] Production creates units
 
 Winning:
+
 Attacking:
 * attacks by moving to enemy units position
+
 Aging:
 A round ends after all players have taken their turn
 _____________________________________
@@ -65,13 +67,13 @@ Cities:
 [x] ✽ cities’ population size is always 1
 [x~]* the player can select a city to produce archers, legions or settlers
     Unit production:
-[]    * produces unit when enough production
+[x]    * produces unit when enough production
 [x]    * when produce, cost is deducted from treasury
-[]    * produce placed in city if space else clockwise starting from north
+[x]    * produce placed in city if space else clockwise starting from north
 Winning:
 [x] ✽ Red wins in year 3000 BC
 Attacking:
-✽ Attacking unit always wins
+[] ✽ Attacking unit always wins
 
 Aging:
 [x] * starts in 4000 bc
