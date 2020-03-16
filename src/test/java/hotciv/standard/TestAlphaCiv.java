@@ -400,6 +400,17 @@ public class TestAlphaCiv {
         assertThat(game.getCityAt(redSettlerP1), is(notNullValue()));
     }
 
+    @Test
+    public void attackingUnitAlwaysWins() {
+        Position redSettlerP1 = new Position(4,3);
+        Position redSettlerP2 = new Position(3,3);
+        Position blueLegionP1 = new Position(3,2);
+        game.moveUnit(redSettlerP1, redSettlerP2);
+        game.endOfTurn();
+        game.endOfTurn();
+        game.moveUnit(redSettlerP2,blueLegionP1); //The red settler moves to the blue legion and overrides (kills) the blue legion
+        assertThat(game.getUnitAt(blueLegionP1).getTypeString(), is(GameConstants.SETTLER));
+    }
 
 
 

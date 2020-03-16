@@ -27,16 +27,16 @@ Units:
               [x]  def: 3, atc 0,
                [x] action: transform into city
 
-*archer cost 10, legion 15, settler 30
+[x] *archer cost 10, legion 15, settler 30
 
 Cities:
 Food increases city size , size always 1 in Alpha
-[] Production creates units
+[x] Production creates units
 
 Winning:
 
 Attacking:
-* attacks by moving to enemy units position
+[x] * attacks by moving to enemy units position
 
 Aging:
 A round ends after all players have taken their turn
@@ -73,7 +73,7 @@ Cities:
 Winning:
 [x] ✽ Red wins in year 3000 BC
 Attacking:
-[] ✽ Attacking unit always wins
+[x] ✽ Attacking unit always wins
 
 Aging:
 [x] * starts in 4000 bc
@@ -81,3 +81,7 @@ Aging:
 [~] * round ends after 2 turns
 
 No actions are supported
+___________________________________________________________________
+TestList - BetaCiv:
+
+

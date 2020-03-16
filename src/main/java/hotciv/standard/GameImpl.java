@@ -137,71 +137,22 @@ public class GameImpl implements Game {
             unitHashMap.put(cityPos, new UnitImpl(c.getOwner(),c.getProduction()));
             return;
         }
-        //north
-        Position tempPos = new Position(cityPos.getRow()-1, cityPos.getColumn());
-        Tile t = getTileAt(tempPos);
-        boolean validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
-        if (getUnitAt(tempPos)==null & validTile) {
-            unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
-            return;
+        int []rows = {-1, -1, 0, 1, 1, 1, 0, -1};
+        int []cols = {0, 1, 1, 1, 0, -1, -1, -1};
+        int i = 0;
+        for(int row : rows){
+            int col = cols[i]; //get the matching pairs of row and column to get the surrounding positions in clockwise order, starting from north.
+                Position tempPos = new Position(cityPos.getRow()+row, cityPos.getColumn()+col);
+                Tile t = getTileAt(tempPos);
+                boolean validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
+                if (getUnitAt(tempPos)==null & validTile) {
+                    unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
+                    return;
+                }
+                i++;
+            }
         }
-        //north east
-        tempPos = new Position(cityPos.getRow()-1, cityPos.getColumn()+1);
-        t = getTileAt(tempPos);
-        validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
-        if (getUnitAt(tempPos)==null & validTile) {
-            unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
-            return;
-        }
-        //east
-        tempPos = new Position(cityPos.getRow(), cityPos.getColumn()+1);
-        t = getTileAt(tempPos);
-        validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
-        if (getUnitAt(tempPos)==null & validTile) {
-            unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
-            return;
-        }
-        //south east
-        tempPos = new Position(cityPos.getRow()+1, cityPos.getColumn()+1);
-        t = getTileAt(tempPos);
-        validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
-        if (getUnitAt(tempPos)==null & validTile) {
-            unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
-            return;
-        }
-        //south
-        tempPos = new Position(cityPos.getRow()+1, cityPos.getColumn());
-        t = getTileAt(tempPos);
-        validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
-        if (getUnitAt(tempPos)==null & validTile) {
-            unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
-            return;
-        }
-        //south west
-        tempPos = new Position(cityPos.getRow()+1, cityPos.getColumn()-1);
-        t = getTileAt(tempPos);
-        validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
-        if (getUnitAt(tempPos)==null & validTile) {
-            unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
-            return;
-        }
-        //west
-        tempPos = new Position(cityPos.getRow(), cityPos.getColumn()-1);
-        t = getTileAt(tempPos);
-        validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
-        if (getUnitAt(tempPos)==null & validTile) {
-            unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
-            return;
-        }
-        //Nort west
-        tempPos = new Position(cityPos.getRow()-1, cityPos.getColumn()-1);
-        t = getTileAt(tempPos);
-        validTile = !t.getTypeString().equals(GameConstants.OCEANS) && !t.getTypeString().equals(GameConstants.MOUNTAINS);
-        if (getUnitAt(tempPos)==null & validTile) {
-            unitHashMap.put(tempPos, new UnitImpl(c.getOwner(),c.getProduction()));
-            return;
-        }
-    }
+
 
 
     public void changeWorkForceFocusInCityAt(Position p, String balance) {
