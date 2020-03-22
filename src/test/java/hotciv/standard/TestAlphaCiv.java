@@ -2,6 +2,11 @@ package hotciv.standard;
 
 import hotciv.framework.*;
 
+import hotciv.standard.StrategyImpls.AlphaActionStrategy;
+import hotciv.standard.StrategyImpls.AlphaAgingStrategy;
+import hotciv.standard.StrategyImpls.AlphaLayoutStrategy;
+import hotciv.standard.StrategyImpls.AlphaWinningStrategy;
+
 import org.junit.*;
 
 import static org.junit.Assert.*;
@@ -45,8 +50,7 @@ public class TestAlphaCiv {
      */
     @Before
     public void setUp() {
-        game = new GameImpl();
-        ((GameImpl) game).createWorld();
+        game = new GameImpl(new AlphaWinningStrategy(), new AlphaAgingStrategy(), new AlphaActionStrategy(), new AlphaLayoutStrategy());
     }
 
     // FRS p. 455 states that 'Red is the first player to take a turn'.
@@ -368,38 +372,7 @@ public class TestAlphaCiv {
         assertThat(game.getUnitAt(redSettlerP1).getAttackingStrength(), is(0));
     }
 
-    @Test
-    public void archerFortifyActionDoublesDefense() {
-        Position redArcherP1 = new Position(2,0);
-        game.performUnitActionAt(redArcherP1);
-        assertThat(game.getUnitAt(redArcherP1).getDefensiveStrength(), is(3*2));
-    }
-
-    @Test
-    public void archerFortifyActionMakesStationary() {
-        Position redArcherP1 = new Position(2,0);
-        Position redArcherP2 = new Position(2,1);
-        game.performUnitActionAt(redArcherP1);
-        assertThat(game.moveUnit(redArcherP1,redArcherP2), is(false));
-    }
-
-    @Test
-    public void archerCanUndoFortifyAction(){
-        Position redArcherP1 = new Position(2,0);
-        Position redArcherP2 = new Position(2,1);
-        game.performUnitActionAt(redArcherP1);  //Fortify
-        game.performUnitActionAt(redArcherP1);  //Undo fortify
-        assertThat(game.getUnitAt(redArcherP1).getDefensiveStrength(), is(3));  //check that def is normal
-        assertThat(game.moveUnit(redArcherP1,redArcherP2), is(true));
-    }
-
-    @Test
-    public void settlerActionTransformsSettlerToCity() {
-        Position redSettlerP1 = new Position(4,3);
-        game.performUnitActionAt(redSettlerP1);
-        assertThat(game.getCityAt(redSettlerP1), is(notNullValue()));
-    }
-
+    // Attacking
     @Test
     public void attackingUnitAlwaysWins() {
         Position redSettlerP1 = new Position(4,3);
@@ -410,6 +383,22 @@ public class TestAlphaCiv {
         game.endOfTurn();
         game.moveUnit(redSettlerP2,blueLegionP1); //The red settler moves to the blue legion and overrides (kills) the blue legion
         assertThat(game.getUnitAt(blueLegionP1).getTypeString(), is(GameConstants.SETTLER));
+    }
+
+    @Test
+    public void takesOverCityWhenAttacks(){
+        redTakesOverBlueCityAt4_1();
+        assertThat(game.getCityAt(new Position(4,1)).getOwner(), is(Player.RED));
+    }
+
+    private void redTakesOverBlueCityAt4_1() {
+        Position redSettlerPos1 = new Position(4,3);
+        Position redSettlerPos2 = new Position(4,2);
+        Position blueCityPos = new Position(4,1);
+        game.moveUnit(redSettlerPos1, redSettlerPos2);
+        game.endOfTurn();
+        game.endOfTurn();
+        game.moveUnit(redSettlerPos2, blueCityPos);
     }
 
 

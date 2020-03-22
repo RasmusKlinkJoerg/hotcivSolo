@@ -1,6 +1,10 @@
 package hotciv.standard;
 
 import hotciv.framework.*;
+import hotciv.framework.Strategies.ActionStrategy;
+import hotciv.framework.Strategies.AgingStrategy;
+import hotciv.framework.Strategies.LayoutStrategy;
+import hotciv.framework.Strategies.WinningStrategy;
 
 import java.util.HashMap;
 
@@ -33,19 +37,26 @@ import java.util.HashMap;
  */
 
 public class GameImpl implements Game {
+    private LayoutStrategy layoutStrategy;
     private Player playerInTurn = Player.RED;
     private HashMap<Position, CityImpl> cityHashMap;
     private HashMap<Position, Tile> tileHashMap;
     private HashMap<Position, UnitImpl> unitHashMap;
     private int age;
-    private Player winner;
+    private WinningStrategy winningStrategy;
+    private AgingStrategy agingStrategy;
+    private ActionStrategy actionStrategy;
 
-    public GameImpl() {
+    public GameImpl(WinningStrategy winningStrategy, AgingStrategy agingStrategy, ActionStrategy actionStrategy, LayoutStrategy layoutStrategy) {
         cityHashMap = new HashMap<>();
         tileHashMap = new HashMap<>();
         unitHashMap = new HashMap<>();
         age = -4000;
-        winner = null;
+        this.winningStrategy = winningStrategy;
+        this.agingStrategy = agingStrategy;
+        this.actionStrategy = actionStrategy;
+        this.layoutStrategy = layoutStrategy;
+        layoutStrategy.createWorld(cityHashMap, unitHashMap, tileHashMap);
     }
 
 
@@ -66,10 +77,7 @@ public class GameImpl implements Game {
     }
 
     public Player getWinner() {
-        if (age==-3000) {
-            winner = Player.RED;
-        }
-        return winner;
+        return winningStrategy.getWinner(age, cityHashMap);
     }
 
     public int getAge() {
@@ -83,8 +91,8 @@ public class GameImpl implements Game {
         boolean toOcean = tileHashMap.get(to).getTypeString() == GameConstants.OCEANS;
         boolean toMountain = tileHashMap.get(to).getTypeString() == GameConstants.MOUNTAINS;
         boolean movingOwnUnit = getUnitAt(from).getOwner() == getPlayerInTurn();
-        boolean unitAtTo = unitHashMap.get(to) != null;
-        boolean ownsUnitAtTo =  unitAtTo && getUnitAt(to).getOwner() == getPlayerInTurn();
+        boolean isUnitAtTo = unitHashMap.get(to) != null;
+        boolean ownsUnitAtTo =  isUnitAtTo && getUnitAt(to).getOwner() == getPlayerInTurn();
         boolean moveCountGreaterThanZero = getUnitAt(from).getMoveCount() > 0;
 
         boolean stationary = unit.getStationary();
@@ -97,6 +105,13 @@ public class GameImpl implements Game {
         unitHashMap.put(to, (UnitImpl) getUnitAt(from));
         unitHashMap.remove(from);
         unitHashMap.get(to).decreaseMoveCount(1);
+
+        CityImpl city = (CityImpl) getCityAt(to);
+        boolean isCityAtTo = city != null;
+        boolean ownsCityAtTo = isCityAtTo && city.getOwner() == playerInTurn;
+        if (isCityAtTo && !ownsCityAtTo) {
+            city.setOwner(playerInTurn);
+        }
         return true;
     }
 
@@ -113,7 +128,7 @@ public class GameImpl implements Game {
     }
 
     private void endOfRound() {
-        age += 100;
+        age = agingStrategy.increaseAge(age);
         cityActions();
         for (UnitImpl u : unitHashMap.values()) {
             u.resetMoveCount();
@@ -165,58 +180,7 @@ public class GameImpl implements Game {
     }
 
     public void performUnitActionAt(Position p) {
-        UnitImpl unit = (UnitImpl) getUnitAt(p);
-        String unitType = unit.getTypeString();
-        if (unitType == GameConstants.ARCHER) {
-            if (unit.getFortified()) {
-                unit.setDefensiveStrength(3);
-                unit.setStationary(false);
-                unit.setFortified(false);
-            } else {
-                int oldDef = unit.getDefensiveStrength();
-                unit.setDefensiveStrength(oldDef*2);
-                unit.setStationary(true);
-                unit.setFortified(true);
-            }
-        }
-        if (unitType == GameConstants.SETTLER) {
-            CityImpl newCity = new CityImpl(unit.getOwner());
-            cityHashMap.put(p, newCity);
-            unitHashMap.remove(p);
-        }
+        actionStrategy.performUnitActionAt(p, unitHashMap, cityHashMap);
     }
-
-    private void putCity(Position p, Player owner) {
-        cityHashMap.put(p, new CityImpl(owner));
-    }
-
-    private void putTile(Position p, String tileType) {
-        tileHashMap.put(p, new TileImpl(tileType));
-    }
-
-    private void putUnit(Position p, Player owner, String unitType) {
-        unitHashMap.put(p, new UnitImpl(owner, unitType));
-    }
-
-    public void createWorld() {
-        //Cities
-        putCity(new Position(1, 1), Player.RED);
-        putCity(new Position(4, 1), Player.BLUE);
-        //Tiles
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 16; j++) {
-                putTile(new Position(i, j), GameConstants.PLAINS);
-            }
-        }
-        putTile(new Position(1, 0), GameConstants.OCEANS);
-        putTile(new Position(0, 1), GameConstants.HILLS);
-        putTile(new Position(2, 2), GameConstants.MOUNTAINS);
-        //Units
-        putUnit(new Position(2, 0), Player.RED, GameConstants.ARCHER);
-        putUnit(new Position(3, 2), Player.BLUE, GameConstants.LEGION);
-        putUnit(new Position(4, 3), Player.RED, GameConstants.SETTLER);
-
-    }
-
 
 }

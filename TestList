@@ -16,16 +16,14 @@ Units:
 [x] * Only one unit at a tile/ cannot move unit to own unit
 [x] * Can only move if move count is greater than 0
 [x]* archer, legion and settler has 1 move count per round
-[x] * has different stats and actions:
+[x] * has different stats:
       - archer:
              [x]   def:3 atc: 2,
-               [x] action: fortify= def*2 & stationary
+
     - legion:
                [x] def:2, atc: 4,
-               [x] action: none
     - settler:
               [x]  def: 3, atc 0,
-               [x] action: transform into city
 
 [x] *archer cost 10, legion 15, settler 30
 
@@ -37,6 +35,7 @@ Winning:
 
 Attacking:
 [x] * attacks by moving to enemy units position
+[] * winning an attack in a opponents city takes over the city
 
 Aging:
 A round ends after all players have taken their turn
@@ -83,5 +82,47 @@ Aging:
 No actions are supported
 ___________________________________________________________________
 TestList - BetaCiv:
+
+Winning:
+[x] First conquers all cities.
+
+[x] Aging:
+    -4000 - -100: +100
+    -100 -> -1 -> 1 -> 50
+    50 - 1750: +50
+    1750 - 1900: +25
+    1900 - 1970: +5
+    1970 - : +1
+
+__________________________________________
+TestList - GammaCiv:
+
+Unit actions:
+
+Settler action:
+    [x] action: fortify= def*2 & stationary
+Archer action:
+    [x] action: transform into city
+
+___________________________________________
+TestList - DeltaCiv:
+
+World layout:
+
+    Page 485 in pdf.
+
+    Cities:
+       [x] Red city at (8, 12)
+        [x]Blue city at (4,5)
+    Units:
+        [x]Blue Legion at (3,5)
+        [x]Red archer at (7, 4)
+
+        [x] Compositional:
+                Easy for programmers to write their own algorithms for generating a world
+                layout  without any source code changes in the HotCiv
+                production code. That is, it should be possible to generate any type of map, just by providing a new Strategy implementation.
+
+
 
 

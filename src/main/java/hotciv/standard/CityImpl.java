@@ -70,6 +70,10 @@ public class CityImpl implements City {
     public int getCurrentUnitPrice() {
         return unitPrices.get(production);
     }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
+    }
 }
 
 
