@@ -85,34 +85,48 @@ public class GameImpl implements Game {
     }
 
     public boolean moveUnit(Position from, Position to) {
-
         UnitImpl unit = (UnitImpl) getUnitAt(from);
+        if (illegalMove(from, to, unit)) return false;
+        updateMap(from, to, unit);
+        return true;
+    }
 
+    private boolean illegalMove(Position from, Position to, UnitImpl unit) {
         boolean toOcean = tileHashMap.get(to).getTypeString() == GameConstants.OCEANS;
         boolean toMountain = tileHashMap.get(to).getTypeString() == GameConstants.MOUNTAINS;
         boolean movingOwnUnit = getUnitAt(from).getOwner() == getPlayerInTurn();
         boolean isUnitAtTo = unitHashMap.get(to) != null;
         boolean ownsUnitAtTo =  isUnitAtTo && getUnitAt(to).getOwner() == getPlayerInTurn();
         boolean moveCountGreaterThanZero = getUnitAt(from).getMoveCount() > 0;
-
         boolean stationary = unit.getStationary();
         if (stationary) {
-            return false;
+            return true;
         }
         if ( toOcean || toMountain  || !movingOwnUnit || ownsUnitAtTo || !moveCountGreaterThanZero) {
-            return false;
+            return true;
         }
-        unitHashMap.put(to, (UnitImpl) getUnitAt(from));
-        unitHashMap.remove(from);
-        unitHashMap.get(to).decreaseMoveCount(1);
+        return false;
+    }
 
+    private void updateMap(Position from, Position to, UnitImpl unit) {
+        updateUnits(from, to, unit);
+        //take over city if wins attack on it
+        takeOverCity(to);
+    }
+
+    private void updateUnits(Position from, Position to, UnitImpl unit) {
+        unitHashMap.put(to, unit);
+        unitHashMap.remove(from);
+        unit.decreaseMoveCount(1);
+    }
+
+    private void takeOverCity(Position to) {
         CityImpl city = (CityImpl) getCityAt(to);
         boolean isCityAtTo = city != null;
         boolean ownsCityAtTo = isCityAtTo && city.getOwner() == playerInTurn;
         if (isCityAtTo && !ownsCityAtTo) {
             city.setOwner(playerInTurn);
         }
-        return true;
     }
 
     public void endOfTurn() {
