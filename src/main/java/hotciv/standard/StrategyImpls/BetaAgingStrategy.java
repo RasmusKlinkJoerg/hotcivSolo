@@ -25,9 +25,7 @@ public class BetaAgingStrategy implements AgingStrategy {
         else if (age < 1970) {
             age += 5;
         }
-        else{
-            age += 1;
-        }
+        else age += 1;
         return age;
     }
 }

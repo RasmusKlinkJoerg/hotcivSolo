@@ -10,25 +10,24 @@ import hotciv.standard.TileImpl;
 import hotciv.standard.UnitImpl;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class DeltaLayoutStrategy implements LayoutStrategy {
-    private HashMap<Position, CityImpl> cityHashMap;
-    private HashMap<Position, UnitImpl> unitHashMap;
-    private HashMap<Position, Tile> tileHashMap;
+    private HashMap<Position, CityImpl> cities;
+    private HashMap<Position, UnitImpl> units;
+    private HashMap<Position, Tile> tiles;
 
     @Override
-    public void createWorld(HashMap<Position, CityImpl> cityHashMap, HashMap<Position, UnitImpl> unitHashMap, HashMap<Position, Tile> tileHashMap) {
-        this.cityHashMap = cityHashMap;
-        this.unitHashMap = unitHashMap;
-        this.tileHashMap = tileHashMap;
+    public void createWorld(HashMap<Position, CityImpl> cities, HashMap<Position, UnitImpl> units, HashMap<Position, Tile> tiles) {
+        this.cities = cities;
+        this.units = units;
+        this.tiles = tiles;
 
         //Cities
         putCity(new Position(8, 12), Player.RED);
         putCity(new Position(4, 5), Player.BLUE);
 
         // A simple implementation to draw the map of DeltaCiv
-        /** Define the world as the DeltaCiv layout */
+        /* Define the world as the DeltaCiv layout */
         // Basically we use a 'data driven' approach - code the
         // layout in a simple semi-visual representation, and
         // convert it to the actual Game representation.
@@ -84,15 +83,15 @@ public class DeltaLayoutStrategy implements LayoutStrategy {
     }
 
     private void putCity(Position p, Player owner) {
-        cityHashMap.put(p, new CityImpl(owner));
+        cities.put(p, new CityImpl(owner));
     }
 
     private void putTile(Position p, String tileType) {
-        tileHashMap.put(p, new TileImpl(tileType));
+        tiles.put(p, new TileImpl(tileType));
     }
 
     private void putUnit(Position p, Player owner, String unitType) {
-        unitHashMap.put(p, new UnitImpl(owner, unitType));
+        units.put(p, new UnitImpl(owner, unitType));
     }
 }
 

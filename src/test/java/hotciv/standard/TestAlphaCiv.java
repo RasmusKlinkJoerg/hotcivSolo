@@ -247,6 +247,7 @@ public class TestAlphaCiv {
         }
         assertThat(game.getUnitAt(mountPos), is(nullValue())); // unit should first be placed in city if there is space
     }
+    // TODO: Test that no unit can be produced outside the world map.
 
 
     //Winning
@@ -333,6 +334,20 @@ public class TestAlphaCiv {
         Position redArcherP3 = new Position(4,2);
         game.moveUnit(redArcherP1, redArcherP2);
         assertThat(game.moveUnit(redArcherP2, redArcherP3), is(false));
+    }
+/* This is a precondition
+    @Test
+    public void mustBeUnitAtFrom() {
+        Position emptyP = new Position(15,15);
+        Position emptyP2 = new Position (14,14);
+        assertThat(game.moveUnit(emptyP, emptyP2), is(false));
+    }
+ */
+    @Test
+    public void cantMoveMoreThan1Tile() {
+        Position redArcherP = new Position(2,0);
+        Position redArcherPTooFarAway = new Position(13,13);
+        assertThat(game.moveUnit(redArcherP, redArcherPTooFarAway), is(false));
     }
 
     //Units

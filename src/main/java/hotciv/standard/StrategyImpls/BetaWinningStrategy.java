@@ -9,15 +9,22 @@ import hotciv.standard.CityImpl;
 import java.util.HashMap;
 
 public class BetaWinningStrategy implements WinningStrategy {
-    private Player winner;
+    private int totalCities;
+    private int redCities;
+    private int blueCities;
+
 
     @Override
-    public Player getWinner(int age, HashMap<Position, CityImpl> cityHashMap) {
-        winner = null;
-        int totalCities = 0;
-        int redCities = 0;
-        int blueCities = 0;
-        for (City c : cityHashMap.values()) {
+    public Player getWinner(int age, HashMap<Position, CityImpl> cities) {
+        countCities(cities);
+        return determineWinner();
+    }
+
+    private void countCities(HashMap<Position, CityImpl> cities) {
+        totalCities = 0;
+        redCities = 0;
+        blueCities = 0;
+        for (City c : cities.values()) {
             totalCities += 1;
             if (c.getOwner() == Player.RED) {
                 redCities += 1;
@@ -26,6 +33,10 @@ public class BetaWinningStrategy implements WinningStrategy {
                 blueCities += 1;
             }
         }
+    }
+
+    private Player determineWinner() {
+        Player winner = null;
         if (totalCities == redCities) {
             winner = Player.RED;
         }
