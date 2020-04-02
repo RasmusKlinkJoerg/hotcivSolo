@@ -82,6 +82,7 @@ public class GameImpl implements Game {
         return age;
     }
 
+    //----- moveUnit Start -----
     public boolean moveUnit(Position from, Position to) {
         if (!isLegalMove(from, to)) return false;
         updateWorld(from, to);
@@ -134,6 +135,7 @@ public class GameImpl implements Game {
             city.setOwner(playerInTurn);
         }
     }
+    //----- moveUnit End -----
 
     public void endOfTurn() {
         boolean redsTurn = playerInTurn == Player.RED;
