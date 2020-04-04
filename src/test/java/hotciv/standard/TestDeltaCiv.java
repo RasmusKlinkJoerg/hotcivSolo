@@ -3,10 +3,7 @@ package hotciv.standard;
 import hotciv.framework.*;
 
 
-import hotciv.standard.StrategyImpls.AlphaActionStrategy;
-import hotciv.standard.StrategyImpls.AlphaAgingStrategy;
-import hotciv.standard.StrategyImpls.AlphaWinningStrategy;
-import hotciv.standard.StrategyImpls.DeltaLayoutStrategy;
+import hotciv.standard.StrategyImpls.*;
 import org.junit.*;
 
 import static org.junit.Assert.*;
@@ -17,7 +14,7 @@ public class TestDeltaCiv {
 
     @Before
     public void setUp() {
-        game = new GameImpl(new AlphaWinningStrategy(), new AlphaAgingStrategy(), new AlphaActionStrategy(), new DeltaLayoutStrategy());
+        game = new GameImpl(new AlphaWinningStrategy(), new AlphaAgingStrategy(), new AlphaActionStrategy(), new DeltaLayoutStrategy(), new AlphaAttackStrategy());
     }
 
     //Layout: Cities

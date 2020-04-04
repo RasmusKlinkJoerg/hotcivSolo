@@ -9,7 +9,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
-public class TestBetaAging {
+public class TestBetaAgingStrategy {
     AgingStrategy as;
     int age;
 

@@ -1,4 +1,4 @@
-package hotciv.standard;
+package hotciv.standard.Stubs;
 
 import hotciv.framework.Player;
 import hotciv.framework.Unit;
@@ -11,6 +11,6 @@ class StubUnit implements Unit {
     public String getTypeString() { return type; }
     public Player getOwner() { return owner; }
     public int getMoveCount() { return 0; }
-    public int getDefensiveStrength() { return 0; }
-    public int getAttackingStrength() { return 0; }
+    public int getDefensiveStrength() { return 1; }
+    public int getAttackingStrength() { return 1; }
 }

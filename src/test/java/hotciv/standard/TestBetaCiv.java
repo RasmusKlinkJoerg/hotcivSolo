@@ -1,10 +1,7 @@
 package hotciv.standard;
 
 import hotciv.framework.*;
-import hotciv.standard.StrategyImpls.AlphaActionStrategy;
-import hotciv.standard.StrategyImpls.AlphaLayoutStrategy;
-import hotciv.standard.StrategyImpls.BetaAgingStrategy;
-import hotciv.standard.StrategyImpls.BetaWinningStrategy;
+import hotciv.standard.StrategyImpls.*;
 
 
 import org.junit.*;
@@ -18,7 +15,7 @@ public class TestBetaCiv {
 
     @Before
     public void setUp() {
-        game = new GameImpl(new BetaWinningStrategy(), new BetaAgingStrategy(), new AlphaActionStrategy(), new AlphaLayoutStrategy());
+        game = new GameImpl(new BetaWinningStrategy(), new BetaAgingStrategy(), new AlphaActionStrategy(), new AlphaLayoutStrategy(),new AlphaAttackStrategy());
     }
 
 

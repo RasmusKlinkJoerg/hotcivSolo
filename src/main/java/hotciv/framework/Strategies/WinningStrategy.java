@@ -8,5 +8,5 @@ import java.util.HashMap;
 
 public interface WinningStrategy {
 
-    Player getWinner(int age, HashMap<Position, CityImpl> cityHashMap);
+    Player getWinner(int age, HashMap<Position, CityImpl> cityHashMap, HashMap<Player, Integer> attacksWonMap);
 }

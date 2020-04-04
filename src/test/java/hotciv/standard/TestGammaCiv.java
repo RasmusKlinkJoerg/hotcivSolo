@@ -4,10 +4,7 @@ package hotciv.standard;
 import hotciv.framework.*;
 
 
-import hotciv.standard.StrategyImpls.AlphaAgingStrategy;
-import hotciv.standard.StrategyImpls.AlphaLayoutStrategy;
-import hotciv.standard.StrategyImpls.AlphaWinningStrategy;
-import hotciv.standard.StrategyImpls.GammaActionStrategy;
+import hotciv.standard.StrategyImpls.*;
 import org.junit.*;
 
 import static org.junit.Assert.*;
@@ -21,7 +18,7 @@ public class TestGammaCiv {
 
     @Before
     public void setUp() {
-        game = new GameImpl(new AlphaWinningStrategy(), new AlphaAgingStrategy(), new GammaActionStrategy(), new AlphaLayoutStrategy());
+        game = new GameImpl(new AlphaWinningStrategy(), new AlphaAgingStrategy(), new GammaActionStrategy(), new AlphaLayoutStrategy(), new AlphaAttackStrategy());
     }
 
     @Test

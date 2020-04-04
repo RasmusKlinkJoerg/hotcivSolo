@@ -1,4 +1,4 @@
-package hotciv.standard;
+package hotciv.standard.Stubs;
 
 import hotciv.framework.*;
 
@@ -12,7 +12,7 @@ import hotciv.framework.*;
  *
  * Red has units on 2,3; 3,2; 3,3; blue one on 4,4
  */
-class GameStubForBattleTesting implements Game {
+public class GameStubForBattleTesting implements Game {
     public Tile getTileAt(Position p) {
         if ( p.getRow() == 0 && p.getColumn() == 0 ) {
             return new StubTile(GameConstants.FOREST, 0, 0);

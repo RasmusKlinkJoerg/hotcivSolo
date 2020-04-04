@@ -8,8 +8,19 @@ import hotciv.standard.CityImpl;
 import java.util.HashMap;
 
 public class EpsilonWinningStrategy implements WinningStrategy {
+    private Player winner;
+
+
     @Override
-    public Player getWinner(int age, HashMap<Position, CityImpl> cityHashMap) {
-        return null;
+    public Player getWinner(int age, HashMap<Position, CityImpl> cityHashMap, HashMap<Player, Integer> attacksWonMap) {
+        if (attacksWonMap.get(Player.RED) >= 3) {
+            winner = Player.RED;
+        }
+        if (attacksWonMap.get(Player.BLUE) >= 3) {
+            winner = Player.BLUE;
+        }
+        return winner;
     }
+
+
 }

@@ -1,4 +1,4 @@
-package hotciv.standard;
+package hotciv.standard.Stubs;
 
 import hotciv.framework.Tile;
 

@@ -122,6 +122,16 @@ World layout:
                 Easy for programmers to write their own algorithms for generating a world
                 layout  without any source code changes in the HotCiv
                 production code. That is, it should be possible to generate any type of map, just by providing a new Strategy implementation.
+____________________________
+EpsilonCiv:
+
+Winning:
+    First to win 3 attacks wins
+Attack:
+    Terrain factor
+    Friendly unit factor
+    Random die factor
+
 
 
 

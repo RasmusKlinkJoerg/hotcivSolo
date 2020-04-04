@@ -1,10 +1,7 @@
 package hotciv.standard;
 
 import hotciv.framework.*;
-import hotciv.framework.Strategies.ActionStrategy;
-import hotciv.framework.Strategies.AgingStrategy;
-import hotciv.framework.Strategies.LayoutStrategy;
-import hotciv.framework.Strategies.WinningStrategy;
+import hotciv.framework.Strategies.*;
 
 import java.util.HashMap;
 
@@ -42,19 +39,25 @@ public class GameImpl implements Game {
     private HashMap<Position, Tile> tiles;
     private HashMap<Position, UnitImpl> units;
     private int age;
+    private HashMap<Player, Integer> attacksWonMap;
     private WinningStrategy winningStrategy;
     private AgingStrategy agingStrategy;
     private ActionStrategy actionStrategy;
+    private AttackStrategy attackStrategy;
 
-    public GameImpl(WinningStrategy winningStrategy, AgingStrategy agingStrategy, ActionStrategy actionStrategy, LayoutStrategy layoutStrategy) {
+    public GameImpl(WinningStrategy winningStrategy, AgingStrategy agingStrategy, ActionStrategy actionStrategy, LayoutStrategy layoutStrategy, AttackStrategy attackStrategy) {
         cities = new HashMap<>();
         tiles = new HashMap<>();
         units = new HashMap<>();
         age = -4000;
+        attacksWonMap = new HashMap<>();
+        attacksWonMap.put(Player.RED, 0);
+        attacksWonMap.put(Player.BLUE, 0);
         this.winningStrategy = winningStrategy;
         this.agingStrategy = agingStrategy;
         this.actionStrategy = actionStrategy;
         layoutStrategy.createWorld(cities, units, tiles);
+        this.attackStrategy = attackStrategy;
     }
 
 
@@ -75,7 +78,7 @@ public class GameImpl implements Game {
     }
 
     public Player getWinner() {
-        return winningStrategy.getWinner(age, cities);
+        return winningStrategy.getWinner(age, cities, attacksWonMap);
     }
 
     public int getAge() {
@@ -123,6 +126,12 @@ public class GameImpl implements Game {
 
     private void updateUnits(Position from, Position to) {
         UnitImpl unit = (UnitImpl) getUnitAt(from);
+        if (getUnitAt(to) != null) {
+            if (attackStrategy.attack(this, from, to, playerInTurn)) {
+                int attacksWon = attacksWonMap.get(playerInTurn);
+                attacksWonMap.put(playerInTurn, attacksWon+1);
+            }
+        }
         units.put(to, unit);
         units.remove(from);
         unit.decreaseMoveCount(1);
@@ -133,6 +142,8 @@ public class GameImpl implements Game {
         boolean ownsCityAtTo = city.getOwner() == playerInTurn;
         if (!ownsCityAtTo) {
             city.setOwner(playerInTurn);
+            int attacksWon = attacksWonMap.get(playerInTurn);
+            attacksWonMap.put(playerInTurn, attacksWon+1);
         }
     }
     //----- moveUnit End -----

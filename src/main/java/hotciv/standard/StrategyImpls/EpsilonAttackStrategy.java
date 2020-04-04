@@ -1,11 +1,46 @@
 package hotciv.standard.StrategyImpls;
 
 import hotciv.framework.*;
+import hotciv.framework.Strategies.AttackStrategy;
 import hotciv.standard.UnitImpl;
 
-import java.util.Iterator;
+public class EpsilonAttackStrategy implements AttackStrategy {
+    private Die die;
 
-public class EpsilonAttackStrategy {
+    public EpsilonAttackStrategy(Die die) {
+        this.die = die;
+    }
+
+    @Override
+    public boolean attack(Game game, Position from, Position to, Player player) {
+        Player attackingPlayer = player;
+        Player defendingPlayer;
+        if (attackingPlayer == Player.RED) {
+            defendingPlayer = Player.BLUE;
+        }
+        else defendingPlayer = Player.RED;
+        return getCombinedAttackStrength(game, from, attackingPlayer) > getCombinedDefenseStrength(game, to, defendingPlayer);
+    }
+
+    public int getCombinedAttackStrength(Game game, Position position, Player player) {
+        int sum;
+            Unit unit =  game.getUnitAt(position);
+            sum = unit.getAttackingStrength();
+            sum += getFriendlySupport(game, position, player);
+            sum *= getTerrainFactor(game, position);
+            sum *= die.getDieFactor();
+        return sum;
+    }
+
+    public int getCombinedDefenseStrength(Game game, Position position, Player player) {
+        int sum;
+        Unit unit =  game.getUnitAt(position);
+        sum = unit.getDefensiveStrength();
+        sum += getFriendlySupport(game, position, player);
+        sum *= getTerrainFactor(game, position);
+        sum *= die.getDieFactor();
+        return sum;
+    }
 
 
 
@@ -19,7 +54,7 @@ public class EpsilonAttackStrategy {
      *          the position that the factor should be calculated for
      * @return the terrain factor
      */
-    public static int getTerrainFactor(Game game, Position position) {
+    public int getTerrainFactor(Game game, Position position) {
         // cities overrule underlying terrain
         if ( game.getCityAt(position) != null ) { return 3; }
         Tile t = game.getTileAt(position);
@@ -43,7 +78,7 @@ public class EpsilonAttackStrategy {
      * @return the support for the unit, +1 for each friendly unit in the 8
      *         neighborhood.
      */
-    public static int getFriendlySupport(Game game, Position position,
+    public int getFriendlySupport(Game game, Position position,
                                          Player player) {
         int support = 0;
         int []rows = {-1, -1, 0, 1, 1, 1, 0, -1};
@@ -51,7 +86,7 @@ public class EpsilonAttackStrategy {
         for(int i = 0; i< rows.length; i++){
             int row = rows[i];
             int col = cols[i];
-        Position p= new Position(position.getRow() + row, position.getColumn() + col);
+        Position p = new Position(position.getRow() + row, position.getColumn() + col);
             if ( game.getUnitAt(p) != null &&
                     game.getUnitAt(p).getOwner() == player ) {
                 support++;
@@ -59,4 +94,6 @@ public class EpsilonAttackStrategy {
         }
         return support;
     }
+
+
 }

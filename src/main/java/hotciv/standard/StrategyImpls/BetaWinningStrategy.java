@@ -15,7 +15,7 @@ public class BetaWinningStrategy implements WinningStrategy {
 
 
     @Override
-    public Player getWinner(int age, HashMap<Position, CityImpl> cities) {
+    public Player getWinner(int age, HashMap<Position, CityImpl> cities, HashMap<Player, Integer> attacksWonMap) {
         countCities(cities);
         return determineWinner();
     }
