@@ -3,9 +3,12 @@ package hotciv.standard;
 import hotciv.framework.*;
 
 
+import hotciv.framework.Strategies.AttackStrategy;
 import hotciv.standard.StrategyImpls.*;
 
+import hotciv.standard.Stubs.StubEpsilonFactory;
 import hotciv.standard.Stubs.StubEpsilonLayout;
+import hotciv.standard.Stubs.StubFixedDie;
 import javafx.geometry.Pos;
 import org.junit.*;
 
@@ -17,9 +20,12 @@ public class TestEpsilonWinningStrategy {
 
     private Game game;
 
+    private EpsilonAttackStrategy attackStrategy;
+
     @Before
     public void setUp() {
-        game = new GameImpl(new EpsilonWinningStrategy(), new AlphaAgingStrategy(), new AlphaActionStrategy(), new StubEpsilonLayout(), new AlphaAttackStrategy());
+        attackStrategy = new EpsilonAttackStrategy(new StubFixedDie());
+        game = new GameImpl(new StubEpsilonFactory());
     }
 
     @Test
@@ -45,9 +51,15 @@ public class TestEpsilonWinningStrategy {
         Position blueSettler1Pos = new Position(4, 3);
         Position blueSettler2Pos = new Position(4, 4);
         Position blueSettler3Pos = new Position(3, 4);
+        game.endOfTurn();
+        //archerDefense: 3*4  blueSettler1: 2*4  (2 from friendly support)
         game.moveUnit(blueSettler1Pos, redArcherP);
         game.moveUnit(blueSettler2Pos, redArcherP);
         game.moveUnit(blueSettler3Pos, redArcherP);
+        assertThat(game.getUnitAt(redArcherP).getTypeString(), is(GameConstants.ARCHER));
+        assertThat(game.getUnitAt(blueSettler1Pos), is(nullValue()));
+        assertThat(game.getUnitAt(blueSettler2Pos), is(nullValue()));
+        assertThat(game.getUnitAt(blueSettler3Pos), is(nullValue()));
         assertThat(game.getWinner(), is(nullValue()));
     }
 

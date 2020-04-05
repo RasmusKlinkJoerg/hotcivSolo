@@ -3,7 +3,7 @@ package hotciv.standard;
 import hotciv.framework.*;
 
 
-import hotciv.standard.StrategyImpls.*;
+import hotciv.standard.Factories.DeltaCivFactory;
 import org.junit.*;
 
 import static org.junit.Assert.*;
@@ -14,7 +14,7 @@ public class TestDeltaCiv {
 
     @Before
     public void setUp() {
-        game = new GameImpl(new AlphaWinningStrategy(), new AlphaAgingStrategy(), new AlphaActionStrategy(), new DeltaLayoutStrategy(), new AlphaAttackStrategy());
+        game = new GameImpl(new DeltaCivFactory());
     }
 
     //Layout: Cities

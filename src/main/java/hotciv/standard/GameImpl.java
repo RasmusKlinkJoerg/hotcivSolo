@@ -40,24 +40,32 @@ public class GameImpl implements Game {
     private HashMap<Position, UnitImpl> units;
     private int age;
     private HashMap<Player, Integer> attacksWonMap;
+    private GameFactory factory;
     private WinningStrategy winningStrategy;
     private AgingStrategy agingStrategy;
     private ActionStrategy actionStrategy;
     private AttackStrategy attackStrategy;
+    private LayoutStrategy layoutStrategy;
+    private int roundNumber;
 
-    public GameImpl(WinningStrategy winningStrategy, AgingStrategy agingStrategy, ActionStrategy actionStrategy, LayoutStrategy layoutStrategy, AttackStrategy attackStrategy) {
+    public GameImpl(GameFactory factory) {
         cities = new HashMap<>();
         tiles = new HashMap<>();
         units = new HashMap<>();
         age = -4000;
+        roundNumber = 1; //The first round of the game is round number 1.
         attacksWonMap = new HashMap<>();
         attacksWonMap.put(Player.RED, 0);
         attacksWonMap.put(Player.BLUE, 0);
-        this.winningStrategy = winningStrategy;
-        this.agingStrategy = agingStrategy;
-        this.actionStrategy = actionStrategy;
+
+        this.factory = factory;
+        this.winningStrategy = factory.createWinningStrategy();
+        this.agingStrategy = factory.createAgingStrategy();
+        this.actionStrategy = factory.createActionStrategy();
+        this.layoutStrategy = factory.createLayoutStrategy();
+        this.attackStrategy = factory.createAttackStrategy();
+
         layoutStrategy.createWorld(cities, units, tiles);
-        this.attackStrategy = attackStrategy;
     }
 
 
@@ -78,7 +86,7 @@ public class GameImpl implements Game {
     }
 
     public Player getWinner() {
-        return winningStrategy.getWinner(age, cities, attacksWonMap);
+        return winningStrategy.getWinner(age, cities, attacksWonMap, roundNumber);
     }
 
     public int getAge() {
@@ -170,6 +178,7 @@ public class GameImpl implements Game {
         for (UnitImpl u : units.values()) {
             u.resetMoveCount();
         }
+        roundNumber++;
     }
 
     private void performCityActions() {
@@ -199,6 +208,12 @@ public class GameImpl implements Game {
 
         private boolean isValidPlacement(Position position) {
             Tile t = getTileAt(position);
+            boolean validRow = 0 <= position.getRow() && position.getRow() < GameConstants.WORLDSIZE;
+            boolean validColumn = 0 <= position.getColumn() && position.getColumn() < GameConstants.WORLDSIZE;
+            boolean validPosition =  validRow && validColumn;
+            if (!validPosition) {
+                return false;
+            }
             boolean validTile = !t.getTypeString().equals(GameConstants.OCEANS) &&
                         !t.getTypeString().equals(GameConstants.MOUNTAINS);
             boolean unitAtPos = getUnitAt(position) != null;

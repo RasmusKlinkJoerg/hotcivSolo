@@ -5,7 +5,7 @@ import hotciv.framework.Die;
 import java.util.Random;
 
 
-public class randomDie implements Die {
+public class SixSidedDie implements Die {
 
 
     @Override

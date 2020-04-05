@@ -2,7 +2,6 @@ package hotciv.standard;
 
 
 import hotciv.framework.Strategies.AgingStrategy;
-import hotciv.standard.StrategyImpls.AlphaAgingStrategy;
 import hotciv.standard.StrategyImpls.BetaAgingStrategy;
 import org.junit.*;
 

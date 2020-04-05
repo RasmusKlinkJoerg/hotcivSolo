@@ -7,12 +7,14 @@ import hotciv.standard.CityImpl;
 
 import java.util.HashMap;
 
-public class AlphaWinningStrategy implements WinningStrategy {
+public class ZetaWinningStrategy implements WinningStrategy {
+    private WinningStrategy currentState = new BetaWinningStrategy();;
+
     @Override
     public Player getWinner(int age, HashMap<Position, CityImpl> cityHashMap, HashMap<Player, Integer> attacksWonMap, int roundNumber) {
-        if (age==-3000) {
-            return  Player.RED;
+        if (roundNumber > 20) {
+            currentState = new EpsilonWinningStrategy();
         }
-        return null;
+        return currentState.getWinner(age, cityHashMap, attacksWonMap, roundNumber);
     }
 }

@@ -12,7 +12,7 @@ public class EpsilonWinningStrategy implements WinningStrategy {
 
 
     @Override
-    public Player getWinner(int age, HashMap<Position, CityImpl> cityHashMap, HashMap<Player, Integer> attacksWonMap) {
+    public Player getWinner(int age, HashMap<Position, CityImpl> cityHashMap, HashMap<Player, Integer> attacksWonMap, int roundNumber) {
         if (attacksWonMap.get(Player.RED) >= 3) {
             winner = Player.RED;
         }

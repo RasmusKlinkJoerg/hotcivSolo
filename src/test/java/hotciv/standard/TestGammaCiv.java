@@ -4,6 +4,7 @@ package hotciv.standard;
 import hotciv.framework.*;
 
 
+import hotciv.standard.Factories.GammaCivFactory;
 import hotciv.standard.StrategyImpls.*;
 import org.junit.*;
 
@@ -18,7 +19,7 @@ public class TestGammaCiv {
 
     @Before
     public void setUp() {
-        game = new GameImpl(new AlphaWinningStrategy(), new AlphaAgingStrategy(), new GammaActionStrategy(), new AlphaLayoutStrategy(), new AlphaAttackStrategy());
+        game = new GameImpl(new GammaCivFactory());
     }
 
     @Test

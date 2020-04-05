@@ -27,6 +27,8 @@ public class StubEpsilonLayout implements LayoutStrategy {
         putCity(new Position(2, 0), Player.BLUE);
         putCity(new Position(3, 0), Player.BLUE);
 
+        putCity(new Position(15, 15), Player.RED);
+
         //Tiles
         for (int i = 0; i < GameConstants.WORLDSIZE; i++) {
             for (int j = 0; j < GameConstants.WORLDSIZE; j++) {
@@ -45,8 +47,8 @@ public class StubEpsilonLayout implements LayoutStrategy {
         putUnit(new Position(4, 4), Player.BLUE, GameConstants.SETTLER);
         putUnit(new Position(3, 4), Player.BLUE, GameConstants.SETTLER);
 
-        putUnit(new Position(12, 4), Player.RED, GameConstants.SETTLER);
-        putUnit(new Position(12, 5), Player.BLUE, GameConstants.ARCHER);
+        putUnit(new Position(10, 4), Player.RED, GameConstants.SETTLER);
+        putUnit(new Position(10, 5), Player.BLUE, GameConstants.ARCHER);
     }
 
     private void putCity(Position p, Player owner) {
