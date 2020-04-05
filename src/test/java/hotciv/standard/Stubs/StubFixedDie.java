@@ -1,8 +1,8 @@
-package hotciv.standard;
+package hotciv.standard.Stubs;
 
 import hotciv.framework.Die;
 
-public class FixedDie implements Die {
+public class StubFixedDie implements Die {
 
     @Override public int getDieFactor() {
         return 4;

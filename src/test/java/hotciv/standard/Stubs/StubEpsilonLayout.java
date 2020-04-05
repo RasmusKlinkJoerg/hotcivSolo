@@ -22,6 +22,11 @@ public class StubEpsilonLayout implements LayoutStrategy {
         this.unitHashMap = unitHashMap;
         this.tileHashMap = tileHashMap;
 
+        //Cities
+        putCity(new Position(1, 0), Player.BLUE);
+        putCity(new Position(2, 0), Player.BLUE);
+        putCity(new Position(3, 0), Player.BLUE);
+
         //Tiles
         for (int i = 0; i < GameConstants.WORLDSIZE; i++) {
             for (int j = 0; j < GameConstants.WORLDSIZE; j++) {
@@ -34,10 +39,18 @@ public class StubEpsilonLayout implements LayoutStrategy {
         putUnit(new Position(0, 1), Player.BLUE, GameConstants.LEGION);
         putUnit(new Position(0, 2), Player.BLUE, GameConstants.LEGION);
         putUnit(new Position(0, 3), Player.BLUE, GameConstants.LEGION);
+
         putUnit(new Position(3, 3), Player.RED, GameConstants.ARCHER);
         putUnit(new Position(4, 3), Player.BLUE, GameConstants.SETTLER);
         putUnit(new Position(4, 4), Player.BLUE, GameConstants.SETTLER);
         putUnit(new Position(3, 4), Player.BLUE, GameConstants.SETTLER);
+
+        putUnit(new Position(12, 4), Player.RED, GameConstants.SETTLER);
+        putUnit(new Position(12, 5), Player.BLUE, GameConstants.ARCHER);
+    }
+
+    private void putCity(Position p, Player owner) {
+        cityHashMap.put(p, new CityImpl(owner));
     }
 
     private void putTile(Position p, String tileType) {

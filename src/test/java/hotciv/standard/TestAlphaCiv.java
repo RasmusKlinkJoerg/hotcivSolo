@@ -305,6 +305,7 @@ public class TestAlphaCiv {
         Position to = new Position(2,1);
         game.moveUnit(from,to);
         assertThat(game.getUnitAt(to), is(notNullValue()));
+        assertThat(game.getUnitAt(from), is(nullValue()));
     }
 
     @Test

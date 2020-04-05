@@ -42,8 +42,6 @@ public class EpsilonAttackStrategy implements AttackStrategy {
         return sum;
     }
 
-
-
     /**
      * get the terrain factor for the attack and defense strength according to the
      * GammaCiv specification

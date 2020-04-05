@@ -95,13 +95,11 @@ public class GameImpl implements Game {
     private boolean isLegalMove(Position from, Position to) {
         UnitImpl unit = (UnitImpl) getUnitAt(from);
 
-        boolean isUnitAtTo = units.get(to) != null;
-        if (isUnitAtTo) {
-            boolean isOpponentAtTo = getUnitAt(to).getOwner() != getPlayerInTurn();
-            return isOpponentAtTo;
-        }
-        boolean toOcean = tiles.get(to).getTypeString().equals(GameConstants.OCEANS);
-        boolean toMountain = tiles.get(to).getTypeString().equals(GameConstants.MOUNTAINS);
+        boolean isUnitAtTo = getUnitAt(to) != null;
+        boolean ownsUnitAtTo = isUnitAtTo && getUnitAt(to).getOwner() == playerInTurn;
+
+        boolean toOcean = getTileAt(to).getTypeString().equals(GameConstants.OCEANS);
+        boolean toMountain = getTileAt(to).getTypeString().equals(GameConstants.MOUNTAINS);
         boolean movingToValidTerrain = !toOcean && !toMountain;
         boolean movingOwnUnit = getUnitAt(from).getOwner() == getPlayerInTurn();
         boolean moveCountGreaterThanZero = getUnitAt(from).getMoveCount() > 0;
@@ -112,7 +110,8 @@ public class GameImpl implements Game {
                 movingToValidTerrain &&
                 moveCountGreaterThanZero &&
                 moveDistanceIsOneOrLess &&
-                !stationary;
+                !stationary &&
+                !ownsUnitAtTo;
     }
 
     private void updateWorld(Position from, Position to) {
@@ -126,11 +125,16 @@ public class GameImpl implements Game {
 
     private void updateUnits(Position from, Position to) {
         UnitImpl unit = (UnitImpl) getUnitAt(from);
-        if (getUnitAt(to) != null) {
+        boolean unitAtTo = getUnitAt(to) != null;
+        if (unitAtTo) {
             if (attackStrategy.attack(this, from, to, playerInTurn)) {
                 int attacksWon = attacksWonMap.get(playerInTurn);
-                attacksWonMap.put(playerInTurn, attacksWon+1);
+                attacksWonMap.put(playerInTurn, attacksWon + 1);
+                units.put(to, unit);
+                unit.decreaseMoveCount(1);
             }
+            units.remove(from);
+            return;
         }
         units.put(to, unit);
         units.remove(from);

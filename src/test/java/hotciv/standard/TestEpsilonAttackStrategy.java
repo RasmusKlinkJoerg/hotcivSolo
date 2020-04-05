@@ -1,9 +1,9 @@
 package hotciv.standard;
 
 import hotciv.framework.*;
-import hotciv.framework.Strategies.AttackStrategy;
 import hotciv.standard.StrategyImpls.EpsilonAttackStrategy;
 import hotciv.standard.Stubs.GameStubForBattleTesting;
+import hotciv.standard.Stubs.StubFixedDie;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,13 +16,13 @@ import static org.hamcrest.CoreMatchers.*;
 public class TestEpsilonAttackStrategy {
 
     Game game;
-    private FixedDie fixedDie;
+    private StubFixedDie fixedDie;
     EpsilonAttackStrategy attackStrategy;
 
     @Before
     public void setUp() {
         game = new GameStubForBattleTesting();
-        fixedDie = new FixedDie();
+        fixedDie = new StubFixedDie();
         attackStrategy = new EpsilonAttackStrategy(fixedDie);
     }
 
