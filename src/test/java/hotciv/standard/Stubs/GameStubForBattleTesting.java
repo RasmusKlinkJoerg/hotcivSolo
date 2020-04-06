@@ -47,6 +47,9 @@ public class GameStubForBattleTesting implements Game {
                 public String getWorkforceFocus() {
                     return null;
                 }
+                public int getFoodCount() {
+                    return 0;
+                }
             };
         }
         return null;

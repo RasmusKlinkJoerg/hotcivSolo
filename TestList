@@ -132,6 +132,8 @@ Attack:
     Friendly unit factor
     Random die factor
 
+    TODO: IntegrationTest ift. WinningStrategy???
+
 
 
 

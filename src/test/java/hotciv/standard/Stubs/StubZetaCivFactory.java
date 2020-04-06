@@ -2,10 +2,7 @@ package hotciv.standard.Stubs;
 
 import hotciv.framework.GameFactory;
 import hotciv.framework.Strategies.*;
-import hotciv.standard.StrategyImpls.AlphaActionStrategy;
-import hotciv.standard.StrategyImpls.AlphaAgingStrategy;
-import hotciv.standard.StrategyImpls.AlphaAttackStrategy;
-import hotciv.standard.StrategyImpls.ZetaWinningStrategy;
+import hotciv.standard.StrategyImpls.*;
 
 public class StubZetaCivFactory implements GameFactory {
     @Override
@@ -31,5 +28,15 @@ public class StubZetaCivFactory implements GameFactory {
     @Override
     public AttackStrategy createAttackStrategy() {
         return new AlphaAttackStrategy();
+    }
+
+    @Override
+    public WorkForceForceFocusStrategy createWorkForceFocusStrategy() {
+        return new AlphaWorkForceFocusStrategy();
+    }
+
+    @Override
+    public PopulationGrowthStrategy createPopulationGrowthStrategy() {
+        return new AlphaPopulationGrowthStrategy();
     }
 }

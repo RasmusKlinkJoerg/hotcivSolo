@@ -39,14 +39,19 @@ public class GameImpl implements Game {
     private HashMap<Position, Tile> tiles;
     private HashMap<Position, UnitImpl> units;
     private int age;
+    private int roundNumber;
     private HashMap<Player, Integer> attacksWonMap;
+    private String workForceFocus;
+
     private GameFactory factory;
     private WinningStrategy winningStrategy;
     private AgingStrategy agingStrategy;
     private ActionStrategy actionStrategy;
     private AttackStrategy attackStrategy;
     private LayoutStrategy layoutStrategy;
-    private int roundNumber;
+    private WorkForceForceFocusStrategy workForceFocusStrategy;
+    private PopulationGrowthStrategy populationGrowthStrategy;
+
 
     public GameImpl(GameFactory factory) {
         cities = new HashMap<>();
@@ -57,6 +62,7 @@ public class GameImpl implements Game {
         attacksWonMap = new HashMap<>();
         attacksWonMap.put(Player.RED, 0);
         attacksWonMap.put(Player.BLUE, 0);
+        workForceFocus = GameConstants.productionFocus;
 
         this.factory = factory;
         this.winningStrategy = factory.createWinningStrategy();
@@ -64,6 +70,8 @@ public class GameImpl implements Game {
         this.actionStrategy = factory.createActionStrategy();
         this.layoutStrategy = factory.createLayoutStrategy();
         this.attackStrategy = factory.createAttackStrategy();
+        this.workForceFocusStrategy = factory.createWorkForceFocusStrategy();
+        this.populationGrowthStrategy = factory.createPopulationGrowthStrategy();
 
         layoutStrategy.createWorld(cities, units, tiles);
     }
@@ -160,6 +168,7 @@ public class GameImpl implements Game {
     }
     //----- moveUnit End -----
 
+    //----- endOfTurn Start -----
     public void endOfTurn() {
         boolean redsTurn = playerInTurn == Player.RED;
         boolean bluesTurn = playerInTurn == Player.BLUE;
@@ -184,7 +193,9 @@ public class GameImpl implements Game {
     private void performCityActions() {
         for (Position p : cities.keySet()) {
             CityImpl c = cities.get(p);
-            c.increaseTreasury(6);
+            workForceFocusStrategy.increaseTreasury(this, p);
+            workForceFocusStrategy.increaseFoodCount(this, p);
+            populationGrowthStrategy.increaseCitySize(c);
             if (c.getTreasury() >= c.getCurrentUnitPrice()){
                 placeUnit(p, c);
                 c.decreaseTreasury(c.getCurrentUnitPrice());
@@ -224,8 +235,10 @@ public class GameImpl implements Game {
             return  validTile && !unitAtPos && validPos;
         }
 
-    public void changeWorkForceFocusInCityAt(Position p, String balance) {
+        //----- endOfTurn end -----
 
+    public void changeWorkForceFocusInCityAt(Position p, String balance) {
+            workForceFocusStrategy.changeWorkForceFocus(this, p, balance);
     }
 
     public void changeProductionInCityAt(Position p, String unitType) {

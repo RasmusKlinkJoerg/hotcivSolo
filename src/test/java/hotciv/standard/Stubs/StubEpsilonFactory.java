@@ -3,10 +3,7 @@ package hotciv.standard.Stubs;
 import hotciv.framework.Die;
 import hotciv.framework.GameFactory;
 import hotciv.framework.Strategies.*;
-import hotciv.standard.StrategyImpls.AlphaActionStrategy;
-import hotciv.standard.StrategyImpls.AlphaAgingStrategy;
-import hotciv.standard.StrategyImpls.EpsilonAttackStrategy;
-import hotciv.standard.StrategyImpls.EpsilonWinningStrategy;
+import hotciv.standard.StrategyImpls.*;
 
 public class StubEpsilonFactory implements GameFactory {
     @Override
@@ -32,5 +29,15 @@ public class StubEpsilonFactory implements GameFactory {
     @Override
     public AttackStrategy createAttackStrategy() {
         return new EpsilonAttackStrategy(new StubFixedDie());
+    }
+
+    @Override
+    public WorkForceForceFocusStrategy createWorkForceFocusStrategy() {
+        return new AlphaWorkForceFocusStrategy();
+    }
+
+    @Override
+    public PopulationGrowthStrategy createPopulationGrowthStrategy() {
+        return new AlphaPopulationGrowthStrategy();
     }
 }

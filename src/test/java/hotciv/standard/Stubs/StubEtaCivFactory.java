@@ -1,14 +1,13 @@
-package hotciv.standard.Factories;
+package hotciv.standard.Stubs;
 
 import hotciv.framework.GameFactory;
 import hotciv.framework.Strategies.*;
-import hotciv.standard.SixSidedDie;
 import hotciv.standard.StrategyImpls.*;
 
-public class EpsilonCivFactory implements GameFactory {
+public class StubEtaCivFactory implements GameFactory {
     @Override
     public WinningStrategy createWinningStrategy() {
-        return new EpsilonWinningStrategy();
+        return new AlphaWinningStrategy();
     }
 
     @Override
@@ -23,21 +22,21 @@ public class EpsilonCivFactory implements GameFactory {
 
     @Override
     public LayoutStrategy createLayoutStrategy() {
-        return new AlphaLayoutStrategy();
+        return new DeltaLayoutStrategy();
     }
 
     @Override
     public AttackStrategy createAttackStrategy() {
-        return new EpsilonAttackStrategy(new SixSidedDie());
+        return new AlphaAttackStrategy();
     }
 
     @Override
     public WorkForceForceFocusStrategy createWorkForceFocusStrategy() {
-        return new AlphaWorkForceFocusStrategy();
+        return new EtaWorkForceFocusStrategy();
     }
 
     @Override
     public PopulationGrowthStrategy createPopulationGrowthStrategy() {
-        return new AlphaPopulationGrowthStrategy();
+        return new EtaPopulationGrowthStrategy();
     }
 }

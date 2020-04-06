@@ -62,4 +62,6 @@ public interface City {
    */
   public String getWorkforceFocus();
 
+  public int getFoodCount();
+
 }

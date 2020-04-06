@@ -1,6 +1,7 @@
 package hotciv.standard;
 
 import hotciv.framework.City;
+import hotciv.framework.Game;
 import hotciv.framework.GameConstants;
 import hotciv.framework.Player;
 
@@ -12,15 +13,21 @@ public class CityImpl implements City {
     private Player owner;
     private int treasury;
     private String production;
+    private String workForceFocus;
     private HashMap<String, Integer> unitPrices;
+    private int foodCount;
+    private int size;
 
 
     public CityImpl(Player owner){
         this.owner = owner;
-        this.treasury = 0;
-        this.production = GameConstants.LEGION;
+        treasury = 0;
+        foodCount = 0;
+        production = GameConstants.LEGION;
+        workForceFocus = GameConstants.productionFocus;
         unitPrices = new HashMap<>();
         putUnitPrices();
+        size = 1;
     }
 
     private void putUnitPrices() {
@@ -36,7 +43,7 @@ public class CityImpl implements City {
 
     @Override
     public int getSize() {
-        return 1;
+        return size;
     }
 
     @Override
@@ -51,7 +58,12 @@ public class CityImpl implements City {
 
     @Override
     public String getWorkforceFocus() {
-        return null;
+        return workForceFocus;
+    }
+
+    @Override
+    public int getFoodCount() {
+        return foodCount;
     }
 
 
@@ -67,12 +79,31 @@ public class CityImpl implements City {
         production = unitType;
     }
 
+    public void setWorkForceFocus(String balance) {
+        workForceFocus = balance;
+    }
+
     public int getCurrentUnitPrice() {
         return unitPrices.get(production);
     }
 
     public void setOwner(Player owner) {
         this.owner = owner;
+    }
+
+
+
+
+    public void setSize(int i) {
+        size = i;
+    }
+
+    public void increaseFoodCount(int i) {
+        foodCount +=i;
+    }
+
+    public void setFoodCount(int i) {
+        foodCount = i;
     }
 }
 

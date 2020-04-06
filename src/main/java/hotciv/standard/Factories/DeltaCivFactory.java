@@ -29,4 +29,14 @@ public class DeltaCivFactory implements GameFactory {
     public AttackStrategy createAttackStrategy() {
         return new AlphaAttackStrategy();
     }
+
+    @Override
+    public WorkForceForceFocusStrategy createWorkForceFocusStrategy() {
+        return new AlphaWorkForceFocusStrategy();
+    }
+
+    @Override
+    public PopulationGrowthStrategy createPopulationGrowthStrategy() {
+        return new AlphaPopulationGrowthStrategy();
+    }
 }

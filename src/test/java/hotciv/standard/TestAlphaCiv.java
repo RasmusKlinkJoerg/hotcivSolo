@@ -289,15 +289,15 @@ public class TestAlphaCiv {
     @Test
     public void redCantMoveBlue(){
         Position blueLegionP = new Position(3,2);
-        Position mountainP = new Position(4 ,2);
-        assertThat(game.moveUnit(blueLegionP, mountainP), is(false));
+        Position blueLegionP2 = new Position(3 ,3);
+        assertThat(game.moveUnit(blueLegionP, blueLegionP2), is(false));
     }
 
     @Test
     public void blueCantMoveRed(){
         Position blueLegionP = new Position(3,2);
-        Position mountainP = new Position(4 ,2);
-        assertThat(game.moveUnit(blueLegionP, mountainP), is(false));
+        Position blueLegionP2 = new Position(3 ,3);
+        assertThat(game.moveUnit(blueLegionP, blueLegionP2), is(false));
     }
 
     @Test

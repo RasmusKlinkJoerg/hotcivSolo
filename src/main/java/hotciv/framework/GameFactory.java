@@ -14,5 +14,8 @@ public interface GameFactory {
 
     AttackStrategy createAttackStrategy();
 
+    WorkForceForceFocusStrategy createWorkForceFocusStrategy();
 
+
+    PopulationGrowthStrategy createPopulationGrowthStrategy();
 }
