@@ -2,7 +2,6 @@ package hotciv.standard.StrategyImpls;
 
 import hotciv.framework.*;
 import hotciv.framework.Strategies.AttackStrategy;
-import hotciv.standard.UnitImpl;
 
 public class EpsilonAttackStrategy implements AttackStrategy {
     private Die die;
@@ -85,7 +84,7 @@ public class EpsilonAttackStrategy implements AttackStrategy {
             int row = rows[i];
             int col = cols[i];
         Position p = new Position(position.getRow() + row, position.getColumn() + col);
-            if ( game.getUnitAt(p) != null &&
+            if (game.getUnitAt(p) != null &&
                     game.getUnitAt(p).getOwner() == player ) {
                 support++;
             }

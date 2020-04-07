@@ -25,10 +25,12 @@ public class GameStubForBattleTesting implements Game {
     public Unit getUnitAt(Position p) {
         if ( p.getRow() == 2 && p.getColumn() == 3 ||
                 p.getRow() == 3 && p.getColumn() == 2 ||
-                p.getRow() == 3 && p.getColumn() == 3 ) {
+                p.getRow() == 3 && p.getColumn() == 3 ||
+                p.getRow() == 0 && p.getColumn() == 14 ) {
             return new StubUnit(GameConstants.ARCHER, Player.RED);
         }
-        if ( p.getRow() == 4 && p.getColumn() == 4 ) {
+        if ( p.getRow() == 4 && p.getColumn() == 4 ||
+                p.getRow() == 0 && p.getColumn() == 15) {
             return new StubUnit(GameConstants.ARCHER, Player.BLUE);
         }
         return null;

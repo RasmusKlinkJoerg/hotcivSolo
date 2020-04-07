@@ -49,6 +49,9 @@ public class StubEpsilonLayout implements LayoutStrategy {
 
         putUnit(new Position(10, 4), Player.RED, GameConstants.SETTLER);
         putUnit(new Position(10, 5), Player.BLUE, GameConstants.ARCHER);
+
+        putUnit(new Position(0, 14), Player.RED, GameConstants.SETTLER);
+        putUnit(new Position(0, 15), Player.BLUE, GameConstants.ARCHER);
     }
 
     private void putCity(Position p, Player owner) {

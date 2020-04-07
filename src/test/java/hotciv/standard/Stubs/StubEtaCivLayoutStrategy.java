@@ -23,7 +23,7 @@ public class StubEtaCivLayoutStrategy implements LayoutStrategy {
         this.tiles = tiles;
 
         //Cities
-        putCity(new Position(7, 12), Player.RED);
+        putCity(new Position(0, 3), Player.RED);
         putCity(new Position(8, 12), Player.RED);
         putCity(new Position(4, 5), Player.BLUE);
 

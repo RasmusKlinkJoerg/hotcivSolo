@@ -82,4 +82,6 @@ public class TestEpsilonAttackStrategy {
         //redArcher has friendlySupport:2, blueArcher has friendlySupport: 0
         assertThat(attackStrategy.attack(game, redArcherP, blueArcherP, Player.RED), is(true));
     }
+
+
 }

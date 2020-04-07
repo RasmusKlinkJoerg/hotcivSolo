@@ -20,33 +20,33 @@ public class EtaWorkForceFocusStrategy implements WorkForceForceFocusStrategy {
     @Override
     public void increaseTreasury(Game game, Position p) {
         CityImpl c = (CityImpl) game.getCityAt(p);
-        HashMap<String, Integer> surroundingTerrain = getSurroundingTerrain(game,p);
+        HashMap<String, Integer> surroundingTerrain = getSurroundingTerrain(game, p);
 
         if (c.getWorkforceFocus().equals(GameConstants.productionFocus)) {
             int sum = 1;
-            int populationLeft = c.getSize()-1;
-            if (surroundingTerrain.get(GameConstants.FOREST) > populationLeft) {
-                sum += populationLeft*3;
-                populationLeft=0;
+            int populationLeft = c.getSize() - 1;
+            if (surroundingTerrain.get(GameConstants.FOREST) >= populationLeft) {
+                sum += populationLeft * 3;
+                populationLeft = 0;
             }
             if (surroundingTerrain.get(GameConstants.FOREST) < populationLeft) {
-                sum += surroundingTerrain.get(GameConstants.FOREST)*3;
+                sum += surroundingTerrain.get(GameConstants.FOREST) * 3;
                 populationLeft -= surroundingTerrain.get(GameConstants.FOREST);
             }
-            if (surroundingTerrain.get(GameConstants.HILLS) > populationLeft) {
-                sum += populationLeft*2;
-                populationLeft=0;
+            if (surroundingTerrain.get(GameConstants.HILLS) >= populationLeft) {
+                sum += populationLeft * 2;
+                populationLeft = 0;
             }
             if (surroundingTerrain.get(GameConstants.HILLS) < populationLeft) {
-                sum += surroundingTerrain.get(GameConstants.HILLS)*2;
+                sum += surroundingTerrain.get(GameConstants.HILLS) * 2;
                 populationLeft -= surroundingTerrain.get(GameConstants.HILLS);
             }
-            if (surroundingTerrain.get(GameConstants.MOUNTAINS) > populationLeft) {
+            if (surroundingTerrain.get(GameConstants.MOUNTAINS) >= populationLeft) {
                 sum += populationLeft;
-                populationLeft=0;
+                populationLeft = 0;
             }
             if (surroundingTerrain.get(GameConstants.MOUNTAINS) < populationLeft) {
-                sum = surroundingTerrain.get(GameConstants.MOUNTAINS)*3;
+                sum = surroundingTerrain.get(GameConstants.MOUNTAINS) * 3;
             }
 
             c.increaseTreasury(sum);
@@ -56,22 +56,21 @@ public class EtaWorkForceFocusStrategy implements WorkForceForceFocusStrategy {
     @Override
     public void increaseFoodCount(Game game, Position p) {
         CityImpl c = (CityImpl) game.getCityAt(p);
-        HashMap<String, Integer> surroundingTerrain = getSurroundingTerrain(game,p);
-
+        HashMap<String, Integer> surroundingTerrain = getSurroundingTerrain(game, p);
         if (c.getWorkforceFocus().equals(GameConstants.foodFocus)) {
             int sum = 1;
-            int populationLeft = c.getSize()-1;
-            if (surroundingTerrain.get(GameConstants.PLAINS) > populationLeft) {
-                sum += populationLeft*3;
-                populationLeft=0;
+            int populationLeft = c.getSize() - 1;
+            if (surroundingTerrain.get(GameConstants.PLAINS) >= populationLeft) {
+                sum += populationLeft * 3;
+                populationLeft = 0;
             }
             if (surroundingTerrain.get(GameConstants.PLAINS) < populationLeft) {
-                sum += surroundingTerrain.get(GameConstants.PLAINS)*3;
+                sum += surroundingTerrain.get(GameConstants.PLAINS) * 3;
                 populationLeft -= surroundingTerrain.get(GameConstants.PLAINS);
             }
-            if (surroundingTerrain.get(GameConstants.OCEANS) > populationLeft) {
+            if (surroundingTerrain.get(GameConstants.OCEANS) >= populationLeft) {
                 sum += populationLeft;
-                populationLeft=0;
+                populationLeft = 0;
             }
             if (surroundingTerrain.get(GameConstants.OCEANS) < populationLeft) {
                 sum += surroundingTerrain.get(GameConstants.OCEANS);
@@ -96,27 +95,29 @@ public class EtaWorkForceFocusStrategy implements WorkForceForceFocusStrategy {
             int row = rows.get(i);
             int col = cols.get(i);
             Position tempPos = new Position(p.getRow() + row, p.getColumn() + col);
-            switch (game.getTileAt(tempPos).getTypeString()) {
-                case GameConstants.FOREST:
-                    int numberOfSurroundingForests = surroundingTerrain.get(GameConstants.FOREST);
-                    surroundingTerrain.put(GameConstants.FOREST, numberOfSurroundingForests + 1);
-                    break;
-                case GameConstants.HILLS:
-                    int numberOfSurroundingHills = surroundingTerrain.get(GameConstants.HILLS);
-                    surroundingTerrain.put(GameConstants.HILLS, numberOfSurroundingHills + 1);
-                    break;
-                case GameConstants.MOUNTAINS:
-                    int numberOfSurroundingMountains = surroundingTerrain.get(GameConstants.MOUNTAINS);
-                    surroundingTerrain.put(GameConstants.MOUNTAINS, numberOfSurroundingMountains + 1);
-                    break;
-                case GameConstants.PLAINS:
-                    int numberOfSurroundingPlains = surroundingTerrain.get(GameConstants.PLAINS);
-                    surroundingTerrain.put(GameConstants.PLAINS, numberOfSurroundingPlains + 1);
-                    break;
-                case GameConstants.OCEANS:
-                    int numberOfSurroundingOceans = surroundingTerrain.get(GameConstants.OCEANS);
-                    surroundingTerrain.put(GameConstants.FOREST, numberOfSurroundingOceans + 1);
-                    break;
+            if (game.getTileAt(tempPos) != null) {
+                switch (game.getTileAt(tempPos).getTypeString()) {
+                    case GameConstants.FOREST:
+                        int numberOfSurroundingForests = surroundingTerrain.get(GameConstants.FOREST);
+                        surroundingTerrain.put(GameConstants.FOREST, numberOfSurroundingForests + 1);
+                        break;
+                    case GameConstants.HILLS:
+                        int numberOfSurroundingHills = surroundingTerrain.get(GameConstants.HILLS);
+                        surroundingTerrain.put(GameConstants.HILLS, numberOfSurroundingHills + 1);
+                        break;
+                    case GameConstants.MOUNTAINS:
+                        int numberOfSurroundingMountains = surroundingTerrain.get(GameConstants.MOUNTAINS);
+                        surroundingTerrain.put(GameConstants.MOUNTAINS, numberOfSurroundingMountains + 1);
+                        break;
+                    case GameConstants.PLAINS:
+                        int numberOfSurroundingPlains = surroundingTerrain.get(GameConstants.PLAINS);
+                        surroundingTerrain.put(GameConstants.PLAINS, numberOfSurroundingPlains + 1);
+                        break;
+                    case GameConstants.OCEANS:
+                        int numberOfSurroundingOceans = surroundingTerrain.get(GameConstants.OCEANS);
+                        surroundingTerrain.put(GameConstants.OCEANS, numberOfSurroundingOceans + 1);
+                        break;
+                }
             }
         }
         return surroundingTerrain;

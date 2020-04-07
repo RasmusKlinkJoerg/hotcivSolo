@@ -65,6 +65,11 @@ public class TestEpsilonWinningStrategy {
 
     @Test public void shouldWinAfterTakingOver3Cities() {
         assertThat(game.getWinner(), is(nullValue()));
+        redTakesOverBlueCities();
+        assertThat(game.getWinner(), is(Player.RED));
+    }
+
+    private void redTakesOverBlueCities() {
         Position redLegionP = new Position(0,0);
         Position blueCity1Pos = new Position(1,0);
         Position blueCity2Pos = new Position(2,0);
@@ -76,7 +81,8 @@ public class TestEpsilonWinningStrategy {
         game.endOfTurn();
         game.endOfTurn();
         game.moveUnit(blueCity2Pos, blueCity3Pos);
-        assertThat(game.getWinner(), is(Player.RED));
     }
+
+
 
 }

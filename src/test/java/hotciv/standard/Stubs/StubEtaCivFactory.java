@@ -22,7 +22,7 @@ public class StubEtaCivFactory implements GameFactory {
 
     @Override
     public LayoutStrategy createLayoutStrategy() {
-        return new DeltaLayoutStrategy();
+        return new StubEtaCivLayoutStrategy();
     }
 
     @Override
