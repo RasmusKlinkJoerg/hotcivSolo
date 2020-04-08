@@ -1,7 +1,6 @@
 package hotciv.standard;
 
 import hotciv.framework.City;
-import hotciv.framework.Game;
 import hotciv.framework.GameConstants;
 import hotciv.framework.Player;
 
@@ -34,6 +33,7 @@ public class CityImpl implements City {
         unitPrices.put(GameConstants.ARCHER, 10);
         unitPrices.put(GameConstants.LEGION, 15);
         unitPrices.put(GameConstants.SETTLER, 30);
+        unitPrices.put(GameConstants.B52, 60);
     }
 
     @Override
@@ -66,7 +66,6 @@ public class CityImpl implements City {
         return foodCount;
     }
 
-
     public void increaseTreasury(int i) {
          treasury += i;
     }
@@ -90,9 +89,6 @@ public class CityImpl implements City {
     public void setOwner(Player owner) {
         this.owner = owner;
     }
-
-
-
 
     public void setSize(int i) {
         size = i;

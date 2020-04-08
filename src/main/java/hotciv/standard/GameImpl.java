@@ -119,10 +119,10 @@ public class GameImpl implements Game {
         boolean movingToValidTerrain = !toOcean && !toMountain;
         boolean movingOwnUnit = getUnitAt(from).getOwner() == getPlayerInTurn();
         boolean moveCountGreaterThanZero = getUnitAt(from).getMoveCount() > 0;
-        boolean moveDistanceIsOneOrLess = Math.abs(from.getRow()- to.getRow())<=1 && Math.abs(from.getColumn()-to.getColumn())<=1;
+        boolean moveDistanceIsOneOrLess = Math.abs(from.getRow() - to.getRow()) <= 1 && Math.abs(from.getColumn() - to.getColumn()) <= 1;
         boolean stationary = unit.getStationary();
 
-        return  movingOwnUnit &&
+        return movingOwnUnit &&
                 movingToValidTerrain &&
                 moveCountGreaterThanZero &&
                 moveDistanceIsOneOrLess &&
@@ -133,24 +133,31 @@ public class GameImpl implements Game {
     private void updateWorld(Position from, Position to) {
         updateUnits(from, to);
         //take over city if wins attack on it
-        boolean isCityAtTo = getCityAt(to) != null;
-        if (isCityAtTo) {
-            takeOverCity(to);
-        }
+
     }
 
     private void updateUnits(Position from, Position to) {
-        UnitImpl unit = (UnitImpl) getUnitAt(from);
-        boolean unitAtTo = getUnitAt(to) != null;
-        if (unitAtTo) {
-            if (attackStrategy.attack(this, from, to, playerInTurn)) {
+        UnitImpl unit = units.get(from);
+        boolean isUnitAtTo = getUnitAt(to) != null;
+        boolean isCityAtTo = getCityAt(to) != null;
+        if (isUnitAtTo) {
+            boolean attackWon = attackStrategy.attack(this, from, to, playerInTurn);
+            if (attackWon) {
                 int attacksWon = attacksWonMap.get(playerInTurn);
                 attacksWonMap.put(playerInTurn, attacksWon + 1);
                 units.put(to, unit);
-                unit.decreaseMoveCount(1);
+                if (isCityAtTo) {
+                    takeOverCity(to);
+                }
             }
             units.remove(from);
+            unit.decreaseMoveCount(1);
             return;
+        }
+        if (isCityAtTo) {
+            int attacksWon = attacksWonMap.get(playerInTurn);
+            attacksWonMap.put(playerInTurn, attacksWon + 1);
+            takeOverCity(to);
         }
         units.put(to, unit);
         units.remove(from);
@@ -162,8 +169,6 @@ public class GameImpl implements Game {
         boolean ownsCityAtTo = city.getOwner() == playerInTurn;
         if (!ownsCityAtTo) {
             city.setOwner(playerInTurn);
-            int attacksWon = attacksWonMap.get(playerInTurn);
-            attacksWonMap.put(playerInTurn, attacksWon+1);
         }
     }
     //----- moveUnit End -----
@@ -183,10 +188,10 @@ public class GameImpl implements Game {
 
     private void endOfRound() {
         age = agingStrategy.increaseAge(age);
-        performCityActions();
         for (UnitImpl u : units.values()) {
             u.resetMoveCount();
         }
+        performCityActions();
         roundNumber++;
     }
 
@@ -196,49 +201,46 @@ public class GameImpl implements Game {
             workForceFocusStrategy.increaseTreasury(this, p);
             workForceFocusStrategy.increaseFoodCount(this, p);
             populationGrowthStrategy.increaseCitySize(c);
-            if (c.getTreasury() >= c.getCurrentUnitPrice()){
+            if (c.getTreasury() >= c.getCurrentUnitPrice()) {
                 placeUnit(p, c);
                 c.decreaseTreasury(c.getCurrentUnitPrice());
             }
         }
     }
+
     //Get the matching pairs of row and column to first get inside the city,
     // then the surrounding positions in clockwise order, starting from north.
     private void placeUnit(Position position, City city) {
-        int []rows = {0,-1, -1, 0, 1, 1, 1, 0, -1};
-        int []cols = {0, 0, 1, 1, 1, 0, -1, -1, -1};
-        for(int i = 0; i< rows.length; i++){
+        int[] rows = {0, -1, -1, 0, 1, 1, 1, 0, -1};
+        int[] cols = {0, 0, 1, 1, 1, 0, -1, -1, -1};
+        for (int i = 0; i < rows.length; i++) {
             int row = rows[i];
             int col = cols[i];
-                Position tempPos = new Position(position.getRow()+row, position.getColumn()+col);
-                if (isValidPlacement(tempPos)) {
-                    units.put(tempPos, new UnitImpl(city.getOwner(), city.getProduction()));
-                }
+            Position tempPos = new Position(position.getRow() + row, position.getColumn() + col);
+            if (isValidPlacement(tempPos)) {
+                units.put(tempPos, new UnitImpl(city.getOwner(), city.getProduction()));
+                return;
             }
         }
+    }
 
-        private boolean isValidPlacement(Position position) {
-            Tile t = getTileAt(position);
-            boolean validRow = 0 <= position.getRow() && position.getRow() < GameConstants.WORLDSIZE;
-            boolean validColumn = 0 <= position.getColumn() && position.getColumn() < GameConstants.WORLDSIZE;
-            boolean validPosition =  validRow && validColumn;
-            if (!validPosition) {
-                return false;
-            }
-            boolean validTile = !t.getTypeString().equals(GameConstants.OCEANS) &&
-                        !t.getTypeString().equals(GameConstants.MOUNTAINS);
-            boolean unitAtPos = getUnitAt(position) != null;
-            boolean validPos = 0 <= position.getRow() &&
-                        position.getRow() < GameConstants.WORLDSIZE  &&
-                        0 <= position.getColumn() &&
-                        position.getColumn() < GameConstants.WORLDSIZE;
-            return  validTile && !unitAtPos && validPos;
+    private boolean isValidPlacement(Position position) {
+        Tile t = getTileAt(position);
+        boolean validRow = 0 <= position.getRow() && position.getRow() < GameConstants.WORLDSIZE;
+        boolean validColumn = 0 <= position.getColumn() && position.getColumn() < GameConstants.WORLDSIZE;
+        boolean validPosition = validRow && validColumn;
+        if (!validPosition) {
+            return false;
         }
-
-        //----- endOfTurn end -----
+        boolean validTile = !t.getTypeString().equals(GameConstants.OCEANS) &&
+                !t.getTypeString().equals(GameConstants.MOUNTAINS);
+        boolean unitAtPos = getUnitAt(position) != null;
+        return validTile && !unitAtPos;
+    }
+    //----- endOfTurn end -----
 
     public void changeWorkForceFocusInCityAt(Position p, String balance) {
-            workForceFocusStrategy.changeWorkForceFocus(this, p, balance);
+        workForceFocusStrategy.changeWorkForceFocus(this, p, balance);
     }
 
     public void changeProductionInCityAt(Position p, String unitType) {
@@ -247,7 +249,7 @@ public class GameImpl implements Game {
     }
 
     public void performUnitActionAt(Position p) {
-        actionStrategy.performUnitActionAt(p, units, cities);
+        actionStrategy.performUnitActionAt(this, p, cities, units);
     }
 
 }

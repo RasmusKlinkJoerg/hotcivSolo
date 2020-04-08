@@ -9,6 +9,7 @@ import java.util.HashMap;
 public class UnitImpl implements hotciv.framework.Unit {
     private  HashMap<String, Integer> attackMap;
     private  HashMap<String, Integer> defenseMap;
+    private  HashMap<String, Integer> moveCountMap;
     private String unitType;
     private Player owner;
     private int moveCount;
@@ -20,13 +21,15 @@ public class UnitImpl implements hotciv.framework.Unit {
     public UnitImpl(Player owner, String unitType) {
         this.owner = owner;
         this.unitType = unitType;
-        this.moveCount = 1;
         defenseMap = new HashMap<>();
         attackMap = new HashMap<>();
+        moveCountMap = new HashMap<>();
         putUnitDef();
         putUnitAtc();
-        this.defensiveStrength = defenseMap.get(unitType);
-        this.attackingStrength = attackMap.get(unitType);
+        putUnitMoveCount();
+        defensiveStrength = defenseMap.get(unitType);
+        attackingStrength = attackMap.get(unitType);
+        moveCount = moveCountMap.get(unitType);
         stationary = false;
         fortified = false;
     }
@@ -35,12 +38,20 @@ public class UnitImpl implements hotciv.framework.Unit {
         defenseMap.put(GameConstants.ARCHER, 3);
         defenseMap.put(GameConstants.LEGION, 2);
         defenseMap.put(GameConstants.SETTLER, 3);
+        defenseMap.put(GameConstants.B52, 8);
     }
 
     private void putUnitAtc() {
         attackMap.put(GameConstants.ARCHER, 2);
         attackMap.put(GameConstants.LEGION, 4);
         attackMap.put(GameConstants.SETTLER, 0);
+        attackMap.put(GameConstants.B52, 1);
+    }
+    private void putUnitMoveCount() {
+        moveCountMap.put(GameConstants.ARCHER, 1);
+        moveCountMap.put(GameConstants.LEGION, 1);
+        moveCountMap.put(GameConstants.SETTLER, 1);
+        moveCountMap.put(GameConstants.B52, 2);
     }
 
     @Override

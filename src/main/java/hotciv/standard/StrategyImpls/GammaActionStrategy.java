@@ -1,5 +1,6 @@
 package hotciv.standard.StrategyImpls;
 
+import hotciv.framework.Game;
 import hotciv.framework.GameConstants;
 import hotciv.framework.Position;
 import hotciv.framework.Strategies.ActionStrategy;
@@ -9,9 +10,11 @@ import hotciv.standard.UnitImpl;
 import java.util.HashMap;
 
 public class GammaActionStrategy implements ActionStrategy {
+
+
     @Override
-    public void performUnitActionAt(Position p, HashMap<Position, UnitImpl> units, HashMap<Position, CityImpl> cities) {
-        UnitImpl unit = units.get(p);
+    public void performUnitActionAt(Game game, Position p, HashMap<Position, CityImpl> cityHashMap, HashMap<Position, UnitImpl> unitHashMap) {
+        UnitImpl unit = unitHashMap.get(p);
         String unitType = unit.getTypeString();
         boolean isArcher = unitType.equals(GameConstants.ARCHER);
         boolean isSettler = unitType.equals(GameConstants.SETTLER);
@@ -19,7 +22,7 @@ public class GammaActionStrategy implements ActionStrategy {
             performArcherAction(unit);
         }
         if (isSettler) {
-            performSettlerAction(p, units, cities, unit);
+            performSettlerAction(p, cityHashMap, unitHashMap, unit);
         }
     }
 
@@ -30,15 +33,16 @@ public class GammaActionStrategy implements ActionStrategy {
             unit.setFortified(false);
         } else {
             int oldDef = unit.getDefensiveStrength();
-            unit.setDefensiveStrength(oldDef*2);
+            unit.setDefensiveStrength(oldDef * 2);
             unit.setStationary(true);
             unit.setFortified(true);
         }
     }
 
-    private void performSettlerAction(Position p, HashMap<Position, UnitImpl> units, HashMap<Position, CityImpl> cities, UnitImpl unit) {
+    private void performSettlerAction(Position p, HashMap<Position, CityImpl> cityHashMap, HashMap<Position, UnitImpl> unitHashMap, UnitImpl unit) {
         CityImpl newCity = new CityImpl(unit.getOwner());
-        cities.put(p, newCity);
-        units.remove(p);
+        cityHashMap.put(p, newCity);
+        unitHashMap.remove(p);
     }
 }
+

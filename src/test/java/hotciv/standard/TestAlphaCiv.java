@@ -203,11 +203,17 @@ public class TestAlphaCiv {
 
     @Test
     public void producedUnitIsPlacedNorthIfCityIsOccupied() {
-        Position northPos = new Position(3, 1);
+        Position northOfBlueCityPos = new Position(3, 1);
         for (int i = 0; i < 12; i++) {  // wait 12 turns (6 rounds) so 36 is added to treasury and two legions are produced(legion costs 15)
             game.endOfTurn();
         }
-        assertThat(game.getUnitAt(northPos), is(notNullValue())); // unit should first be placed in city if there is space
+        assertThat(game.getUnitAt(northOfBlueCityPos), is(notNullValue())); // unit should first be placed in city if there is space
+        //No other units have been produces (there is already blue legion at northEast)
+        Position eastOfBlueCityPos = new Position(4, 2);
+        assertThat(game.getUnitAt(eastOfBlueCityPos), is(nullValue()));
+        //Position southEastOfBlueCityPos = new Position(5, 2);
+        //assertThat(game.getUnitAt(southEastOfBlueCityPos), is(nullValue()));
+
     }
 
     @Test
@@ -329,8 +335,8 @@ public class TestAlphaCiv {
     @Test
     public void canOnlyMoveIfMoveCountIsGreaterThan0() {
         Position redArcherP1 = new Position(2,0);
-        Position redArcherP2 = new Position(3,1);
-        Position redArcherP3 = new Position(4,2);
+        Position redArcherP2 = new Position(3,0);
+        Position redArcherP3 = new Position(4,0);
         game.moveUnit(redArcherP1, redArcherP2);
         assertThat(game.moveUnit(redArcherP2, redArcherP3), is(false));
     }
@@ -345,8 +351,22 @@ public class TestAlphaCiv {
     @Test
     public void cantMoveMoreThan1Tile() {
         Position redArcherP = new Position(2,0);
-        Position redArcherPTooFarAway = new Position(13,13);
+        Position redArcherPTooFarAway = new Position(4,0);
         assertThat(game.moveUnit(redArcherP, redArcherPTooFarAway), is(false));
+    }
+
+    @Test
+    public void unitCreatedByCityCannotMoveTwoTilesPerTurn() {
+        Position redArcherPos1 = new Position(1,1);
+        Position redArcherPos2 = new Position(2,1 );
+        Position redArcherPos3 = new Position(3,1);
+        makeRedCityCreateArcher();
+        assertThat(game.getUnitAt(redArcherPos1).getTypeString(), is(GameConstants.ARCHER));
+        assertThat(game.getUnitAt(redArcherPos2), is(nullValue()));
+        game.moveUnit(redArcherPos1,redArcherPos2);
+        assertThat(game.getUnitAt(redArcherPos2).getTypeString(), is(GameConstants.ARCHER));
+        assertThat(game.getUnitAt(redArcherPos1), is(nullValue()));
+        assertThat(game.moveUnit(redArcherPos2,redArcherPos3), is(false));
     }
 
     //Units
@@ -415,6 +435,18 @@ public class TestAlphaCiv {
         game.moveUnit(redSettlerPos2, blueCityPos);
     }
 
+
+    private void makeRedCityCreateArcher() {
+        Position redCityPos = new Position(1,1);
+        game.changeProductionInCityAt(redCityPos, GameConstants.ARCHER);
+        //Wait 2 rounds to make 12 production
+        for (int i = 0; i < 2; i++) {
+
+            game.endOfTurn();
+            game.endOfTurn();
+            System.out.println("Treasury: " + game.getCityAt(redCityPos).getTreasury());
+        }
+    }
 
 
 
