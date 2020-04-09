@@ -4,6 +4,7 @@ import hotciv.framework.Game;
 import hotciv.framework.GameConstants;
 import hotciv.framework.Position;
 import hotciv.framework.Strategies.ActionStrategy;
+import hotciv.framework.Tile;
 import hotciv.standard.CityImpl;
 import hotciv.standard.UnitImpl;
 
@@ -13,7 +14,7 @@ public class GammaActionStrategy implements ActionStrategy {
 
 
     @Override
-    public void performUnitActionAt(Game game, Position p, HashMap<Position, CityImpl> cityHashMap, HashMap<Position, UnitImpl> unitHashMap) {
+    public void performUnitActionAt(Game game, Position p, HashMap<Position, CityImpl> cityHashMap, HashMap<Position, UnitImpl> unitHashMap, HashMap<Position, Tile> tiles) {
         UnitImpl unit = unitHashMap.get(p);
         String unitType = unit.getTypeString();
         boolean isArcher = unitType.equals(GameConstants.ARCHER);

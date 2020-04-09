@@ -154,7 +154,8 @@ public class GameImpl implements Game {
             unit.decreaseMoveCount(1);
             return;
         }
-        if (isCityAtTo) {
+        boolean unitIsB52Bomber = unit.getTypeString().equals(GameConstants.B52);
+        if (isCityAtTo && !unitIsB52Bomber) {
             int attacksWon = attacksWonMap.get(playerInTurn);
             attacksWonMap.put(playerInTurn, attacksWon + 1);
             takeOverCity(to);
@@ -249,7 +250,7 @@ public class GameImpl implements Game {
     }
 
     public void performUnitActionAt(Position p) {
-        actionStrategy.performUnitActionAt(this, p, cities, units);
+        actionStrategy.performUnitActionAt(this, p, cities, units, tiles);
     }
 
 }

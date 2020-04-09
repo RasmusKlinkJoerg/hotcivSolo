@@ -444,7 +444,6 @@ public class TestAlphaCiv {
 
             game.endOfTurn();
             game.endOfTurn();
-            System.out.println("Treasury: " + game.getCityAt(redCityPos).getTreasury());
         }
     }
 
