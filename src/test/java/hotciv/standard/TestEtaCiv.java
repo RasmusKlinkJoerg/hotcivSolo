@@ -3,11 +3,9 @@ package hotciv.standard;
 import hotciv.framework.Game;
 import hotciv.framework.GameConstants;
 import hotciv.framework.Position;
-import hotciv.standard.Factories.EtaCivFactory;
 import hotciv.standard.Stubs.StubEtaCivFactory;
 import org.junit.*;
 
-import javax.crypto.spec.GCMParameterSpec;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;

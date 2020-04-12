@@ -355,6 +355,7 @@ public class TestAlphaCiv {
         assertThat(game.moveUnit(redArcherP, redArcherPTooFarAway), is(false));
     }
 
+    //used this to find error in city production, maybe this should be removed
     @Test
     public void unitCreatedByCityCannotMoveTwoTilesPerTurn() {
         Position redArcherPos1 = new Position(1,1);

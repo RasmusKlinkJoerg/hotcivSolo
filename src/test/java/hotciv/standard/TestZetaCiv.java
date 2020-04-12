@@ -4,10 +4,10 @@ import hotciv.framework.*;
 
 
 import hotciv.standard.Stubs.StubZetaCivFactory;
-import org.junit.*;
+    import org.junit.*;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+    import static org.junit.Assert.*;
+    import static org.hamcrest.CoreMatchers.*;
 
 public class TestZetaCiv {
     private Game game;
