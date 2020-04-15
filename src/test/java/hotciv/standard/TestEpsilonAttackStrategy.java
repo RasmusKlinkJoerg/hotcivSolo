@@ -40,7 +40,7 @@ public class TestEpsilonAttackStrategy {
     @Test public void shouldGiveSum1ForBlueAtP5_5() {
         assertThat("Blue unit at (5,5) should get +1 support",
                 attackStrategy.getFriendlySupport( game, new Position(5,5), Player.BLUE), is(+1));
-    } 
+    }
 
     @Test public void shouldGiveSum0ForBlueAtP2_4() {
         assertThat("Blue unit at (2,4) should get +0 support",

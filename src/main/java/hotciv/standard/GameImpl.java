@@ -253,4 +253,13 @@ public class GameImpl implements Game {
         actionStrategy.performUnitActionAt(this, p, cities, units, tiles);
     }
 
+
+    public void addObserver(GameObserver observer) {
+
+    }
+
+    public void setTileFocus(Position position) {
+
+    }
+
 }
