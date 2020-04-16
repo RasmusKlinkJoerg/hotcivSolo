@@ -100,6 +100,16 @@ class UpdateTool extends NullTool {
                 break;
             }
             case 7: {
+                editor.showStatus("State change: change production in city at (10,10)");
+                game.changeProductionInCityAt(new Position(10, 10), GameConstants.ARCHER);
+                break;
+            }
+            case 8: {
+                editor.showStatus("State change: change workForceFocus in city at (10,10)");
+                game.changeWorkForceFocusInCityAt(new Position(10, 10), GameConstants.foodFocus);
+                break;
+            }
+            case 9: {
                 editor.showStatus("State change: Perform unit action with settler at (4,3)");
                 game.performUnitActionAt(new Position(4, 3));
                 break;

@@ -3,13 +3,13 @@ package hotciv.visual;
 import minidraw.standard.*;
 import minidraw.framework.*;
 
-import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
 
 import hotciv.framework.*;
-import hotciv.view.*;
 import hotciv.stub.*;
+
+import static hotciv.view.GfxConstants.*;
+import static hotciv.view.GfxConstants.TURN_SHIELD_Y;
 
 /** Template code for exercise FRS 36.44.
 
@@ -38,7 +38,65 @@ public class ShowComposition {
     editor.open();
     editor.showStatus("Click and drag any item to see Game's proper response.");
 
-    // TODO: Replace the setting of the tool with your CompositionTool implementation.
-    editor.setTool( new NullTool() );
+    editor.setTool( new CompositionTool(editor, game) );
+  }
+}
+
+class CompositionTool extends NullTool {
+  private DrawingEditor editor;
+  private Game game;
+  private Position from;
+  private Position to;
+  private MoveTool moveTool;
+  private SetFocusTool setFocusTool;
+  private EndOfTurnTool endOfTurnTool;
+  private ActionTool actionTool;
+  private ChangeProductionAndWFFTool changeProductionAndWFFTool;
+
+
+  public CompositionTool(DrawingEditor editor, Game game) {
+    this.editor = editor;
+    this.game = game;
+    moveTool = null;
+    setFocusTool = new SetFocusTool(editor,game);
+    endOfTurnTool = new EndOfTurnTool(editor,game);
+    actionTool = new ActionTool(editor, game);
+    changeProductionAndWFFTool = new ChangeProductionAndWFFTool(editor,game);
+  }
+
+  public void mouseDown(MouseEvent e, int x, int y) {
+    setFocusTool.mouseDown(e, x, y);
+    from = getPositionFromXY(x,y);
+    boolean isUnitAtFrom = game.getUnitAt(from) != null;
+    if (isUnitAtFrom) {
+      if (e.isShiftDown()) {
+        actionTool.mouseDown(e, x, y);
+      }
+      moveTool = new MoveTool(editor,game);
+    }
+    boolean clickedOnEndOfTurnShield =TURN_SHIELD_X < x && x < TURN_SHIELD_X + 30 &&
+            TURN_SHIELD_Y  < y && y < TURN_SHIELD_Y + 40 ;
+    if (clickedOnEndOfTurnShield) {
+      endOfTurnTool.mouseDown(e, x, y);
+    }
+    boolean isCityInTileFocus = game.getCityAt(game.getTileFocus())!=null;
+    if (isCityInTileFocus) {
+      boolean clickedOnCityWorkForceFocus = WORKFORCEFOCUS_X < x && x < WORKFORCEFOCUS_X + 30 &&
+              WORKFORCEFOCUS_Y  < y && y < WORKFORCEFOCUS_Y + 40;
+      boolean clickedOnCityProduction =CITY_PRODUCTION_X < x && x < CITY_PRODUCTION_X + 30 &&
+              CITY_PRODUCTION_Y  < y && y < CITY_PRODUCTION_Y + 40 ;
+      if (clickedOnCityProduction || clickedOnCityWorkForceFocus) {
+        changeProductionAndWFFTool.mouseDown(e, x, y);
+      }
+    }
+
+  }
+
+  public void mouseUp(MouseEvent e, int x, int y) {
+    to = getPositionFromXY(x,y);
+    boolean isUnitAtFrom = game.getUnitAt(from) != null;
+    if (moveTool != null && isUnitAtFrom) {
+      game.moveUnit(from,to);
+    }
   }
 }

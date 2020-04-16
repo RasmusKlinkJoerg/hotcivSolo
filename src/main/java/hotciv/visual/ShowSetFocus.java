@@ -3,13 +3,12 @@ package hotciv.visual;
 import minidraw.standard.*;
 import minidraw.framework.*;
 
-import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
 
 import hotciv.framework.*;
-import hotciv.view.*;
 import hotciv.stub.*;
+
+import static hotciv.view.GfxConstants.getPositionFromXY;
 
 /** Template code for exercise FRS 36.40.
 
@@ -39,6 +38,26 @@ public class ShowSetFocus {
     editor.showStatus("Click a tile to see Game's setFocus method being called.");
 
     // TODO: Replace the setting of the tool with your SetFocusTool implementation.
-    editor.setTool( new SelectionTool(editor) );
+    editor.setTool( new SetFocusTool(editor, game) );
   }
+}
+
+class SetFocusTool extends NullTool {
+  private DrawingEditor editor;
+  private Game game;
+  private Position position;
+
+  public SetFocusTool(DrawingEditor editor, Game game) {
+    this.editor = editor;
+    this.game = game;
+  }
+
+  public void mouseDown( MouseEvent e, int x, int y) {
+    position = getPositionFromXY(x,y);
+    boolean clickedOnGameBoard = x < 500; // The gameboad ends after 500 pixels, and the "info panel" begins
+    if (clickedOnGameBoard) {
+      game.setTileFocus(position);
+    }
+  }
+
 }

@@ -1,6 +1,7 @@
 package hotciv.stub;
 
 import hotciv.framework.*;
+import hotciv.standard.UnitImpl;
 
 import java.util.*;
 
@@ -49,6 +50,7 @@ public class StubGame2 implements Game {
 
   private City red_city;
   private City red_city_createdBySettler;
+  private Position tileFocus;
 
   public Unit getUnitAt(Position p) {
     if ( p.equals(pos_archer_red) ) {
@@ -69,13 +71,21 @@ public class StubGame2 implements Game {
   // Stub only allows moving red archer
   public boolean moveUnit( Position from, Position to ) { 
     System.out.println( "-- StubGame2 / moveUnit called: "+from+"->"+to );
-    if ( from.equals(pos_archer_red) ) {
+    if ( from.equals(pos_archer_red) &&isLegalMove(from,to)) {
       pos_archer_red = to;
     }
     // notify our observer(s) about the changes on the tiles
     gameObserver.worldChangedAt(from);
     gameObserver.worldChangedAt(to);
     return true; 
+  }
+  private boolean isLegalMove(Position from, Position to) {
+
+    boolean moveCountGreaterThanZero = getUnitAt(from).getMoveCount() > 0;
+    boolean moveDistanceIsOneOrLess = Math.abs(from.getRow() - to.getRow()) <= 1 && Math.abs(from.getColumn() - to.getColumn()) <= 1;
+
+    return moveCountGreaterThanZero &&
+            moveDistanceIsOneOrLess ;
   }
 
   // === Turn handling ===
@@ -138,7 +148,6 @@ public class StubGame2 implements Game {
   // TODO: Add more stub behaviour to test MiniDraw updating
   public City getCityAt( Position p ) {
     if (p.equals(pos_city_red)) {
-
       return red_city;
     }
     if (p.equals(pos_settler_red) && red_settler == null) {
@@ -148,8 +157,14 @@ public class StubGame2 implements Game {
   }
   public Player getWinner() { return null; }
   public int getAge() { return 0; }  
-  public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
-  public void changeProductionInCityAt( Position p, String unitType ) {}
+  public void changeWorkForceFocusInCityAt( Position p, String balance ) {
+    ((StubCity) red_city).setWorkForceFocus(GameConstants.foodFocus);
+    gameObserver.tileFocusChangedAt(p);
+  }
+  public void changeProductionInCityAt( Position p, String unitType ) {
+    ((StubCity) red_city).setProduction(GameConstants.ARCHER);
+    gameObserver.tileFocusChangedAt(p);
+  }
   public void performUnitActionAt( Position p ) {
     if (p.equals(pos_settler_red)) {
       red_settler = null;
@@ -161,6 +176,12 @@ public class StubGame2 implements Game {
   public void setTileFocus(Position position) {
     System.out.println("-- StubGame2 / setTileFocus called.");
     gameObserver.tileFocusChangedAt(position);
+    tileFocus = position;
+  }
+
+  @Override
+  public Position getTileFocus() {
+    return tileFocus;
   }
 
 }
@@ -179,22 +200,45 @@ class StubUnit implements  Unit {
   public int getAttackingStrength() { return 0; }
 }
 
-class StubCity implements City{
+class StubCity implements City {
+
+  private String production;
+  private String workForceFocus;
+
+  public StubCity() {
+    production = GameConstants.LEGION;
+    workForceFocus = GameConstants.foodFocus;
+  }
 
   public Player getOwner() {
     return Player.RED;
   }
+
   public int getSize() {
     return 42;
   }
+
   public int getTreasury() {
     return 69;
   }
+
   public String getProduction() {
-    return GameConstants.LEGION;
+    return production;
   }
+
   public String getWorkforceFocus() {
-    return GameConstants.productionFocus;
+    return workForceFocus;
   }
-  public int getFoodCount() { return 420; }
+
+  public int getFoodCount() {
+    return 420;
+  }
+
+  public void setProduction(String unitType) {
+    production = unitType;
+  }
+
+  public void setWorkForceFocus(String workForceFocus) {
+    this.workForceFocus = workForceFocus;
+  }
 }

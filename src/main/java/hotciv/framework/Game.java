@@ -151,4 +151,6 @@ public interface Game {
    * has focus.
    */
   public void setTileFocus(Position position);
+
+  public Position getTileFocus();
 }

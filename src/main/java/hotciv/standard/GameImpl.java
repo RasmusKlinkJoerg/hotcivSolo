@@ -55,6 +55,7 @@ public class GameImpl implements Game {
     private WorkForceForceFocusStrategy workForceFocusStrategy;
     private PopulationGrowthStrategy populationGrowthStrategy;
     private ArrayList<GameObserver> observerList;
+    private Position tileFocus;
 
 
     public GameImpl(GameFactory factory) {
@@ -200,9 +201,6 @@ public class GameImpl implements Game {
         }
         if (bluesTurn) {
             playerInTurn = Player.RED;
-            for (GameObserver observer : observerList) {
-                observer.turnEnds(Player.RED, age);
-            }
             endOfRound();
         }
     }
@@ -214,6 +212,9 @@ public class GameImpl implements Game {
         }
         performCityActions();
         roundNumber++;
+        for (GameObserver observer : observerList) {
+            observer.turnEnds(Player.RED, age);
+        }
     }
 
     private void performCityActions() {
@@ -265,17 +266,31 @@ public class GameImpl implements Game {
 
     public void changeWorkForceFocusInCityAt(Position p, String balance) {
         workForceFocusStrategy.changeWorkForceFocus(this, p, balance);
+        for (GameObserver observer : observerList) {
+            observer.tileFocusChangedAt(p);
+        }
     }
 
     public void changeProductionInCityAt(Position p, String unitType) {
         CityImpl c = (CityImpl) getCityAt(p);
         c.setProduction(unitType);
+        for (GameObserver observer : observerList) {
+            observer.tileFocusChangedAt(p);
+        }
     }
 
     public void performUnitActionAt(Position p) {
-        actionStrategy.performUnitActionAt(this, p, cities, units, tiles);
-        for (GameObserver observer : observerList) {
-            observer.worldChangedAt(p);
+        boolean isUnitAtTo = getUnitAt(p)!=null;
+        if (!isUnitAtTo){
+            return;
+        }
+        Unit unit = getUnitAt(p);
+        boolean unitIsOwnedByPlayerInTurn = unit.getOwner().equals(playerInTurn);
+        if (unitIsOwnedByPlayerInTurn) {
+            actionStrategy.performUnitActionAt(this, p, cities, units, tiles);
+            for (GameObserver observer : observerList) {
+                observer.worldChangedAt(p);
+            }
         }
     }
 
@@ -285,9 +300,15 @@ public class GameImpl implements Game {
     }
 
     public void setTileFocus(Position position) {
+        tileFocus = position;
         for (GameObserver observer : observerList) {
             observer.tileFocusChangedAt(position);
         }
+    }
+
+    @Override
+    public Position getTileFocus() {
+        return tileFocus;
     }
 
 }

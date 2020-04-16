@@ -96,6 +96,13 @@ task setfocus(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
+task changeProduction(type: JavaExec) {
+    group 'SWEA Mandatory'
+    description 'Test ShowProduction, FRS 36.41'
+    main = 'hotciv.visual.ShowChangeProductionAndWFF'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 task turn(type: JavaExec) {
     group 'SWEA Mandatory'
     description 'Test EndOfTurnTool, FRS 36.42'
@@ -112,6 +119,8 @@ task action(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
+
+
 task comp(type: JavaExec) {
     group 'SWEA Mandatory'
     description 'Test CompositionTool, FRS 36.44'
@@ -124,6 +133,6 @@ task semi(type: JavaExec) {
     group 'SWEA Mandatory'
     description ' Play SemiCiv using the GUI :-)'
 
-    main = 'hotciv.visual.NotDefinedYet'
+    main = 'hotciv.visual.ShowSemi'
     classpath = sourceSets.main.runtimeClasspath
 }

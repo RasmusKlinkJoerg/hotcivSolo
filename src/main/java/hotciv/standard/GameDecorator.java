@@ -74,4 +74,9 @@ public class GameDecorator implements Game {
 
     }
 
+    @Override
+    public Position getTileFocus() {
+        return null;
+    }
+
 }

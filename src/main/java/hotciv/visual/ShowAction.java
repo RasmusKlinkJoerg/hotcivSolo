@@ -11,6 +11,8 @@ import hotciv.framework.*;
 import hotciv.view.*;
 import hotciv.stub.*;
 
+import static hotciv.view.GfxConstants.getPositionFromXY;
+
 /** Template code for exercise FRS 36.43.
 
    This source code is from the book 
@@ -39,6 +41,25 @@ public class ShowAction {
     editor.showStatus("Shift-Click on unit to see Game's performAction method being called.");
 
     // TODO: Replace the setting of the tool with your ActionTool implementation.
-    editor.setTool( new NullTool() );
+    editor.setTool( new ActionTool(editor, game) );
+  }
+}
+
+class ActionTool extends NullTool {
+  private DrawingEditor editor;
+  private Game game;
+  private Position position;
+
+
+  public ActionTool(DrawingEditor editor, Game game) {
+    this.editor = editor;
+    this.game = game;
+  }
+
+  public void mouseDown(MouseEvent e, int x, int y) {
+    position = getPositionFromXY(x,y);
+    if (e.isShiftDown()) {
+      game.performUnitActionAt(position);
+    }
   }
 }

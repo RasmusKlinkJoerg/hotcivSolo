@@ -11,6 +11,8 @@ import hotciv.framework.*;
 import hotciv.view.*;
 import hotciv.stub.*;
 
+import static hotciv.view.GfxConstants.getPositionFromXY;
+
 /** Template code for exercise FRS 36.39.
 
    This source code is from the book 
@@ -39,6 +41,28 @@ public class ShowMove {
     editor.showStatus("Move units to see Game's moveUnit method being called.");
 
     // TODO: Replace the setting of the tool with your UnitMoveTool implementation.
-    editor.setTool( new SelectionTool(editor) );
+    editor.setTool( new MoveTool(editor, game));
   }
+}
+
+class MoveTool extends NullTool {
+  private Game game;
+  private DrawingEditor editor;
+  private Position from;
+  private Position to;
+
+  public MoveTool(DrawingEditor editor, Game game) {
+    this.editor = editor;
+    this.game = game;
+  }
+
+  public void mouseDown(MouseEvent e, int x, int y) {
+      from = getPositionFromXY(x,y);
+  }
+  public void mouseUp(MouseEvent e, int x, int y) {
+    to = getPositionFromXY(x,y);
+    game.moveUnit(from,to);
+  }
+
+
 }

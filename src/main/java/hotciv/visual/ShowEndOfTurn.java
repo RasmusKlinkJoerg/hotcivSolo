@@ -11,6 +11,8 @@ import hotciv.framework.*;
 import hotciv.view.*;
 import hotciv.stub.*;
 
+import static hotciv.view.GfxConstants.*;
+
 /** Template code for exercise FRS 36.42.
 
    This source code is from the book 
@@ -39,6 +41,26 @@ public class ShowEndOfTurn {
     editor.showStatus("Click to shield to see Game's endOfTurn method being called.");
 
     // TODO: Replace the setting of the tool with your EndOfTurnTool implementation.
-    editor.setTool( new NullTool() );
+    editor.setTool( new EndOfTurnTool(editor,game) );
   }
+}
+
+class EndOfTurnTool extends NullTool {
+  private DrawingEditor editor;
+  private Game game;
+
+  public EndOfTurnTool(DrawingEditor editor, Game game) {
+    this.editor = editor;
+    this.game = game;
+  }
+
+  public void mouseDown(MouseEvent e, int x, int y) {
+
+    boolean clickedOnEndOfTurnShield =TURN_SHIELD_X < x && x < TURN_SHIELD_X + 30 &&
+            TURN_SHIELD_Y  < y && y < TURN_SHIELD_Y + 40 ;
+    if (clickedOnEndOfTurnShield) {
+      game.endOfTurn();
+    }
+  }
+
 }

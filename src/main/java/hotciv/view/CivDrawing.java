@@ -261,6 +261,8 @@ public class CivDrawing
                         new Point( GfxConstants.TURN_SHIELD_X,
                                    GfxConstants.TURN_SHIELD_Y ) );
     ageIcon.setText("Age:"+game.getAge());
+    defineUnitMap();
+    defineCityMap();
   }
 
   public void tileFocusChangedAt(Position position) {
@@ -293,13 +295,19 @@ public class CivDrawing
                 new Point(GfxConstants.CITY_SHIELD_X,
                         GfxConstants.CITY_SHIELD_Y));
       }
-      productionIcon.set(cityAtPos.getProduction(),
+
+    }
+
+    Position tileFocus = game.getTileFocus();
+    boolean isCityInTileFocus = tileFocus != null && game.getCityAt(tileFocus) != null;
+    if (isCityInTileFocus) {
+      City cityInTileFocus = game.getCityAt(tileFocus);
+      productionIcon.set(cityInTileFocus.getProduction(),
               new Point(GfxConstants.CITY_PRODUCTION_X,
                       GfxConstants.CITY_PRODUCTION_Y));
-      workForceFocusIcon.set(cityAtPos.getWorkforceFocus(),
+      workForceFocusIcon.set(cityInTileFocus.getWorkforceFocus(),
               new Point(GfxConstants.WORKFORCEFOCUS_X,
                       GfxConstants.WORKFORCEFOCUS_Y));
-
     }
   }
 
