@@ -2,7 +2,10 @@ package hotciv.standard;
 
 import hotciv.framework.*;
 import hotciv.framework.Strategies.*;
+import hotciv.view.CivDrawing;
+import minidraw.standard.MiniDrawApplication;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -51,6 +54,7 @@ public class GameImpl implements Game {
     private LayoutStrategy layoutStrategy;
     private WorkForceForceFocusStrategy workForceFocusStrategy;
     private PopulationGrowthStrategy populationGrowthStrategy;
+    private ArrayList<GameObserver> observerList;
 
 
     public GameImpl(GameFactory factory) {
@@ -74,6 +78,8 @@ public class GameImpl implements Game {
         this.populationGrowthStrategy = factory.createPopulationGrowthStrategy();
 
         layoutStrategy.createWorld(cities, units, tiles);
+
+        observerList = new ArrayList<>();
     }
 
 
@@ -132,8 +138,6 @@ public class GameImpl implements Game {
 
     private void updateWorld(Position from, Position to) {
         updateUnits(from, to);
-        //take over city if wins attack on it
-
     }
 
     private void updateUnits(Position from, Position to) {
@@ -149,8 +153,14 @@ public class GameImpl implements Game {
                 if (isCityAtTo) {
                     takeOverCity(to);
                 }
+                for (GameObserver observer : observerList) {
+                    observer.worldChangedAt(to);
+                }
             }
             units.remove(from);
+            for (GameObserver observer : observerList) {
+                observer.worldChangedAt(from);
+            }
             unit.decreaseMoveCount(1);
             return;
         }
@@ -162,6 +172,10 @@ public class GameImpl implements Game {
         }
         units.put(to, unit);
         units.remove(from);
+        for (GameObserver observer : observerList) {
+            observer.worldChangedAt(from);
+            observer.worldChangedAt(to);
+        }
         unit.decreaseMoveCount(1);
     }
 
@@ -180,9 +194,15 @@ public class GameImpl implements Game {
         boolean bluesTurn = playerInTurn == Player.BLUE;
         if (redsTurn) {
             playerInTurn = Player.BLUE;
+            for (GameObserver observer : observerList) {
+                observer.turnEnds(Player.BLUE, age);
+            }
         }
         if (bluesTurn) {
             playerInTurn = Player.RED;
+            for (GameObserver observer : observerList) {
+                observer.turnEnds(Player.RED, age);
+            }
             endOfRound();
         }
     }
@@ -205,6 +225,9 @@ public class GameImpl implements Game {
             if (c.getTreasury() >= c.getCurrentUnitPrice()) {
                 placeUnit(p, c);
                 c.decreaseTreasury(c.getCurrentUnitPrice());
+                for (GameObserver observer : observerList) {
+                    observer.worldChangedAt(p);
+                }
             }
         }
     }
@@ -251,15 +274,20 @@ public class GameImpl implements Game {
 
     public void performUnitActionAt(Position p) {
         actionStrategy.performUnitActionAt(this, p, cities, units, tiles);
+        for (GameObserver observer : observerList) {
+            observer.worldChangedAt(p);
+        }
     }
 
 
     public void addObserver(GameObserver observer) {
-
+        observerList.add(observer);
     }
 
     public void setTileFocus(Position position) {
-
+        for (GameObserver observer : observerList) {
+            observer.tileFocusChangedAt(position);
+        }
     }
 
 }

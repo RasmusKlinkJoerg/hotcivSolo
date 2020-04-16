@@ -70,7 +70,7 @@ public class GfxConstants {
 
   // === Names of GIF files loaded by image manager
   public static final String RED_SHIELD = "redshield";
-  public static final String BLUE_SHIELD = "blueshield";
+  public static final String BLUE_SHIELD = "blues                                                                                                                       hield";
   public static final String NOTHING = "black";
   public static final String REFRESH_BUTTON = "refresh";
 

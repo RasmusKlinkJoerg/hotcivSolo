@@ -35,20 +35,27 @@ import java.util.*;
 
 public class StubGame2 implements Game {
 
+
   // === Unit handling ===
   private Position pos_archer_red;
   private Position pos_legion_blue;
   private Position pos_settler_red;
   private Position pos_bomb_red;
 
+  private Position pos_city_red;
+
   private Unit red_archer;
+  private Unit red_settler;
+
+  private City red_city;
+  private City red_city_createdBySettler;
 
   public Unit getUnitAt(Position p) {
     if ( p.equals(pos_archer_red) ) {
       return red_archer;
     }
     if ( p.equals(pos_settler_red) ) {
-      return new StubUnit( GameConstants.SETTLER, Player.RED );
+      return red_settler;
     }
     if ( p.equals(pos_legion_blue) ) {
       return new StubUnit( GameConstants.LEGION, Player.BLUE );
@@ -98,9 +105,13 @@ public class StubGame2 implements Game {
     pos_legion_blue = new Position( 3, 2);
     pos_settler_red = new Position( 4, 3);
     pos_bomb_red = new Position( 6, 4);
+    pos_city_red = new Position(10, 10);
 
     // the only one I need to store for this stub
-    red_archer = new StubUnit( GameConstants.ARCHER, Player.RED );   
+    red_archer = new StubUnit( GameConstants.ARCHER, Player.RED );
+    red_settler = new StubUnit( GameConstants.SETTLER, Player.RED );
+
+    red_city = new StubCity();
 
     inTurn = Player.RED;
   }
@@ -125,17 +136,31 @@ public class StubGame2 implements Game {
   }
 
   // TODO: Add more stub behaviour to test MiniDraw updating
-  public City getCityAt( Position p ) { return null; }
+  public City getCityAt( Position p ) {
+    if (p.equals(pos_city_red)) {
+
+      return red_city;
+    }
+    if (p.equals(pos_settler_red) && red_settler == null) {
+      return red_city_createdBySettler;
+    }
+    return null;
+  }
   public Player getWinner() { return null; }
   public int getAge() { return 0; }  
   public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
   public void changeProductionInCityAt( Position p, String unitType ) {}
-  public void performUnitActionAt( Position p ) {}  
+  public void performUnitActionAt( Position p ) {
+    if (p.equals(pos_settler_red)) {
+      red_settler = null;
+      red_city_createdBySettler = new StubCity();
+      gameObserver.worldChangedAt(p);
+    }
+  }
 
   public void setTileFocus(Position position) {
-    // TODO: setTileFocus implementation pending.
     System.out.println("-- StubGame2 / setTileFocus called.");
-    System.out.println(" *** IMPLEMENTATION PENDING ***");
+    gameObserver.tileFocusChangedAt(position);
   }
 
 }
@@ -152,4 +177,24 @@ class StubUnit implements  Unit {
   public int getMoveCount() { return 1; }
   public int getDefensiveStrength() { return 0; }
   public int getAttackingStrength() { return 0; }
+}
+
+class StubCity implements City{
+
+  public Player getOwner() {
+    return Player.RED;
+  }
+  public int getSize() {
+    return 42;
+  }
+  public int getTreasury() {
+    return 69;
+  }
+  public String getProduction() {
+    return GameConstants.LEGION;
+  }
+  public String getWorkforceFocus() {
+    return GameConstants.productionFocus;
+  }
+  public int getFoodCount() { return 420; }
 }
