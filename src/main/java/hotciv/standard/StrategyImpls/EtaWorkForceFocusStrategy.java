@@ -48,7 +48,6 @@ public class EtaWorkForceFocusStrategy implements WorkForceForceFocusStrategy {
             if (surroundingTerrain.get(GameConstants.MOUNTAINS) < populationLeft) {
                 sum = surroundingTerrain.get(GameConstants.MOUNTAINS) * 3;
             }
-
             c.increaseTreasury(sum);
         }
     }

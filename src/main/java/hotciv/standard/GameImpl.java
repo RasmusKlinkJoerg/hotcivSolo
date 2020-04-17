@@ -154,15 +154,13 @@ public class GameImpl implements Game {
                 if (isCityAtTo) {
                     takeOverCity(to);
                 }
-                for (GameObserver observer : observerList) {
-                    observer.worldChangedAt(to);
-                }
             }
             units.remove(from);
+            unit.decreaseMoveCount(1);
             for (GameObserver observer : observerList) {
                 observer.worldChangedAt(from);
+                observer.worldChangedAt(to);
             }
-            unit.decreaseMoveCount(1);
             return;
         }
         boolean unitIsB52Bomber = unit.getTypeString().equals(GameConstants.B52);
@@ -173,11 +171,11 @@ public class GameImpl implements Game {
         }
         units.put(to, unit);
         units.remove(from);
+        unit.decreaseMoveCount(1);
         for (GameObserver observer : observerList) {
             observer.worldChangedAt(from);
             observer.worldChangedAt(to);
         }
-        unit.decreaseMoveCount(1);
     }
 
     private void takeOverCity(Position to) {
@@ -210,11 +208,13 @@ public class GameImpl implements Game {
         for (UnitImpl u : units.values()) {
             u.resetMoveCount();
         }
-        performCityActions();
-        roundNumber++;
+
         for (GameObserver observer : observerList) {
             observer.turnEnds(Player.RED, age);
         }
+
+        performCityActions();
+        roundNumber++;
     }
 
     private void performCityActions() {

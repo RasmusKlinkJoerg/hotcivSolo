@@ -81,13 +81,7 @@ class CompositionTool extends NullTool {
     }
     boolean isCityInTileFocus = game.getCityAt(game.getTileFocus())!=null;
     if (isCityInTileFocus) {
-      boolean clickedOnCityWorkForceFocus = WORKFORCEFOCUS_X < x && x < WORKFORCEFOCUS_X + 30 &&
-              WORKFORCEFOCUS_Y  < y && y < WORKFORCEFOCUS_Y + 40;
-      boolean clickedOnCityProduction =CITY_PRODUCTION_X < x && x < CITY_PRODUCTION_X + 30 &&
-              CITY_PRODUCTION_Y  < y && y < CITY_PRODUCTION_Y + 40 ;
-      if (clickedOnCityProduction || clickedOnCityWorkForceFocus) {
         changeProductionAndWFFTool.mouseDown(e, x, y);
-      }
     }
 
   }

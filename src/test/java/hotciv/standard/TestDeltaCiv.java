@@ -38,8 +38,8 @@ public class TestDeltaCiv {
     }
 
     @Test
-    public void blueLegionAt3_5() {
-        Position redArcherP = new Position(3,5);
+    public void blueLegionAt5_5() {
+        Position redArcherP = new Position(5,3);
         assertThat(game.getUnitAt(redArcherP).getOwner(), is(Player.BLUE));
     }
 

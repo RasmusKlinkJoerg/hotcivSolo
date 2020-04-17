@@ -175,8 +175,8 @@ public class StubGame2 implements Game {
 
   public void setTileFocus(Position position) {
     System.out.println("-- StubGame2 / setTileFocus called.");
-    gameObserver.tileFocusChangedAt(position);
     tileFocus = position;
+    gameObserver.tileFocusChangedAt(position);
   }
 
   @Override
@@ -207,7 +207,7 @@ class StubCity implements City {
 
   public StubCity() {
     production = GameConstants.LEGION;
-    workForceFocus = GameConstants.foodFocus;
+    workForceFocus = GameConstants.productionFocus;
   }
 
   public Player getOwner() {

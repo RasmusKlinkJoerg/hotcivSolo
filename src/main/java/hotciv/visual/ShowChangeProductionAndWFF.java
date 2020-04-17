@@ -57,8 +57,8 @@ class ChangeProductionAndWFFTool extends NullTool {
 
     private void changeWorkForceFocus(int x, int y) {
         String workForceFocus = game.getCityAt(tileFocus).getWorkforceFocus();
-        boolean clickedOnCityWorkForceFocus = WORKFORCEFOCUS_X < x && x < WORKFORCEFOCUS_X + 30 &&
-                WORKFORCEFOCUS_Y  < y && y < WORKFORCEFOCUS_Y + 40;
+        boolean clickedOnCityWorkForceFocus = WORKFORCEFOCUS_X < x && x < WORKFORCEFOCUS_X + 45 &&
+                WORKFORCEFOCUS_Y  < y && y < WORKFORCEFOCUS_Y + 50;
         if (clickedOnCityWorkForceFocus && workForceFocus.equals(GameConstants.productionFocus)) {
             game.changeWorkForceFocusInCityAt(tileFocus, GameConstants.foodFocus);
         }
@@ -69,8 +69,8 @@ class ChangeProductionAndWFFTool extends NullTool {
 
     private void changeProduction(int x, int y) {
         String production = game.getCityAt(tileFocus).getProduction();
-        boolean clickedOnCityProduction =CITY_PRODUCTION_X < x && x < CITY_PRODUCTION_X + 30 &&
-                CITY_PRODUCTION_Y  < y && y < CITY_PRODUCTION_Y + 40 ;
+        boolean clickedOnCityProduction =CITY_PRODUCTION_X < x && x < CITY_PRODUCTION_X + 28 &&
+                CITY_PRODUCTION_Y  < y && y < CITY_PRODUCTION_Y + 33 ;
         if (clickedOnCityProduction && production.equals(GameConstants.LEGION)) {
             game.changeProductionInCityAt(tileFocus, GameConstants.ARCHER);
         }

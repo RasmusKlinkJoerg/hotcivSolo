@@ -78,7 +78,7 @@ public class DeltaLayoutStrategy implements LayoutStrategy {
         }
         //Units
         putUnit(new Position(7, 4), Player.RED, GameConstants.ARCHER);
-        putUnit(new Position(3, 5), Player.BLUE, GameConstants.LEGION);
+        putUnit(new Position(5, 3), Player.BLUE, GameConstants.LEGION);
         putUnit(new Position(5, 5), Player.RED, GameConstants.SETTLER);
     }
 

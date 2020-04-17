@@ -67,10 +67,12 @@ public class CivDrawing
     // changes...
     game.addObserver(this);
     // ... and build up the set of figures associated with
-    // units in the game.
-    defineUnitMap();
+    // units and cities in the game.
 
     defineCityMap();
+    defineUnitMap();
+
+
     // and the set of 'icons' in the status panel
     defineIcons();
   }
@@ -244,9 +246,13 @@ public class CivDrawing
     System.out.println( "CivDrawing: world changes at "+pos);
     // this is a really brute-force algorithm: destroy
     // all known units and build up the entire set again
-    defineUnitMap();
-
+    boolean isUnitAtPos = game.getUnitAt(pos) != null;
+    if (isUnitAtPos) {
+      Unit unitAtPos = game.getUnitAt(pos);
+      unitMoveCountIcon.setText(""+unitAtPos.getMoveCount());
+    }
     defineCityMap();
+    defineUnitMap();
   }
 
 
@@ -261,8 +267,9 @@ public class CivDrawing
                         new Point( GfxConstants.TURN_SHIELD_X,
                                    GfxConstants.TURN_SHIELD_Y ) );
     ageIcon.setText("Age:"+game.getAge());
-    defineUnitMap();
+
     defineCityMap();
+    defineUnitMap();
   }
 
   public void tileFocusChangedAt(Position position) {

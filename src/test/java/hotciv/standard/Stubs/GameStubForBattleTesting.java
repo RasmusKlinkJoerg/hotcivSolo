@@ -74,4 +74,9 @@ public class GameStubForBattleTesting implements Game {
     public void setTileFocus(Position position) {
 
     }
+
+    @Override
+    public Position getTileFocus() {
+        return null;
+    }
 }
