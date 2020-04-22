@@ -1,5 +1,6 @@
 package hotciv.stub;
 
+import frds.broker.Servant;
 import hotciv.framework.*;
 import hotciv.standard.UnitImpl;
 
@@ -34,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class StubGame2 implements Game {
+public class StubGame2 implements Game, Servant {
 
 
   // === Unit handling ===
@@ -155,7 +156,7 @@ public class StubGame2 implements Game {
     }
     return null;
   }
-  public Player getWinner() { return null; }
+  public Player getWinner() { return Player.RED; }
   public int getAge() { return 0; }  
   public void changeWorkForceFocusInCityAt( Position p, String balance ) {
     ((StubCity) red_city).setWorkForceFocus(GameConstants.foodFocus);
@@ -242,3 +243,5 @@ class StubCity implements City {
     this.workForceFocus = workForceFocus;
   }
 }
+
+
