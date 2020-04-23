@@ -8,8 +8,8 @@ public class GameProxy implements ClientProxy, Game {
 
     private final Requestor requestor;
 
-    public GameProxy(Requestor crh) {
-        this.requestor = crh;
+    public GameProxy(Requestor requestor) {
+        this.requestor = requestor;
     }
 
     public Tile getTileAt(Position p) {

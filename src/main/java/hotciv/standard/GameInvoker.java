@@ -77,7 +77,7 @@ public class GameInvoker implements Invoker {
                 case PERFORM_UNIT_ACTION:
                     p = gson.fromJson(array.get(0), Position.class);
                     game.performUnitActionAt(p);
-                    reply = new ReplyObject(HttpServletResponse.SC_OK, gson.toJson("performUnitActionAt calles"));
+                    reply = new ReplyObject(HttpServletResponse.SC_OK, gson.toJson("performUnitActionAt called"));
 
             }
 

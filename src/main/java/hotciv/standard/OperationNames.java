@@ -10,4 +10,11 @@ public class OperationNames {
     public static final String CHANGE_WORKFORCEFOCUS = "game-change-workforce-focus";
     public static final String CHANGE_PRODUCTION = "game-change-production";
     public static final String PERFORM_UNIT_ACTION = "game-perform-unit-action";
+
+    public static final String GET_OWNER_CITY = "city-get-owner";
+    public static final String GET_SIZE = "city-get-size";
+    public static final String GET_TREASURY = "city-get-treasury";
+    public static final String GET_PRODUCTION = "city-get-production";
+    public static final String GET_WORKFORCEFOCUS = "city-get-workforcefocus";
+    public static final String GET_FOOD_COUNT = "city-get-foodcount";
 }
