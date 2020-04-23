@@ -25,7 +25,11 @@ public class GameProxy implements ClientProxy, Game {
     }
 
     public Player getPlayerInTurn() {
-        return null;
+        Player playerInTurn =
+                    requestor.sendRequestAndAwaitReply("No id required??",
+                            OperationNames.GET_PLAYER_IN_TURN,
+                            Player.class);
+        return playerInTurn;
     }
 
     public Player getWinner() {
@@ -37,26 +41,36 @@ public class GameProxy implements ClientProxy, Game {
     }
 
     public int getAge() {
-        return 0;
+        int age =
+                requestor.sendRequestAndAwaitReply("No id",
+                        OperationNames.GET_AGE,
+                        Integer.class);
+        return age;
     }
 
     public boolean moveUnit(Position from, Position to) {
-        return false;
+        boolean move =
+                requestor.sendRequestAndAwaitReply("No id",
+                        OperationNames.MOVE_UNIT,
+                        Boolean.class, from, to);
+
+        return move;
     }
 
     public void endOfTurn() {
-
+        requestor.sendRequestAndAwaitReply("No id", OperationNames.END_OF_TURN, null);
     }
 
     public void changeWorkForceFocusInCityAt(Position p, String balance) {
-
+        requestor.sendRequestAndAwaitReply("No id", OperationNames.CHANGE_WORKFORCEFOCUS, null, p, balance);
     }
 
     public void changeProductionInCityAt(Position p, String unitType) {
-
+        requestor.sendRequestAndAwaitReply("No id", OperationNames.CHANGE_PRODUCTION, null, p, unitType);
     }
 
     public void performUnitActionAt(Position p) {
+        requestor.sendRequestAndAwaitReply("No id", OperationNames.PERFORM_UNIT_ACTION, null, p);
 
     }
 

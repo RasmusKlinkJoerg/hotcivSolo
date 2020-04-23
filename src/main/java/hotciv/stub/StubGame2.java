@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class StubGame2 implements Game, Servant {
+public class StubGame2 implements Game {
 
 
   // === Unit handling ===
@@ -92,12 +92,12 @@ public class StubGame2 implements Game, Servant {
   // === Turn handling ===
   private Player inTurn;
   public void endOfTurn() {
-    System.out.println( "-- StubGame2 / endOfTurn called." );
+    //System.out.println( "-- StubGame2 / endOfTurn called." );
     inTurn = (getPlayerInTurn() == Player.RED ?
               Player.BLUE : 
               Player.RED );
     // no age increments
-    gameObserver.turnEnds(inTurn, -4000);
+    gameObserver.turnEnds(inTurn, 0);
   }
   public Player getPlayerInTurn() { return inTurn; }
   
