@@ -17,4 +17,12 @@ public class OperationNames {
     public static final String GET_PRODUCTION = "city-get-production";
     public static final String GET_WORKFORCEFOCUS = "city-get-workforcefocus";
     public static final String GET_FOOD_COUNT = "city-get-foodcount";
+
+    public static final String GET_TYPESTRING_UNIT = "unit-get-typestring";
+    public static final String GET_OWNER_UNIT = "unit-get-owner";
+    public static final String GET_MOVECOUNT = "unit-get-movecount";
+    public static final String GET_DEFENSE = "unit-get-def";
+    public static final String GET_ATTACK = "unit-get-atc";
+
+    public static final String GET_TYPESTRING_TILE = "tile-get-typestring";
 }

@@ -6,7 +6,6 @@ import frds.broker.Requestor;
 import frds.broker.marshall.json.StandardJSONRequestor;
 import hotciv.framework.*;
 import hotciv.standard.Stubs.StubCity2;
-import hotciv.standard.Stubs.StubGame3;
 import org.junit.*;
 
 import static org.junit.Assert.*;
