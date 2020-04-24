@@ -1,8 +1,9 @@
-package hotciv.standard;
+package hotciv.standard.Proxies;
 
 import frds.broker.Requestor;
 import hotciv.framework.City;
 import hotciv.framework.Player;
+import hotciv.standard.OperationNames;
 
 public class CityProxy implements City {
 

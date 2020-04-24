@@ -8,6 +8,8 @@ import hotciv.framework.Game;
 import hotciv.framework.GameObserver;
 import hotciv.framework.Player;
 import hotciv.framework.Position;
+import hotciv.standard.Invokers.GameInvoker;
+import hotciv.standard.Proxies.GameProxy;
 import hotciv.standard.Stubs.StubGame3;
 
 import org.junit.*;

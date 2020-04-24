@@ -5,6 +5,8 @@ import frds.broker.Invoker;
 import frds.broker.Requestor;
 import frds.broker.marshall.json.StandardJSONRequestor;
 import hotciv.framework.*;
+import hotciv.standard.Invokers.CityInvoker;
+import hotciv.standard.Proxies.CityProxy;
 import hotciv.standard.Stubs.StubCity2;
 import org.junit.*;
 

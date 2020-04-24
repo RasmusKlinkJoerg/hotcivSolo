@@ -5,11 +5,10 @@ import frds.broker.Invoker;
 import frds.broker.Requestor;
 import frds.broker.marshall.json.StandardJSONRequestor;
 import hotciv.framework.GameConstants;
-import hotciv.framework.Player;
 import hotciv.framework.Tile;
-import hotciv.framework.Unit;
+import hotciv.standard.Invokers.TileInvoker;
+import hotciv.standard.Proxies.TileProxy;
 import hotciv.standard.Stubs.StubTile;
-import hotciv.standard.Stubs.StubUnit2;
 import org.junit.*;
 
 import static org.junit.Assert.*;

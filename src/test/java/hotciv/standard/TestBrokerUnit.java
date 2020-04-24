@@ -7,6 +7,8 @@ import frds.broker.marshall.json.StandardJSONRequestor;
 import hotciv.framework.GameConstants;
 import hotciv.framework.Unit;
 import hotciv.framework.Player;
+import hotciv.standard.Invokers.UnitInvoker;
+import hotciv.standard.Proxies.UnitProxy;
 import hotciv.standard.Stubs.StubUnit2;
 import org.junit.*;
 
