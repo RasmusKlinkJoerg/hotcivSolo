@@ -3,6 +3,7 @@ package hotciv.stub;
 
 import frds.broker.Servant;
 import hotciv.framework.*;
+import hotciv.standard.TileImpl;
 
 public class StubGame4 implements Game {
 
@@ -16,7 +17,7 @@ public class StubGame4 implements Game {
 
     @Override
     public Tile getTileAt(Position p) {
-        return null;
+        return new TileImpl(GameConstants.PLAINS);
     }
 
     @Override

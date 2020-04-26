@@ -10,6 +10,7 @@ import minidraw.framework.*;
 import minidraw.standard.*;
 
 import static hotciv.view.GfxConstants.NOTHING;
+import static hotciv.view.GfxConstants.REFRESH_BUTTON;
 
 /** CivDrawing is a specialized Drawing (model component) from
  * MiniDraw that dynamically builds the list of Figures for MiniDraw
@@ -196,6 +197,7 @@ public class CivDrawing
   protected ImageFigure productionIcon;
   protected ImageFigure workForceFocusIcon;
   protected TextFigure ageIcon;
+  protected ImageFigure refreshButton;
 
   protected void defineIcons() {
     // TODO: Further development to include rest of figures needed
@@ -228,6 +230,11 @@ public class CivDrawing
             new TextFigure("Age:"+game.getAge(),
                     new Point(GfxConstants.AGE_TEXT_X,
                             GfxConstants.AGE_TEXT_Y));
+
+    refreshButton =
+            new ImageFigure(REFRESH_BUTTON,
+                    new Point(GfxConstants.REFRESH_BUTTON_X,
+                            GfxConstants.REFRESH_BUTTON_Y));
     // insert in delegate figure list to ensure graphical
     // rendering.
     delegate.add(turnShieldIcon);
@@ -237,12 +244,12 @@ public class CivDrawing
     delegate.add(productionIcon);
     delegate.add(workForceFocusIcon);
     delegate.add(ageIcon);
+    delegate.add(refreshButton);
   }
  
   // === Observer Methods ===
 
   public void worldChangedAt(Position pos) {
-    // TODO: Remove system.out debugging output
     System.out.println( "CivDrawing: world changes at "+pos);
     // this is a really brute-force algorithm: destroy
     // all known units and build up the entire set again
@@ -348,7 +355,6 @@ public class CivDrawing
     defineUnitMap();
     defineCityMap();
     defineIcons();
-    // TODO: Cities pending
   }
 
   @Override

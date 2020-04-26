@@ -35,10 +35,11 @@ public class HotCivStoryTest {
         System.out.println(" game age: " + game.getAge());
         System.out.println(" game winner: " + game.getWinner());
         System.out.println(" game player in turn" + game.getPlayerInTurn());
-        System.out.println("game move from 0-0 to 1-1 is " + game.moveUnit(new Position(0,0), new Position(1,1)));
+        System.out.println("game move from 0-0 to 1-1 is " + game.moveUnit(new Position(7,4), new Position(1,1)));
         game.endOfTurn();
         System.out.println("Now player in turn after end of turn is " + game.getPlayerInTurn());
+        System.out.println("City at Pos(4,5) " + game.getCityAt(new Position(4,5)));
+        System.out.println("Tile at Pos(0,0) " + game.getTileAt(new Position(0,0))); //should be ocean in semiciv and plains in StubGame4
     }
-
 
 }

@@ -5,7 +5,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import frds.broker.Invoker;
 import frds.broker.ReplyObject;
-import hotciv.framework.City;
 import hotciv.framework.Player;
 import hotciv.framework.Unit;
 import hotciv.standard.NameService;
@@ -29,6 +28,7 @@ public class UnitInvoker implements Invoker {
     public ReplyObject handleRequest(String objectId, String operationName, String payloadJSONArray) {
         ReplyObject reply = null;
 
+
     // Demarshall parameters into a JsonArray
         JsonParser parser = new JsonParser();
         JsonArray array =
@@ -37,6 +37,7 @@ public class UnitInvoker implements Invoker {
         Unit unit = nameService.getUnit(objectId);
         switch (operationName) {
             case GET_TYPESTRING_UNIT:
+                System.out.println("in unitInvoker type string case with object id" + objectId);
                 String type = unit.getTypeString();
                 reply = new ReplyObject(HttpServletResponse.SC_OK, gson.toJson(type));
                 break;

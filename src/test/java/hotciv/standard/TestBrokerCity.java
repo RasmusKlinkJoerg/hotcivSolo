@@ -1,17 +1,12 @@
 package hotciv.standard;
 
-import com.google.gson.Gson;
 import frds.broker.ClientRequestHandler;
 import frds.broker.Invoker;
 import frds.broker.Requestor;
 import frds.broker.marshall.json.StandardJSONRequestor;
 import hotciv.framework.*;
-import hotciv.standard.Invokers.CityInvoker;
-import hotciv.standard.Invokers.GameInvoker;
-import hotciv.standard.Proxies.CityProxy;
 import hotciv.standard.Proxies.GameProxy;
-import hotciv.standard.Proxies.GameRootInvoker;
-import hotciv.standard.Stubs.StubCity2;
+import hotciv.standard.Invokers.GameRootInvoker;
 import hotciv.standard.Stubs.StubGame3;
 import org.junit.*;
 

@@ -1,4 +1,4 @@
-package hotciv.standard.Proxies;
+package hotciv.standard.Invokers;
 
 import com.google.gson.Gson;
 import frds.broker.Invoker;
@@ -32,10 +32,13 @@ public class GameRootInvoker implements Invoker {
         // Subinvokers
         Invoker gameInvoker = new GameInvoker(game, nameService, gson);
         invokerMap.put(OperationNames.GAME_PREFIX, gameInvoker);
+
         Invoker cityInvoker = new CityInvoker(nameService, gson);
         invokerMap.put(OperationNames.CITY_PREFIX, cityInvoker);
+
         Invoker unitInvoker = new UnitInvoker(nameService, gson);
         invokerMap.put(OperationNames.UNIT_PREFIX, unitInvoker);
+
         Invoker tileInvoker = new TileInvoker(nameService, gson);
         invokerMap.put(OperationNames.TILE_PREFIX, tileInvoker);
     }

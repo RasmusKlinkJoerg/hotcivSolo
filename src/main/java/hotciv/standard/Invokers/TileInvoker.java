@@ -30,7 +30,7 @@ public class TileInvoker implements Invoker {
         JsonArray array =
                 parser.parse(payloadJSONArray).getAsJsonArray();
 
-        System.out.println("TileInvoker");
+        System.out.println("In TileInvoker");
         Tile tile = nameService.getTile(objectId);
         if (operationName.equals(GET_TYPESTRING_TILE)) {
             String type = tile.getTypeString();

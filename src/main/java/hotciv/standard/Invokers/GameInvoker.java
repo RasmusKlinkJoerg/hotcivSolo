@@ -21,6 +21,7 @@ public class GameInvoker implements Invoker {
         game = servant;
         this.nameService = nameService;
         this.gson = gson;
+        System.out.println("created gameInvoker.");
 
     }
 
@@ -32,7 +33,7 @@ public class GameInvoker implements Invoker {
         JsonParser parser = new JsonParser();
         JsonArray array =
                 parser.parse(payloadJSONArray).getAsJsonArray();
-
+        System.out.println("in gameInvoker");
         try {
             switch (operationName) {
                 case GET_WINNER:
@@ -84,24 +85,37 @@ public class GameInvoker implements Invoker {
 
                 case GET_CITY:
                     p = gson.fromJson(array.get(0), Position.class);
-                    City city = game.getCityAt(p);
-                    String id = city.getId();
-                    nameService.putCity(id, city);
-                    reply = new ReplyObject(HttpServletResponse.SC_CREATED, gson.toJson(id));
+                    //System.out.println("The pos is " + p);
+                    if (game.getCityAt(p) != null) {
+
+                        City city = game.getCityAt(p);
+                        String id = city.getId();
+                        nameService.putCity(id, city);
+                        reply = new ReplyObject(HttpServletResponse.SC_CREATED, gson.toJson(id));
+                    } else {
+                        reply = new ReplyObject(HttpServletResponse.SC_OK, null);
+
+                    }
                     break;
 
                 case GET_UNIT:
                     p = gson.fromJson(array.get(0), Position.class);
-                    Unit unit = game.getUnitAt(p);
-                    id = unit.getId();
-                    nameService.putUnit(id, unit);
-                    reply = new ReplyObject(HttpServletResponse.SC_CREATED, gson.toJson(id));
+                    if (game.getUnitAt(p) != null) {
+                        Unit unit = game.getUnitAt(p);
+                        String id = unit.getId();
+                        nameService.putUnit(id, unit);
+                        reply = new ReplyObject(HttpServletResponse.SC_CREATED, gson.toJson(id));
+                    } else {
+                        reply = new ReplyObject(HttpServletResponse.SC_OK, null);
+
+                    }
                     break;
 
                 case GET_TILE:
+                    System.out.println("In GameInvoker in case get tile at");
                     p = gson.fromJson(array.get(0), Position.class);
                     Tile tile = game.getTileAt(p);
-                    id = tile.getId();
+                    String id = tile.getId();
                     nameService.putTile(id, tile);
                     reply = new ReplyObject(HttpServletResponse.SC_CREATED, gson.toJson(id));
                     break;
