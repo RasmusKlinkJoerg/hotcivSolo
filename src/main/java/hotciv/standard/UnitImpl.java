@@ -5,6 +5,7 @@ import hotciv.framework.Player;
 
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class UnitImpl implements hotciv.framework.Unit {
     private  HashMap<String, Integer> attackMap;
@@ -17,6 +18,7 @@ public class UnitImpl implements hotciv.framework.Unit {
     private int attackingStrength;
     private boolean stationary;
     private boolean fortified;
+    private String id;
 
     public UnitImpl(Player owner, String unitType) {
         this.owner = owner;
@@ -32,6 +34,7 @@ public class UnitImpl implements hotciv.framework.Unit {
         moveCount = moveCountMap.get(unitType);
         stationary = false;
         fortified = false;
+        id = UUID.randomUUID().toString();
     }
 
     private void putUnitDef() {
@@ -77,6 +80,11 @@ public class UnitImpl implements hotciv.framework.Unit {
     @Override
     public int getAttackingStrength() {
         return attackingStrength;
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 
     public void decreaseMoveCount(int i) {

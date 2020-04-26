@@ -5,9 +5,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import frds.broker.Invoker;
 import frds.broker.ReplyObject;
-import hotciv.framework.Game;
-import hotciv.framework.Player;
-import hotciv.framework.Position;
+import hotciv.framework.*;
+import hotciv.standard.NameService;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,10 +15,13 @@ import static hotciv.standard.OperationNames.*;
 public class GameInvoker implements Invoker {
     private final Game game;
     private final Gson gson;
+    private final NameService nameService;
 
-    public GameInvoker(Game servant) {
+    public GameInvoker(Game servant, NameService nameService, Gson gson) {
         game = servant;
-        gson = new Gson();
+        this.nameService = nameService;
+        this.gson = gson;
+
     }
 
     @Override
@@ -78,7 +80,31 @@ public class GameInvoker implements Invoker {
                     p = gson.fromJson(array.get(0), Position.class);
                     game.performUnitActionAt(p);
                     reply = new ReplyObject(HttpServletResponse.SC_OK, gson.toJson("performUnitActionAt called"));
+                    break;
 
+                case GET_CITY:
+                    p = gson.fromJson(array.get(0), Position.class);
+                    City city = game.getCityAt(p);
+                    String id = city.getId();
+                    nameService.putCity(id, city);
+                    reply = new ReplyObject(HttpServletResponse.SC_CREATED, gson.toJson(id));
+                    break;
+
+                case GET_UNIT:
+                    p = gson.fromJson(array.get(0), Position.class);
+                    Unit unit = game.getUnitAt(p);
+                    id = unit.getId();
+                    nameService.putUnit(id, unit);
+                    reply = new ReplyObject(HttpServletResponse.SC_CREATED, gson.toJson(id));
+                    break;
+
+                case GET_TILE:
+                    p = gson.fromJson(array.get(0), Position.class);
+                    Tile tile = game.getTileAt(p);
+                    id = tile.getId();
+                    nameService.putTile(id, tile);
+                    reply = new ReplyObject(HttpServletResponse.SC_CREATED, gson.toJson(id));
+                    break;
             }
 
         } catch( Exception e ) {

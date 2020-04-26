@@ -4,6 +4,7 @@ import frds.broker.ClientProxy;
 import frds.broker.Requestor;
 import hotciv.framework.*;
 import hotciv.standard.OperationNames;
+import hotciv.standard.TileImpl;
 
 public class GameProxy implements ClientProxy, Game {
 
@@ -14,15 +15,32 @@ public class GameProxy implements ClientProxy, Game {
     }
 
     public Tile getTileAt(Position p) {
-        return null;
+        Tile tile;
+        String id =
+            requestor.sendRequestAndAwaitReply("none",
+                    OperationNames.GET_TILE,
+                    String.class, p);
+        tile = new TileProxy(id, requestor);
+        return tile;
     }
 
     public Unit getUnitAt(Position p) {
-        return null;
+        Unit unit;
+        String id = requestor.sendRequestAndAwaitReply("none",
+                OperationNames.GET_UNIT,
+                String.class, p);
+        unit = new UnitProxy(id, requestor);
+        return unit;
     }
 
     public City getCityAt(Position p) {
-        return null;
+        City city;
+        String id =
+                requestor.sendRequestAndAwaitReply("none",
+                        OperationNames.GET_CITY,
+                        String.class, p);
+        city = new CityProxy(id, requestor);
+        return city;
     }
 
     public Player getPlayerInTurn() {

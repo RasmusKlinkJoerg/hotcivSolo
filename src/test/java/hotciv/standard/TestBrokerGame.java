@@ -1,15 +1,14 @@
 package hotciv.standard;
 
+import com.google.gson.Gson;
 import frds.broker.ClientRequestHandler;
 import frds.broker.Invoker;
 import frds.broker.Requestor;
 import frds.broker.marshall.json.StandardJSONRequestor;
-import hotciv.framework.Game;
-import hotciv.framework.GameObserver;
-import hotciv.framework.Player;
-import hotciv.framework.Position;
+import hotciv.framework.*;
 import hotciv.standard.Invokers.GameInvoker;
 import hotciv.standard.Proxies.GameProxy;
+import hotciv.standard.Proxies.GameRootInvoker;
 import hotciv.standard.Stubs.StubGame3;
 
 import org.junit.*;
@@ -26,7 +25,7 @@ public class TestBrokerGame {
         GameObserver nullObserver = new NullObserver();
         servant.addObserver(nullObserver);
 
-        Invoker invoker = new GameInvoker(servant);
+        Invoker invoker = new GameRootInvoker(servant);
 
         ClientRequestHandler crh =
                 new LocalMethodClientRequestHandler(invoker);
@@ -86,6 +85,22 @@ public class TestBrokerGame {
         //performUnitActionAt sets the age to 101 in GameStub3
         game.performUnitActionAt(new Position(0,0));
         assertThat(game.getAge(), is(69));
+    }
+
+    @Test
+    public void canGetCityAt() {
+        City city = game.getCityAt(new Position(0,0));
+        assertThat(city, is(notNullValue()));
+    }
+
+    @Test public void canGetUnitAt() {
+        Unit unit = game.getUnitAt(new Position(0,0));
+        assertThat(unit, is(notNullValue()));
+    }
+
+    @Test public void canGetTileAt() {
+        Tile tile = game.getTileAt(new Position(0,0));
+        assertThat(tile,is(notNullValue()));
     }
 
 }

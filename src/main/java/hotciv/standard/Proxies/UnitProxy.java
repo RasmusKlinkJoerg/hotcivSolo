@@ -7,16 +7,18 @@ import hotciv.standard.OperationNames;
 
 public class UnitProxy implements Unit {
 
+    private final String id;
     private final Requestor requestor;
 
-    public UnitProxy(Requestor requestor) {
+    public UnitProxy(String id, Requestor requestor) {
+        this.id = id;
         this.requestor = requestor;
     }
 
     @Override
     public String getTypeString() {
         String production =
-                requestor.sendRequestAndAwaitReply("",
+                requestor.sendRequestAndAwaitReply(getId(),
                         OperationNames.GET_TYPESTRING_UNIT,
                         String.class);
         return production;
@@ -25,7 +27,7 @@ public class UnitProxy implements Unit {
     @Override
     public Player getOwner() {
         Player owner =
-                requestor.sendRequestAndAwaitReply("",
+                requestor.sendRequestAndAwaitReply(getId(),
                         OperationNames.GET_OWNER_UNIT,
                         Player.class);
         return owner;
@@ -34,7 +36,7 @@ public class UnitProxy implements Unit {
     @Override
     public int getMoveCount() {
         int mc =
-                requestor.sendRequestAndAwaitReply("",
+                requestor.sendRequestAndAwaitReply(getId(),
                         OperationNames.GET_MOVECOUNT,
                         Integer.class);
         return mc;
@@ -43,7 +45,7 @@ public class UnitProxy implements Unit {
     @Override
     public int getDefensiveStrength() {
         int def =
-                requestor.sendRequestAndAwaitReply("",
+                requestor.sendRequestAndAwaitReply(getId(),
                         OperationNames.GET_DEFENSE,
                         Integer.class);
         return def;
@@ -52,9 +54,14 @@ public class UnitProxy implements Unit {
     @Override
     public int getAttackingStrength() {
         int atc =
-                requestor.sendRequestAndAwaitReply("",
+                requestor.sendRequestAndAwaitReply(getId(),
                         OperationNames.GET_ATTACK,
                         Integer.class);
         return atc;
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 }

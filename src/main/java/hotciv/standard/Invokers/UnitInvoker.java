@@ -8,6 +8,7 @@ import frds.broker.ReplyObject;
 import hotciv.framework.City;
 import hotciv.framework.Player;
 import hotciv.framework.Unit;
+import hotciv.standard.NameService;
 import org.json.HTTPTokener;
 
 import javax.servlet.http.HttpServletResponse;
@@ -16,12 +17,12 @@ import java.util.HashMap;
 import static hotciv.standard.OperationNames.*;
 
 public class UnitInvoker implements Invoker {
-    private final Unit unit;
+    private final NameService nameService;
     private final Gson gson;
 
-    public UnitInvoker(Unit unitServant) {
-        unit = unitServant;
-        gson = new Gson();
+    public UnitInvoker(NameService nameService, Gson gson) {
+        this.nameService = nameService;
+        this.gson = gson;
     }
 
     @Override
@@ -33,6 +34,7 @@ public class UnitInvoker implements Invoker {
         JsonArray array =
                 parser.parse(payloadJSONArray).getAsJsonArray();
 
+        Unit unit = nameService.getUnit(objectId);
         switch (operationName) {
             case GET_TYPESTRING_UNIT:
                 String type = unit.getTypeString();

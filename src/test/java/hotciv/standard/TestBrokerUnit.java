@@ -1,14 +1,17 @@
 package hotciv.standard;
 
+import com.google.gson.Gson;
 import frds.broker.ClientRequestHandler;
 import frds.broker.Invoker;
 import frds.broker.Requestor;
 import frds.broker.marshall.json.StandardJSONRequestor;
-import hotciv.framework.GameConstants;
-import hotciv.framework.Unit;
-import hotciv.framework.Player;
+import hotciv.framework.*;
+import hotciv.standard.Invokers.GameInvoker;
 import hotciv.standard.Invokers.UnitInvoker;
+import hotciv.standard.Proxies.GameProxy;
+import hotciv.standard.Proxies.GameRootInvoker;
 import hotciv.standard.Proxies.UnitProxy;
+import hotciv.standard.Stubs.StubGame3;
 import hotciv.standard.Stubs.StubUnit2;
 import org.junit.*;
 
@@ -17,19 +20,24 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class TestBrokerUnit {
     private Unit unit;
+    private Game game;
 
     @Before
     public void setUp() {
-        Unit unitServant = new StubUnit2(GameConstants.SETTLER, Player.GREEN);
+        Game servant = new StubGame3();
+        GameObserver nullObserver = new NullObserver();
+        servant.addObserver(nullObserver);
 
-        Invoker invoker = new UnitInvoker(unitServant);
+        Invoker invoker = new GameRootInvoker(servant);
 
         ClientRequestHandler crh =
                 new LocalMethodClientRequestHandler(invoker);
 
         Requestor requestor = new StandardJSONRequestor(crh);
 
-        unit = new UnitProxy(requestor);
+        game = new GameProxy(requestor);
+        game.addObserver(nullObserver);
+        unit = game.getUnitAt(new Position(0,0));
     }
 
     @Test

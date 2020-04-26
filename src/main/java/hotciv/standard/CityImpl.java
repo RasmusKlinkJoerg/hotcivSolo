@@ -5,6 +5,7 @@ import hotciv.framework.GameConstants;
 import hotciv.framework.Player;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 
 public class CityImpl implements City {
@@ -16,6 +17,7 @@ public class CityImpl implements City {
     private HashMap<String, Integer> unitPrices;
     private int foodCount;
     private int size;
+    private String id;
 
 
     public CityImpl(Player owner){
@@ -27,6 +29,7 @@ public class CityImpl implements City {
         unitPrices = new HashMap<>();
         putUnitPrices();
         size = 1;
+        id = UUID.randomUUID().toString();
     }
 
     private void putUnitPrices() {
@@ -64,6 +67,11 @@ public class CityImpl implements City {
     @Override
     public int getFoodCount() {
         return foodCount;
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 
     public void increaseTreasury(int i) {

@@ -7,19 +7,19 @@ import frds.broker.Invoker;
 import frds.broker.ReplyObject;
 import hotciv.framework.City;
 import hotciv.framework.Player;
-import javafx.scene.chart.ScatterChart;
+import hotciv.standard.NameService;
 
 import javax.servlet.http.HttpServletResponse;
 
 import static hotciv.standard.OperationNames.*;
 
 public class CityInvoker implements Invoker {
-    private final City city;
+    private final NameService nameService;
     private final Gson gson;
 
-    public CityInvoker(City cityServant) {
-        city = cityServant;
-        gson = new Gson();
+    public CityInvoker(NameService nameService, Gson gson) {
+        this.nameService = nameService;
+        this.gson = gson;
     }
 
     @Override
@@ -31,6 +31,7 @@ public class CityInvoker implements Invoker {
         JsonArray array =
                 parser.parse(payloadJSONArray).getAsJsonArray();
 
+        City city = nameService.getCity(objectId);
         try {
             switch (operationName) {
                 case GET_OWNER_CITY:

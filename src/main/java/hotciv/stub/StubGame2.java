@@ -186,7 +186,7 @@ public class StubGame2 implements Game {
 
 }
 
-class StubUnit implements  Unit {
+class StubUnit implements Unit {
   private String type;
   private Player owner;
   public StubUnit(String type, Player owner) {
@@ -198,6 +198,7 @@ class StubUnit implements  Unit {
   public int getMoveCount() { return 1; }
   public int getDefensiveStrength() { return 0; }
   public int getAttackingStrength() { return 0; }
+  public String getId() { return null; }
 }
 
 class StubCity implements City {
@@ -232,6 +233,11 @@ class StubCity implements City {
 
   public int getFoodCount() {
     return 420;
+  }
+
+  @Override
+  public String getId() {
+    return null;
   }
 
   public void setProduction(String unitType) {

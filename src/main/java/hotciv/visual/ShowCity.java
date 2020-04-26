@@ -31,7 +31,7 @@ public class ShowCity {
   
   public static void main(String[] args) {
 
-    Game game = new StubGame1();
+    Game game = new StubGame2();
 
     DrawingEditor editor = 
       new MiniDrawApplication( "Click to see city graphics update...",  
@@ -107,5 +107,10 @@ class CityStub implements City {
   @Override
   public int getFoodCount() {
     return 0;
+  }
+
+  @Override
+  public String getId() {
+    return null;
   }
 }

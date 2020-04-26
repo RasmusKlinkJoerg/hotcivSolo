@@ -1,15 +1,17 @@
 package hotciv.Broker;
 
+import com.google.gson.Gson;
 import frds.broker.Invoker;
 import frds.broker.ipc.socket.SocketServerRequestHandler;
 import hotciv.framework.Game;
 import hotciv.standard.Invokers.GameInvoker;
+import hotciv.standard.NameService;
 import hotciv.stub.StubGame4;
 
 
 public class HotCivServer {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         new HotCivServer(); // No error handling!
     }
 
@@ -17,7 +19,9 @@ public class HotCivServer {
         int port = 37123;
 
         Game gameServant = new StubGame4();
-        Invoker invoker = new GameInvoker(gameServant);
+        NameService nameService = new NameService();
+        Gson gson = new Gson();
+        Invoker invoker = new GameInvoker(gameServant, nameService,gson);
 
         // Configure a socket based server request handler
         SocketServerRequestHandler ssrh =

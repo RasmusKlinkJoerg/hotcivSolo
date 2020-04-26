@@ -64,4 +64,6 @@ public interface City {
 
   public int getFoodCount();
 
+  public String getId();
+
 }

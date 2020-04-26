@@ -7,16 +7,18 @@ import hotciv.standard.OperationNames;
 
 public class CityProxy implements City {
 
+    private final String id;
     private final Requestor requestor;
 
-    public CityProxy(Requestor requestor) {
+    public CityProxy(String id, Requestor requestor) {
+        this.id = id;
         this.requestor = requestor;
     }
 
     @Override
     public Player getOwner() {
         Player owner =
-            requestor.sendRequestAndAwaitReply("No id",
+            requestor.sendRequestAndAwaitReply(getId(),
                 OperationNames.GET_OWNER_CITY,
                 Player.class);
         return owner;
@@ -25,7 +27,7 @@ public class CityProxy implements City {
     @Override
     public int getSize() {
         int size =
-                requestor.sendRequestAndAwaitReply("No id",
+                requestor.sendRequestAndAwaitReply(getId(),
                         OperationNames.GET_SIZE,
                         Integer.class);
 
@@ -35,7 +37,7 @@ public class CityProxy implements City {
     @Override
     public int getTreasury() {
         int treasury =
-                requestor.sendRequestAndAwaitReply("",
+                requestor.sendRequestAndAwaitReply(getId(),
                         OperationNames.GET_TREASURY,
                         Integer.class);
 
@@ -45,7 +47,7 @@ public class CityProxy implements City {
     @Override
     public String getProduction() {
         String production =
-                requestor.sendRequestAndAwaitReply("",
+                requestor.sendRequestAndAwaitReply(getId(),
                         OperationNames.GET_PRODUCTION,
                         String.class);
         return production;
@@ -54,7 +56,7 @@ public class CityProxy implements City {
     @Override
     public String getWorkforceFocus() {
         String workforceFocus =
-                requestor.sendRequestAndAwaitReply("",
+                requestor.sendRequestAndAwaitReply(getId(),
                         OperationNames.GET_WORKFORCEFOCUS,
                         String.class);
         return workforceFocus;
@@ -63,9 +65,15 @@ public class CityProxy implements City {
     @Override
     public int getFoodCount() {
         int foodCount =
-                requestor.sendRequestAndAwaitReply("",
+                requestor.sendRequestAndAwaitReply(getId(),
                         OperationNames.GET_FOOD_COUNT,
                         Integer.class);
         return foodCount;
     }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
 }

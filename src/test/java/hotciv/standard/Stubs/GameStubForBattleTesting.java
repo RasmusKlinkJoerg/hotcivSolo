@@ -52,6 +52,9 @@ public class GameStubForBattleTesting implements Game {
                 public int getFoodCount() {
                     return 0;
                 }
+                public String getId() {
+                    return null;
+                }
             };
         }
         return null;

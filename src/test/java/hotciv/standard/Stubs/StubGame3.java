@@ -16,17 +16,17 @@ public class StubGame3 implements Game, Servant {
 
     @Override
     public Tile getTileAt(Position p) {
-        return null;
+        return new StubTile(GameConstants.PLAINS, 0, 0);
     }
 
     @Override
     public Unit getUnitAt(Position p) {
-        return null;
+        return new StubUnit2(GameConstants.SETTLER, Player.GREEN);
     }
 
     @Override
     public City getCityAt(Position p) {
-        return null;
+        return new StubCity2();
     }
 
     // === Turn handling ===

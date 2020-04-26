@@ -13,4 +13,9 @@ public class StubUnit2 implements Unit {
     public int getMoveCount() { return 42; }
     public int getDefensiveStrength() { return 17; }
     public int getAttackingStrength() { return 37; }
+
+    @Override
+    public String getId() {
+        return "StubUnit2-Id";
+    }
 }

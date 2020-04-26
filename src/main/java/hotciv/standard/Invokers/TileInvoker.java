@@ -6,18 +6,19 @@ import com.google.gson.JsonParser;
 import frds.broker.Invoker;
 import frds.broker.ReplyObject;
 import hotciv.framework.Tile;
+import hotciv.standard.NameService;
 
 import javax.servlet.http.HttpServletResponse;
 
 import static hotciv.standard.OperationNames.GET_TYPESTRING_TILE;
 
 public class TileInvoker implements Invoker {
-    private final Tile tile;
+    private final NameService nameService;
     private final Gson gson;
 
-    public TileInvoker(Tile tileServant) {
-        tile = tileServant;
-        gson = new Gson();
+    public TileInvoker(NameService nameService, Gson gson) {
+        this.nameService = nameService;
+        this.gson = gson;
     }
 
     @Override
@@ -29,9 +30,12 @@ public class TileInvoker implements Invoker {
         JsonArray array =
                 parser.parse(payloadJSONArray).getAsJsonArray();
 
+        System.out.println("TileInvoker");
+        Tile tile = nameService.getTile(objectId);
         if (operationName.equals(GET_TYPESTRING_TILE)) {
             String type = tile.getTypeString();
             reply = new ReplyObject(HttpServletResponse.SC_OK, gson.toJson(type));
+            System.out.println("________reply = " + reply);
         }
 
         return reply;

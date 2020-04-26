@@ -39,4 +39,9 @@ public class StubCity2 implements City {
     public int getFoodCount() {
         return 42;
     }
+
+    @Override
+    public String getId() {
+        return "StubCity2-Id";
+    }
 }
