@@ -39,5 +39,5 @@ public interface Tile {
    */
   public String getTypeString();
 
-    String getId();
+  public String getId();
 }

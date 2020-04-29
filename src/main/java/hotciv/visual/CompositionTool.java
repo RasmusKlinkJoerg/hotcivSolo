@@ -19,6 +19,8 @@ public class CompositionTool extends NullTool {
     private EndOfTurnTool endOfTurnTool;
     private ActionTool actionTool;
     private ChangeProductionAndWFFTool changeProductionAndWFFTool;
+    private boolean isUnitAtFrom;
+
 
 
     public CompositionTool(DrawingEditor editor, Game game) {
@@ -33,7 +35,7 @@ public class CompositionTool extends NullTool {
 
     public void mouseDown(MouseEvent e, int x, int y) {
         from = getPositionFromXY(x, y);
-        boolean isUnitAtFrom = game.getUnitAt(from) != null;
+        isUnitAtFrom = game.getUnitAt(from) != null;
         if (isUnitAtFrom) {
             actionTool.mouseDown(e, x, y);
             moveTool = new MoveTool(editor, game);
@@ -43,10 +45,12 @@ public class CompositionTool extends NullTool {
         changeProductionAndWFFTool.mouseDown(e, x, y);
 
         //refresh botton
-        boolean clickedOnRefreshButton = REFRESH_BUTTON_X < x && x < REFRESH_BUTTON_X+15 &&
-                REFRESH_BUTTON_Y < y && y < REFRESH_BUTTON_Y + 5;
+        //System.out.println("x: " + x + " y: " + y);
+        boolean clickedOnRefreshButton = REFRESH_BUTTON_X < x && x < REFRESH_BUTTON_X+50 &&
+                REFRESH_BUTTON_Y < y && y < REFRESH_BUTTON_Y + 20;
         if (clickedOnRefreshButton) {
             editor.drawing().requestUpdate();
+            //System.out.println("____________REQuest update");
         }
 
 
@@ -54,7 +58,6 @@ public class CompositionTool extends NullTool {
 
     public void mouseUp(MouseEvent e, int x, int y) {
         to = getPositionFromXY(x, y);
-        boolean isUnitAtFrom = game.getUnitAt(from) != null;
         if (moveTool != null && isUnitAtFrom) {
             game.moveUnit(from, to);
         }

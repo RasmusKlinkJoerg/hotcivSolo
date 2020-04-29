@@ -100,6 +100,7 @@ public class GameInvoker implements Invoker {
 
                 case GET_UNIT:
                     p = gson.fromJson(array.get(0), Position.class);
+                    System.out.println("In GameInvoker in case get tile at with pos " + p);
                     if (game.getUnitAt(p) != null) {
                         Unit unit = game.getUnitAt(p);
                         String id = unit.getId();
@@ -112,12 +113,17 @@ public class GameInvoker implements Invoker {
                     break;
 
                 case GET_TILE:
-                    System.out.println("In GameInvoker in case get tile at");
                     p = gson.fromJson(array.get(0), Position.class);
-                    Tile tile = game.getTileAt(p);
-                    String id = tile.getId();
-                    nameService.putTile(id, tile);
-                    reply = new ReplyObject(HttpServletResponse.SC_CREATED, gson.toJson(id));
+                    System.out.println("In GameInvoker in case get tile at with pos " + p);
+                    if (game.getTileAt(p) != null) {
+                        Tile tile = game.getTileAt(p);
+                        String id = tile.getId();
+                        nameService.putTile(id, tile);
+                        reply = new ReplyObject(HttpServletResponse.SC_CREATED, gson.toJson(id));
+                    } else {
+                        reply = new ReplyObject(HttpServletResponse.SC_OK, null);
+
+                    }
                     break;
             }
 

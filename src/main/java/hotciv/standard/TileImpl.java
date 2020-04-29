@@ -20,6 +20,6 @@ public class TileImpl implements hotciv.framework.Tile {
 
     @Override
     public String getId() {
-        return null;
+        return id;
     }
 }

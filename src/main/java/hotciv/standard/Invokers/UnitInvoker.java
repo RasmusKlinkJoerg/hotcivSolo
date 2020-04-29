@@ -28,6 +28,8 @@ public class UnitInvoker implements Invoker {
     public ReplyObject handleRequest(String objectId, String operationName, String payloadJSONArray) {
         ReplyObject reply = null;
 
+        System.out.println("In unitInvoker ");
+
 
     // Demarshall parameters into a JsonArray
         JsonParser parser = new JsonParser();

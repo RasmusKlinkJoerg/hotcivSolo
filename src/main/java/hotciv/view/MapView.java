@@ -79,7 +79,7 @@ public class MapView
         int ypos = GfxConstants.getYFromRow(r);
         // Draw proper terrain
         Tile t = game.getTileAt(p);
-        System.out.println("tile " + t + " at pos " + p);
+        //System.out.println("tile " + t + " at pos " + p);
         String image_name = t.getTypeString();
         // special handling of ocean coasts
         if ( image_name.equals(GameConstants.OCEANS) ) {

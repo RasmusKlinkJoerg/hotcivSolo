@@ -40,6 +40,7 @@ public class HotCivStoryTest {
         System.out.println("Now player in turn after end of turn is " + game.getPlayerInTurn());
         System.out.println("City at Pos(4,5) " + game.getCityAt(new Position(4,5)));
         System.out.println("Tile at Pos(0,0) " + game.getTileAt(new Position(0,0))); //should be ocean in semiciv and plains in StubGame4
+        System.out.println("Type of Tile at Pos(0,0) " + game.getTileAt(new Position(0,0)).getTypeString());
     }
 
 }

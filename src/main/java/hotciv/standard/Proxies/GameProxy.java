@@ -29,13 +29,15 @@ public class GameProxy implements ClientProxy, Game {
                         OperationNames.GET_TILE,
                         String.class, p);
         System.out.println("GameProxy --- The tile has id " + id);
+        if (id != null) {
             tile = new TileProxy(id, requestor);
-
+        }
         return tile;
     }
 
     public Unit getUnitAt(Position p) {
         Unit unit = null;
+        System.out.println("GameProxy --- getUnitAt Pos " + p);
         String id = requestor.sendRequestAndAwaitReply("none",
                 OperationNames.GET_UNIT,
                 String.class, p);
@@ -98,8 +100,8 @@ public class GameProxy implements ClientProxy, Game {
     }
 
     public void endOfTurn() {
-
         requestor.sendRequestAndAwaitReply("No id", OperationNames.END_OF_TURN, null);
+
         for (GameObserver g : observerList) {
             if (getPlayerInTurn() == Player.RED) {
                 g.turnEnds(Player.RED, getAge());
@@ -109,10 +111,16 @@ public class GameProxy implements ClientProxy, Game {
 
     public void changeWorkForceFocusInCityAt(Position p, String balance) {
         requestor.sendRequestAndAwaitReply("No id", OperationNames.CHANGE_WORKFORCEFOCUS, null, p, balance);
+        for (GameObserver g : observerList) {
+                g.tileFocusChangedAt(p);
+        }
     }
 
     public void changeProductionInCityAt(Position p, String unitType) {
         requestor.sendRequestAndAwaitReply("No id", OperationNames.CHANGE_PRODUCTION, null, p, unitType);
+        for (GameObserver g : observerList) {
+            g.tileFocusChangedAt(p);
+        }
     }
 
     public void performUnitActionAt(Position p) {
