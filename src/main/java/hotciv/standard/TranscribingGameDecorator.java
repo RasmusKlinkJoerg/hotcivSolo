@@ -5,11 +5,11 @@ import hotciv.framework.Position;
 
 import java.util.ArrayList;
 
-public class TranscribingGame extends GameDecorator {
+public class TranscribingGameDecorator extends GameDecorator {
     private Game game;
     private ArrayList<String> transcript;
 
-    public TranscribingGame(Game game) {
+    public TranscribingGameDecorator(Game game) {
         super(game);
         this.game = game;
         transcript = new ArrayList<>();
@@ -46,5 +46,6 @@ public class TranscribingGame extends GameDecorator {
     public ArrayList<String> getTranscript() {
         return transcript;
     }
+
 
 }

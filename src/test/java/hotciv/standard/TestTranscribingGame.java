@@ -11,19 +11,19 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class TestTranscribingGame {
     Game decoratee;
-    TranscribingGame transcribingGame;
+    TranscribingGameDecorator transcribingGameDecorator;
     Game game;
     @Before
     public void setUp() {
         decoratee = new GameImpl(new EtaCivFactory());
-        transcribingGame = new TranscribingGame(decoratee);
-        game = transcribingGame;
+        transcribingGameDecorator = new TranscribingGameDecorator(decoratee);
+        game = transcribingGameDecorator;
     }
 
     @Test
     public void endOfTurnIsTranscribed() {
         game.endOfTurn();
-        assertThat(transcribingGame.getTranscript().size(), is(1));
+        assertThat(transcribingGameDecorator.getTranscript().size(), is(1));
     }
 
     @Test
@@ -31,7 +31,7 @@ public class TestTranscribingGame {
         Position redArcherPos1 = new Position(2,0);
         Position redArcherPos2 = new Position(3,0);
         game.moveUnit(redArcherPos1, redArcherPos2);
-        assertThat(transcribingGame.getTranscript().size(), is(1));
+        assertThat(transcribingGameDecorator.getTranscript().size(), is(1));
     }
 
     @Test
@@ -40,7 +40,7 @@ public class TestTranscribingGame {
         Position redArcherPos1 = new Position(2,0);
         Position redArcherPos2 = new Position(3,0);
         game.moveUnit(redArcherPos1, redArcherPos2);
-        assertThat(transcribingGame.getTranscript().size(), is(0));
+        assertThat(transcribingGameDecorator.getTranscript().size(), is(0));
     }
 
     @Test
@@ -50,26 +50,26 @@ public class TestTranscribingGame {
         Position redArcherPos2 = new Position(3,0);
         Position redArcherPos3 = new Position(4,0);
         game.moveUnit(redArcherPos1, redArcherPos2);
-        assertThat(transcribingGame.getTranscript().size(), is(0));
-        game = transcribingGame;
+        assertThat(transcribingGameDecorator.getTranscript().size(), is(0));
+        game = transcribingGameDecorator;
         game.endOfTurn();
         game.endOfTurn();
         game.moveUnit(redArcherPos2, redArcherPos3);
-        assertThat(transcribingGame.getTranscript().size(), is(3));
+        assertThat(transcribingGameDecorator.getTranscript().size(), is(3));
     }
 
     @Test
     public void changeWorkforceFocusIsTranscribed() {
         Position redCityPos = new Position(1,1);
         game.changeWorkForceFocusInCityAt(redCityPos, GameConstants.foodFocus);
-        assertThat(transcribingGame.getTranscript().size(), is(1));
+        assertThat(transcribingGameDecorator.getTranscript().size(), is(1));
     }
 
     @Test
     public void changeProductionIsTranscribed() {
         Position redCityPos = new Position(1,1);
         game.changeProductionInCityAt(redCityPos, GameConstants.ARCHER);
-        assertThat(transcribingGame.getTranscript().size(), is(1));
+        assertThat(transcribingGameDecorator.getTranscript().size(), is(1));
     }
 
 }
