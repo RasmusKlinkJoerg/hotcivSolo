@@ -13,11 +13,79 @@ public class TestTranscribingGame {
     Game decoratee;
     TranscribingGameDecorator transcribingGameDecorator;
     Game game;
+    private String dectee;
+    private String component;
+
     @Before
     public void setUp() {
-        decoratee = new GameImpl(new EtaCivFactory());
+        game = new GameImpl(new EtaCivFactory());
+        decoratee = game;
         transcribingGameDecorator = new TranscribingGameDecorator(decoratee);
         game = transcribingGameDecorator;
+    }
+
+    /*
+    @Test
+    public void testStateIsRememberedWhenDecIsTurnedOffAndOn() {
+        Position redArcherPos1 = new Position(2,0);
+        Position redArcherPos2 = new Position(3,0);
+        Position redArcherPos3 = new Position(4,0);
+        Position redArcherPos4 = new Position(5,0);
+
+        decoratee.moveUnit(redArcherPos1, redArcherPos2);
+
+        turnDecoratorOnOff(); //---------turn it on
+
+        assertThat( transcribingGameDecorator.getTranscript().size(), is(0));
+        assertThat(decoratee.getUnitAt(redArcherPos2).getTypeString(), is(GameConstants.ARCHER));
+
+        turnDecoratorOnOff(); // ------- turns it off   game = dec
+
+        assertThat(decoratee.getUnitAt(redArcherPos2).getTypeString(), is(GameConstants.ARCHER));
+        assertThat(game.getUnitAt(redArcherPos2).getTypeString(), is(GameConstants.ARCHER));
+
+        turnDecoratorOnOff(); // turn it on again   game = new T()
+
+        assertThat( transcribingGameDecorator.getTranscript().size(), is(0));
+        game.endOfTurn();
+        game.endOfTurn();
+        game.moveUnit(redArcherPos2, redArcherPos3);
+
+        assertThat( transcribingGameDecorator.getTranscript().size(), is(3));
+        assertThat(decoratee.getUnitAt(redArcherPos3).getTypeString(), is(GameConstants.ARCHER));
+        assertThat(game.getUnitAt(redArcherPos3).getTypeString(), is(GameConstants.ARCHER));
+
+        turnDecoratorOnOff(); //off   game = dec
+
+        assertThat(decoratee.getUnitAt(redArcherPos3).getTypeString(), is(GameConstants.ARCHER));
+        assertThat(game.getUnitAt(redArcherPos3).getTypeString(), is(GameConstants.ARCHER));
+
+        turnDecoratorOnOff(); //-----------on
+
+        game.endOfTurn();
+        game.endOfTurn();
+        game.moveUnit(redArcherPos3, redArcherPos4);
+
+        assertThat(decoratee.getUnitAt(redArcherPos4).getTypeString(), is(GameConstants.ARCHER));
+
+        turnDecoratorOnOff(); // --------off
+        assertThat(decoratee.getUnitAt(redArcherPos4).getTypeString(), is(GameConstants.ARCHER));
+
+    }
+
+     */
+
+
+    private void turnDecoratorOnOff() { // like done in FRS p. 317 pdf
+        if (game == decoratee) {
+            //turn dec on
+            decoratee = game; // but remember the component
+            game = new TranscribingGameDecorator(game);
+        }
+        else {
+            //turn dec off
+            game = decoratee;
+        }
     }
 
     @Test
@@ -36,7 +104,7 @@ public class TestTranscribingGame {
 
     @Test
     public void canTurnTranscribingOff() {
-        game = decoratee;
+        game = decoratee; //turn it off
         Position redArcherPos1 = new Position(2,0);
         Position redArcherPos2 = new Position(3,0);
         game.moveUnit(redArcherPos1, redArcherPos2);
@@ -45,7 +113,7 @@ public class TestTranscribingGame {
 
     @Test
     public void canTurnTranscribingOffAndOn() {
-        game = decoratee;
+        game = decoratee;  //turn it off
         Position redArcherPos1 = new Position(2,0);
         Position redArcherPos2 = new Position(3,0);
         Position redArcherPos3 = new Position(4,0);
@@ -57,6 +125,7 @@ public class TestTranscribingGame {
         game.moveUnit(redArcherPos2, redArcherPos3);
         assertThat(transcribingGameDecorator.getTranscript().size(), is(3));
     }
+
 
     @Test
     public void changeWorkforceFocusIsTranscribed() {
@@ -71,5 +140,7 @@ public class TestTranscribingGame {
         game.changeProductionInCityAt(redCityPos, GameConstants.ARCHER);
         assertThat(transcribingGameDecorator.getTranscript().size(), is(1));
     }
+
+
 
 }

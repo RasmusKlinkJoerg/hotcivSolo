@@ -17,10 +17,10 @@ public class GameInvoker implements Invoker {
     private final Gson gson;
     private final NameService nameService;
 
-    public GameInvoker(Game servant, NameService nameService, Gson gson) {
+    public GameInvoker(Game servant, NameService nameService) {
         game = servant;
         this.nameService = nameService;
-        this.gson = gson;
+        gson = new Gson();
         System.out.println("created gameInvoker.");
 
     }
@@ -33,7 +33,9 @@ public class GameInvoker implements Invoker {
         JsonParser parser = new JsonParser();
         JsonArray array =
                 parser.parse(payloadJSONArray).getAsJsonArray();
+
         System.out.println("in gameInvoker");
+
         try {
             switch (operationName) {
                 case GET_WINNER:
@@ -115,15 +117,15 @@ public class GameInvoker implements Invoker {
                 case GET_TILE:
                     p = gson.fromJson(array.get(0), Position.class);
                     System.out.println("In GameInvoker in case get tile at with pos " + p);
-                    if (game.getTileAt(p) != null) {
+                    //if (game.getTileAt(p) != null) { a tile will never be null
                         Tile tile = game.getTileAt(p);
                         String id = tile.getId();
                         nameService.putTile(id, tile);
                         reply = new ReplyObject(HttpServletResponse.SC_CREATED, gson.toJson(id));
-                    } else {
-                        reply = new ReplyObject(HttpServletResponse.SC_OK, null);
+                    //} else {
+                      //  reply = new ReplyObject(HttpServletResponse.SC_OK, null);
 
-                    }
+                    //}
                     break;
             }
 

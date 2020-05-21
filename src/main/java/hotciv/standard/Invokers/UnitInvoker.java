@@ -19,9 +19,9 @@ public class UnitInvoker implements Invoker {
     private final NameService nameService;
     private final Gson gson;
 
-    public UnitInvoker(NameService nameService, Gson gson) {
+    public UnitInvoker(NameService nameService) {
         this.nameService = nameService;
-        this.gson = gson;
+        gson = new Gson();
     }
 
     @Override

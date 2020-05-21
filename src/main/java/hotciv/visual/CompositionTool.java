@@ -58,6 +58,7 @@ public class CompositionTool extends NullTool {
 
     public void mouseUp(MouseEvent e, int x, int y) {
         to = getPositionFromXY(x, y);
+        isUnitAtFrom = game.getUnitAt(from) != null; //make check again to check if settler became city
         if (moveTool != null && isUnitAtFrom) {
             game.moveUnit(from, to);
         }

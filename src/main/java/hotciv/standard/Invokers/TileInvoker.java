@@ -16,9 +16,9 @@ public class TileInvoker implements Invoker {
     private final NameService nameService;
     private final Gson gson;
 
-    public TileInvoker(NameService nameService, Gson gson) {
+    public TileInvoker(NameService nameService) {
         this.nameService = nameService;
-        this.gson = gson;
+        gson = new Gson();
     }
 
     @Override
@@ -26,9 +26,11 @@ public class TileInvoker implements Invoker {
         ReplyObject reply = null;
 
         // Demarshall parameters into a JsonArray
-        JsonParser parser = new JsonParser();
+        /*JsonParser parser = new JsonParser();
         JsonArray array =
                 parser.parse(payloadJSONArray).getAsJsonArray();
+
+         */
 
         System.out.println("In TileInvoker");
         Tile tile = nameService.getTile(objectId);

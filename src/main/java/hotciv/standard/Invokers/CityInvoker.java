@@ -17,9 +17,9 @@ public class CityInvoker implements Invoker {
     private final NameService nameService;
     private final Gson gson;
 
-    public CityInvoker(NameService nameService, Gson gson) {
+    public CityInvoker(NameService nameService) {
         this.nameService = nameService;
-        this.gson = gson;
+       gson = new Gson();
     }
 
     @Override

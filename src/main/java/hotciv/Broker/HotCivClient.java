@@ -31,11 +31,8 @@ public class HotCivClient {
         System.out.println( " === Hotciv client (socket) host: " + hostname + ") ===");
 
         //set broker part up
-        ClientRequestHandler crh = new SocketClientRequestHandler();
-        crh.setServer(hostname, 37123);
-
+        ClientRequestHandler crh = new SocketClientRequestHandler(hostname, 37123);
         Requestor requestor = new StandardJSONRequestor(crh);
-
         gameProxy = new GameProxy(requestor);
     }
 

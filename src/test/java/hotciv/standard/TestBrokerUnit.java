@@ -20,7 +20,7 @@ public class TestBrokerUnit {
     @Before
     public void setUp() {
         Game servant = new StubGame3();
-        GameObserver nullObserver = new NullObserver();
+        GameObserver nullObserver = new NullGameObserver();
         servant.addObserver(nullObserver);
 
         Invoker invoker = new GameRootInvoker(servant);

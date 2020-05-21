@@ -29,9 +29,9 @@ public class GameProxy implements ClientProxy, Game {
                         OperationNames.GET_TILE,
                         String.class, p);
         System.out.println("GameProxy --- The tile has id " + id);
-        if (id != null) {
+        //if (id != null) {
             tile = new TileProxy(id, requestor);
-        }
+        //}
         return tile;
     }
 

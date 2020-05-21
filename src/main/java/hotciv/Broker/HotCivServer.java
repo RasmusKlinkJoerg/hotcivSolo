@@ -22,8 +22,7 @@ public class HotCivServer {
         Invoker invoker = new GameRootInvoker(gameServant);
 
         // Configure a socket based server request handler
-        SocketServerRequestHandler ssrh =
-                new SocketServerRequestHandler(port, invoker);
+        SocketServerRequestHandler ssrh = new SocketServerRequestHandler(port, invoker);
         //ssrh.setPortAndInvoker(port, invoker);
 
         // Welcome

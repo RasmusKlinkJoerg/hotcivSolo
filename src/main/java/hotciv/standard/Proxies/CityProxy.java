@@ -18,7 +18,7 @@ public class CityProxy implements City {
     @Override
     public Player getOwner() {
         Player owner =
-            requestor.sendRequestAndAwaitReply(getId(),
+            requestor.sendRequestAndAwaitReply(getId(), //it doesn't matter whether you use id or getId(), because we have id as a field, but getId() is needed in GameProxy
                 OperationNames.GET_OWNER_CITY,
                 Player.class);
         return owner;
@@ -27,7 +27,7 @@ public class CityProxy implements City {
     @Override
     public int getSize() {
         int size =
-                requestor.sendRequestAndAwaitReply(getId(),
+                requestor.sendRequestAndAwaitReply(id,
                         OperationNames.GET_SIZE,
                         Integer.class);
 
@@ -47,7 +47,7 @@ public class CityProxy implements City {
     @Override
     public String getProduction() {
         String production =
-                requestor.sendRequestAndAwaitReply(getId(),
+                requestor.sendRequestAndAwaitReply(id,
                         OperationNames.GET_PRODUCTION,
                         String.class);
         return production;

@@ -4,10 +4,6 @@ import com.google.gson.Gson;
 import frds.broker.Invoker;
 import frds.broker.ReplyObject;
 import hotciv.framework.Game;
-import hotciv.standard.Invokers.CityInvoker;
-import hotciv.standard.Invokers.GameInvoker;
-import hotciv.standard.Invokers.TileInvoker;
-import hotciv.standard.Invokers.UnitInvoker;
 import hotciv.standard.NameService;
 import hotciv.standard.OperationNames;
 
@@ -30,16 +26,16 @@ public class GameRootInvoker implements Invoker {
         invokerMap = new HashMap<>();
 
         // Subinvokers
-        Invoker gameInvoker = new GameInvoker(game, nameService, gson);
+        Invoker gameInvoker = new GameInvoker(game, nameService);
         invokerMap.put(OperationNames.GAME_PREFIX, gameInvoker);
 
-        Invoker cityInvoker = new CityInvoker(nameService, gson);
+        Invoker cityInvoker = new CityInvoker(nameService);
         invokerMap.put(OperationNames.CITY_PREFIX, cityInvoker);
 
-        Invoker unitInvoker = new UnitInvoker(nameService, gson);
+        Invoker unitInvoker = new UnitInvoker(nameService);
         invokerMap.put(OperationNames.UNIT_PREFIX, unitInvoker);
 
-        Invoker tileInvoker = new TileInvoker(nameService, gson);
+        Invoker tileInvoker = new TileInvoker(nameService);
         invokerMap.put(OperationNames.TILE_PREFIX, tileInvoker);
     }
 

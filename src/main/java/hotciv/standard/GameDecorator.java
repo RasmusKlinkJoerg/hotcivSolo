@@ -2,7 +2,7 @@ package hotciv.standard;
 
 import hotciv.framework.*;
 
-public class GameDecorator implements Game {
+public abstract class GameDecorator implements Game {
     private Game game;
 
     public GameDecorator(Game game) {
@@ -80,3 +80,5 @@ public class GameDecorator implements Game {
     }
 
 }
+
+
